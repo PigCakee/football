@@ -17,7 +17,9 @@ class ClubsViewModel @Inject constructor(
     val club: MutableLiveData<Club> = mutableLiveData()
 
     init {
-        getClubs()
+        if (clubs.value?.isNullOrEmpty() == true) {
+            getClubs()
+        }
     }
 
     private fun getClubs() = viewModelScope.launch(Dispatchers.IO) {

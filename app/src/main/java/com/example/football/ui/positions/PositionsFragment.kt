@@ -31,4 +31,12 @@ class PositionsFragment : Fragment() {
         binding.model = model
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        model.clubs.observe(viewLifecycleOwner, {
+
+        })
+    }
 }
