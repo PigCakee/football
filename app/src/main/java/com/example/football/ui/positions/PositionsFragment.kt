@@ -12,11 +12,11 @@ import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import javax.inject.Inject
 
-class PositionFragment : Fragment() {
+class PositionsFragment : Fragment() {
     private val binding by contentView<FragmentPositionsBinding>(R.layout.fragment_positions)
 
     @Inject
-    lateinit var model: PositionViewModel
+    lateinit var model: PositionsViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

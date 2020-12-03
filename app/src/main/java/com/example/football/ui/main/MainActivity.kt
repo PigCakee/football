@@ -24,10 +24,6 @@ class MainActivity : AppCompatActivity() {
         initDagger()
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        binding.viewPager.adapter = sectionsPagerAdapter
-        binding.tabs.setupWithViewPager(binding.viewPager)
     }
 
     private fun initDagger() {

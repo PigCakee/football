@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.example.football.ui.positions.PositionViewModel" />
+            type="com.example.football.ui.positions.PositionsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

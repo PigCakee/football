@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.football.R
 import com.example.football.ui.clubs.ClubsFragment
 import com.example.football.ui.nationalities.NationalitiesFragment
-import com.example.football.ui.positions.PositionFragment
+import com.example.football.ui.positions.PositionsFragment
 import com.example.football.utils.view.CLUBS_POS
 import com.example.football.utils.view.NATIONALITY_POS
 import com.example.football.utils.view.POSITION_POS
@@ -26,7 +26,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     override fun getItem(position: Int): Fragment {
         return when (position) {
             CLUBS_POS -> ClubsFragment()
-            POSITION_POS -> PositionFragment()
+            POSITION_POS -> PositionsFragment()
             NATIONALITY_POS -> NationalitiesFragment()
             else -> ClubsFragment()
         }

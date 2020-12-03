@@ -1,7 +1,7 @@
 package com.example.football.di
 
 import com.example.football.ui.main.MainActivity
-import com.example.football.ui.positions.PositionFragment
+import com.example.football.ui.positions.PositionsFragment
 import dagger.Subcomponent
 
 @Subcomponent
@@ -13,5 +13,5 @@ interface PositionsComponent {
     }
 
     fun inject(activity: MainActivity)
-    fun inject(fragment: PositionFragment)
+    fun inject(fragment: PositionsFragment)
 }
