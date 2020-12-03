@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Football</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="clubs">Clubs</string>
+    <string name="positions">Positions</string>
+    <string name="nationalities">Nationalities</string>
+</resources>
