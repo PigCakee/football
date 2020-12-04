@@ -50,8 +50,8 @@ class PositionsAdapter(
 
     override fun getItemCount() = positions.size
 
-    fun setData(positions: List<Club>) {
-        data = positions
+    fun setData(clubs: List<Club>) {
+        data = clubs
         notifyDataSetChanged()
     }
 

@@ -10,4 +10,9 @@
     <string name="forward">Forward</string>
     <string name="middle">Middle</string>
     <string name="defence">Defence</string>
+    <string name="saxon">Saxon</string>
+    <string name="english">English</string>
+    <string name="german">German</string>
+    <string name="belarussian">Belarussian</string>
+    <string name="polish">Polish</string>
 </resources>
