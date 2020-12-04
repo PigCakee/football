@@ -48,7 +48,8 @@ class ClubsFragment : Fragment() {
         })
 
         model.club.observe(viewLifecycleOwner, {
-            // TODO navigate to club's positions fragment
+            val action = ClubsFragmentDirections.actionClubsFragmentToClubPositionsFragment(it)
+            navController.navigate(action)
         })
     }
 }

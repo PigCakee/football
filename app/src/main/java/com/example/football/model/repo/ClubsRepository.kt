@@ -18,7 +18,9 @@ class ClubsRepository @Inject constructor() {
                     Player("Anton1", "Forward", "Belarussian"),
                     Player("Anton2", "Forward", "English"),
                     Player("Anton3", "Defence", "Saxon"),
-                    Player("Anton4", "Middle", "Polish")
+                    Player("Anton4", "Middle", "Polish"),
+                    Player("Anton5", "Forward", "Belarussian"),
+                    Player("Anton6", "Forward", "Belarussian")
                 )
             ),
             Club(
@@ -27,7 +29,8 @@ class ClubsRepository @Inject constructor() {
                     Player("Anton1", "Forward", "Belarussian"),
                     Player("Anton2", "Forward", "English"),
                     Player("Anton3", "Defence", "Saxon"),
-                    Player("Anton4", "Middle", "Polish")
+                    Player("Anton4", "Middle", "Polish"),
+                    Player("Anton5", "Middle", "Polish")
                 )
             ),
             Club(

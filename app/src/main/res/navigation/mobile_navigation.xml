@@ -9,12 +9,26 @@
         android:id="@+id/mainFragment"
         android:name="com.example.football.ui.main.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_clubsFragment"
+            app:destination="@id/clubsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_positionFragment"
+            app:destination="@id/positionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_nationalitiesFragment"
+            app:destination="@id/nationalitiesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/clubsFragment"
         android:name="com.example.football.ui.clubs.ClubsFragment"
         android:label="ClubsFragment"
-        tools:layout="@layout/fragment_clubs"/>
+        tools:layout="@layout/fragment_clubs">
+        <action
+            android:id="@+id/action_clubsFragment_to_clubPositionsFragment"
+            app:destination="@id/clubPositionsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nationalitiesFragment"
         android:name="com.example.football.ui.nationalities.NationalitiesFragment"
@@ -25,4 +39,13 @@
         android:name="com.example.football.ui.positions.PositionsFragment"
         android:label="PositionFragment"
         tools:layout="@layout/fragment_positions"/>
+    <fragment
+        android:id="@+id/clubPositionsFragment"
+        android:name="com.example.football.ui.clubs.ClubPositionsFragment"
+        android:label="ClubPositionsFragment"
+        tools:layout="@layout/fragment_club_positions" >
+        <argument
+            android:name="club"
+            app:argType="com.example.football.model.club.Club" />
+    </fragment>
 </navigation>
