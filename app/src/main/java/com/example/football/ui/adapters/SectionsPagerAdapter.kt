@@ -14,14 +14,14 @@ import com.example.football.utils.view.CLUBS_POS
 import com.example.football.utils.view.NATIONALITY_POS
 import com.example.football.utils.view.POSITION_POS
 
-private val TAB_TITLES = arrayOf(
-    R.string.clubs,
-    R.string.positions,
-    R.string.nationalities
-)
-
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
+
+    private val tabTitles = arrayOf(
+        R.string.clubs,
+        R.string.positions,
+        R.string.nationalities
+    )
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
@@ -33,10 +33,10 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return context.resources.getString(TAB_TITLES[position])
+        return context.resources.getString(tabTitles[position])
     }
 
     override fun getCount(): Int {
-        return TAB_TITLES.size
+        return tabTitles.size
     }
 }

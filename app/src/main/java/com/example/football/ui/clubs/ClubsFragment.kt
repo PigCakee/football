@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.football.R
 import com.example.football.databinding.FragmentClubsBinding
 import com.example.football.ui.adapters.ClubsAdapter
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
 import javax.inject.Inject
 
@@ -48,8 +50,11 @@ class ClubsFragment : Fragment() {
         })
 
         model.club.observe(viewLifecycleOwner, {
-            val action = ClubsFragmentDirections.actionClubsFragmentToClubPositionsFragment(it)
-            navController.navigate(action)
+            if (it != null) {
+                val action = MainFragmentDirections.actionMainFragmentToClubPositionsFragment(it)
+                navController.navigate(action)
+                model.club.value = null
+            }
         })
     }
 }

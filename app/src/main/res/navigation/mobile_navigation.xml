@@ -11,24 +11,14 @@
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_clubsFragment"
-            app:destination="@id/clubsFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_positionFragment"
-            app:destination="@id/positionFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_nationalitiesFragment"
-            app:destination="@id/nationalitiesFragment" />
+            android:id="@+id/action_mainFragment_to_clubPositionsFragment"
+            app:destination="@id/clubPositionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/clubsFragment"
         android:name="com.example.football.ui.clubs.ClubsFragment"
         android:label="ClubsFragment"
-        tools:layout="@layout/fragment_clubs">
-        <action
-            android:id="@+id/action_clubsFragment_to_clubPositionsFragment"
-            app:destination="@id/clubPositionsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_clubs"/>
     <fragment
         android:id="@+id/nationalitiesFragment"
         android:name="com.example.football.ui.nationalities.NationalitiesFragment"

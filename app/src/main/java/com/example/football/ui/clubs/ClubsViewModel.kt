@@ -12,7 +12,7 @@ class ClubsViewModel @Inject constructor(
     clubsRepository: ClubsRepository
 ) : ViewModel() {
     val clubs: LiveData<List<Club>> = clubsRepository.clubs.asLiveData()
-    val club: MutableLiveData<Club> = mutableLiveData()
+    val club: MutableLiveData<Club?> = mutableLiveData(null)
 
     fun handleClubClick(club: Club) {
         this.club.value = club
