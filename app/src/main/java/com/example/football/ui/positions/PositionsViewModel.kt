@@ -1,8 +1,6 @@
 package com.example.football.ui.positions
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.football.model.club.Club
 import com.example.football.model.repo.ClubsRepository
 import kotlinx.coroutines.Dispatchers
@@ -12,17 +10,7 @@ import javax.inject.Inject
 class PositionsViewModel @Inject constructor(
     private val clubsRepository: ClubsRepository
 ) : ViewModel() {
-    val clubs: MutableLiveData<List<Club>> = clubsRepository.clubs
-
-    init {
-        if (clubs.value?.isNullOrEmpty() == true) {
-            getClubs()
-        }
-    }
-
-    private fun getClubs() = viewModelScope.launch(Dispatchers.IO) {
-        clubsRepository.getClubs()
-    }
+    val clubs: LiveData<List<Club>> = clubsRepository.clubs.asLiveData()
 
     fun handlePositionClick(position: String) {
 

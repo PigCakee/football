@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
-import com.example.football.databinding.ClubBinding
+import com.example.football.databinding.ItemClubBinding
 import com.example.football.model.club.Club
 import com.example.football.ui.clubs.ClubsViewModel
 
@@ -17,7 +17,7 @@ class ClubsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ClubBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemClubBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -38,10 +38,10 @@ class ClubsAdapter(
 
     override fun getItemCount() = data.size
 
-    fun setData(groups: List<Club>) {
-        data = groups
+    fun setData(clubs: List<Club>) {
+        data = clubs
         notifyDataSetChanged()
     }
 
-    class ViewHolder(val binding: ClubBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)
 }
