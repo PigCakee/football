@@ -3,7 +3,7 @@ package com.example.football.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.football.databinding.ItemClubPositionBinding
+import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.club.Club
 import com.example.football.model.club.Player
 
@@ -15,7 +15,7 @@ class ClubPositionsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemClubPositionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -29,5 +29,5 @@ class ClubPositionsListAdapter(
 
     override fun getItemCount() = data.size
 
-    class ViewHolder(val binding: ItemClubPositionBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemPlayerBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -7,11 +7,11 @@ import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.club.Club
 import com.example.football.model.club.Player
 
-class PositionInClubsListAdapter(
-    private val position: String,
+class NationalityInClubsListAdapter(
+    private val nationality: String,
     club: Club
-) : RecyclerView.Adapter<PositionInClubsListAdapter.ViewHolder>() {
-    private var data: List<Player> = club.players.filter { it.position == position }
+) : RecyclerView.Adapter<NationalityInClubsListAdapter.ViewHolder>() {
+    private var data: List<Player> = club.players.filter { it.nationality == nationality }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =

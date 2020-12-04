@@ -10,8 +10,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.football.R
 import com.example.football.databinding.FragmentNationalitiesBinding
+import com.example.football.model.club.Club
+import com.example.football.model.club.Clubs
 import com.example.football.ui.adapters.NationalitiesAdapter
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
 import javax.inject.Inject
 
@@ -49,10 +52,15 @@ class NationalitiesFragment : Fragment() {
 
         model.nationality.observe(viewLifecycleOwner, {
             if (it != null) {
-
+                val clubsArrayList = arrayListOf<Club>()
+                model.clubs.value?.let { club -> clubsArrayList.addAll(club) }
+                val action =
+                    MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(
+                        Clubs(clubsArrayList), it
+                    )
+                navController.navigate(action)
                 model.nationality.value = null
             }
-            // TODO navigate to nationalities in clubs fragment
         })
     }
 }

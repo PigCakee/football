@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mainFragment_to_positionInClubsFragment"
             app:destination="@id/positionInClubsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_nationalitiesInClubsFragment"
+            app:destination="@id/nationalitiesInClubsFragment" />
     </fragment>
     <fragment
         android:id="@+id/clubsFragment"
@@ -52,6 +55,20 @@
         </argument>
         <argument
             android:name="position"
+            app:argType="string">
+        </argument>
+    </fragment>
+    <fragment
+        android:id="@+id/nationalitiesInClubsFragment"
+        android:name="com.example.football.ui.nationalities.NationalitiesInClubsFragment"
+        android:label="NationalitiesInClubsFragment"
+        tools:layout="@layout/fragment_nationality_in_club" >
+        <argument
+            android:name="clubs"
+            app:argType="com.example.football.model.club.Clubs">
+        </argument>
+        <argument
+            android:name="nationality"
             app:argType="string">
         </argument>
     </fragment>

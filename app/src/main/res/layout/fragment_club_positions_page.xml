@@ -17,7 +17,7 @@
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_club_position"/>
+            tools:listitem="@layout/item_player"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
