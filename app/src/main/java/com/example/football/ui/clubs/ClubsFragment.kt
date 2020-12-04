@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.football.R
 import com.example.football.databinding.FragmentClubsBinding
 import com.example.football.ui.adapters.ClubsAdapter
@@ -16,6 +18,7 @@ import javax.inject.Inject
 class ClubsFragment : Fragment() {
     private val binding by contentView<FragmentClubsBinding>(R.layout.fragment_clubs)
     private lateinit var adapter: ClubsAdapter
+    private lateinit var navController: NavController
 
     @Inject
     lateinit var model: ClubsViewModel
@@ -38,13 +41,14 @@ class ClubsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
 
         model.clubs.observe(viewLifecycleOwner, {
             adapter.setData(it)
         })
 
         model.club.observe(viewLifecycleOwner, {
-            // navigate to club's positions fragment
+            // TODO navigate to club's positions fragment
         })
     }
 }

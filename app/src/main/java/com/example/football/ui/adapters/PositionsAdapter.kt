@@ -37,13 +37,15 @@ class PositionsAdapter(
     }
 
     private fun ItemPositionBinding.filterPlayers(position: Int) {
+        var count = 0
         data.forEach { club ->
             val matchingPlayers: List<Player> =
                 club.players.filter { player -> player.position == positions[position] }
-            this.position.text = positions[position]
-            this.players.text = matchingPlayers.size.toString()
-            this.pos = positions[position]
+            count += matchingPlayers.size
         }
+        this.position.text = positions[position]
+        this.players.text = count.toString()
+        this.pos = positions[position]
     }
 
     override fun getItemCount() = positions.size
