@@ -10,8 +10,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.football.R
 import com.example.football.databinding.FragmentPositionsBinding
+import com.example.football.model.club.Club
+import com.example.football.model.club.Clubs
 import com.example.football.ui.adapters.PositionsAdapter
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
 import javax.inject.Inject
 
@@ -34,7 +37,7 @@ class PositionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding.model = model
-        adapter = PositionsAdapter(model, requireContext())
+        adapter = PositionsAdapter(model)
         binding.recyclerView.adapter = adapter
         return binding.root
     }
@@ -48,7 +51,16 @@ class PositionsFragment : Fragment() {
         })
 
         model.position.observe(viewLifecycleOwner, {
-            // TODO navigate to position in clubs fragment
+            if (it != null) {
+                val clubsArrayList = arrayListOf<Club>()
+                model.clubs.value?.let { club -> clubsArrayList.addAll(club) }
+                val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(
+                    Clubs(clubsArrayList),
+                    it
+                )
+                navController.navigate(action)
+                model.position.value = null
+            }
         })
     }
 }

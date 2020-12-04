@@ -34,7 +34,7 @@ class NationalitiesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding.model = model
-        adapter = NationalitiesAdapter(model, requireContext())
+        adapter = NationalitiesAdapter(model)
         binding.recyclerView.adapter = adapter
         return binding.root
     }
@@ -48,6 +48,10 @@ class NationalitiesFragment : Fragment() {
         })
 
         model.nationality.observe(viewLifecycleOwner, {
+            if (it != null) {
+
+                model.nationality.value = null
+            }
             // TODO navigate to nationalities in clubs fragment
         })
     }

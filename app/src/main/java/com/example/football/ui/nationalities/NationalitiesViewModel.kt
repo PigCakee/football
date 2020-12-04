@@ -13,7 +13,7 @@ class NationalitiesViewModel @Inject constructor(
     clubsRepository: ClubsRepository
 ) : ViewModel() {
     val clubs: LiveData<List<Club>> = clubsRepository.clubs.asLiveData()
-    val nationality: MutableLiveData<String> = mutableLiveData()
+    val nationality: MutableLiveData<String?> = mutableLiveData()
 
     fun handleNationalityClick(nationality: String) {
         this.nationality.value = nationality

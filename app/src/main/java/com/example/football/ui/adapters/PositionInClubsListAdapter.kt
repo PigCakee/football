@@ -7,10 +7,10 @@ import com.example.football.databinding.ItemClubPositionBinding
 import com.example.football.model.club.Club
 import com.example.football.model.club.Player
 
-class ClubPositionsListAdapter(
+class PositionInClubsListAdapter(
     private val position: String,
     club: Club
-) : RecyclerView.Adapter<ClubPositionsListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<PositionInClubsListAdapter.ViewHolder>() {
     private var data: List<Player> = club.players.filter { it.position == position }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
