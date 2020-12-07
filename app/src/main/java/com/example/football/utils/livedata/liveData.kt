@@ -13,20 +13,3 @@ fun <T> mutableLiveData(defaultValue: T? = null): MutableLiveData<T> {
 
     return data
 }
-
-fun <T> mediatorLiveData(
-    vararg liveDataItems: LiveData<*>,
-    predicate: () -> T
-): MediatorLiveData<T> {
-    val mediator = MediatorLiveData<T>()
-
-    liveDataItems.forEach { liveData ->
-        mediator.addSource(liveData) {
-            mediator.value = predicate()
-        }
-    }
-
-    mediator.observeForever { }
-
-    return mediator
-}

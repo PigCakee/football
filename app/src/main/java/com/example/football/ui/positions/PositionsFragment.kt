@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentPositionsBinding
-import com.example.football.model.club.Club
-import com.example.football.model.club.Clubs
-import com.example.football.ui.adapters.PositionsAdapter
+import com.example.football.databinding.ItemPositionBinding
+import com.example.football.model.club.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
@@ -46,16 +46,21 @@ class PositionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        model.clubs.observe(viewLifecycleOwner, {
-            adapter.setData(it)
+        model.getPositions()
+
+        model.positions.observe(viewLifecycleOwner, {
+            it.forEach { position ->
+                model.getPlayersByPosition(position)
+            }
+        })
+
+        model.playersOnPositions.observe(viewLifecycleOwner, {
+            adapter.addData(it)
         })
 
         model.position.observe(viewLifecycleOwner, {
             if (it != null) {
-                val clubsArrayList = arrayListOf<Club>()
-                model.clubs.value?.let { club -> clubsArrayList.addAll(club) }
                 val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(
-                    Clubs(clubsArrayList),
                     it
                 )
                 navController.navigate(action)
@@ -63,4 +68,36 @@ class PositionsFragment : Fragment() {
             }
         })
     }
+
+    inner class PositionsAdapter(
+        private val model: PositionsViewModel,
+        private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
+    ) : RecyclerView.Adapter<PositionsAdapter.ViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding =
+                ItemPositionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.binding.model = model
+            with(holder.binding) {
+                this.position.text = data[position].second
+                this.players.text = data[position].first.size.toString()
+                this.pos = data[position].second
+            }
+        }
+
+        override fun getItemCount() = data.size
+
+        fun addData(pair: Pair<List<Player>, String>) {
+            data.add(pair)
+            notifyDataSetChanged()
+        }
+
+        inner class ViewHolder(val binding: ItemPositionBinding) :
+            RecyclerView.ViewHolder(binding.root)
+    }
 }
+

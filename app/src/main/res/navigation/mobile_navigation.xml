@@ -50,10 +50,6 @@
         android:label="PositionInClubsFragment"
         tools:layout="@layout/fragment_position_in_clubs" >
         <argument
-            android:name="clubs"
-            app:argType="com.example.football.model.club.Clubs">
-        </argument>
-        <argument
             android:name="position"
             app:argType="string">
         </argument>

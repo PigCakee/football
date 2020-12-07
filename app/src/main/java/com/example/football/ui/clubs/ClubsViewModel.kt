@@ -10,7 +10,7 @@ import com.example.football.utils.livedata.mutableLiveData
 import javax.inject.Inject
 
 class ClubsViewModel @Inject constructor(
-    clubsRepository: ClubsRepository
+    private val clubsRepository: ClubsRepository
 ) : ViewModel() {
     val clubs: LiveData<List<Club>> = clubsRepository.clubs.asLiveData()
     val club: MutableLiveData<Club?> = mutableLiveData(null)
