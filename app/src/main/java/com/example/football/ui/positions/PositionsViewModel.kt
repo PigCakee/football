@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.football.model.club.Player
-import com.example.football.model.repo.ClubsRepository
+import com.example.football.model.repo.PlayersRepository
 import com.example.football.utils.livedata.mutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.onEach
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PositionsViewModel @Inject constructor(
-    private val clubsRepository: ClubsRepository
+    private val playersRepository: PlayersRepository
 ) : ViewModel() {
     val positions: MutableLiveData<List<String>> = mutableLiveData()
     val clubs: MutableLiveData<List<String>> = mutableLiveData()
@@ -21,22 +21,22 @@ class PositionsViewModel @Inject constructor(
     val position: MutableLiveData<String?> = mutableLiveData()
 
     fun getPositions() = viewModelScope.launch(Dispatchers.IO) {
-        clubsRepository.getAllPositions().onEach { positions.value = it }
+        playersRepository.getAllPositions().onEach { positions.postValue(it) }
     }
 
     fun getPlayersByPosition(position: String) = viewModelScope.launch(Dispatchers.IO) {
-        clubsRepository.getPlayersByPosition(position)
-            .onEach { playersOnPositions.value = Pair(it, position) }
+        playersRepository.getPlayersByPosition(position)
+            .onEach { playersOnPositions.postValue(Pair(it, position)) }
     }
 
     fun getAllClubs() = viewModelScope.launch(Dispatchers.IO) {
-        clubsRepository.getAllClubs().onEach { clubs.value = it }
+        playersRepository.getAllClubs().onEach { clubs.postValue(it) }
     }
 
     fun getPlayersByPositionInClub(position: String, club: String) =
         viewModelScope.launch(Dispatchers.IO) {
-            clubsRepository.getPlayersByPositionInClub(position, club)
-                .onEach { playersOnPositionInClub.value = it }
+            playersRepository.getPlayersByPositionInClub(position, club)
+                .onEach { playersOnPositionInClub.postValue(it) }
         }
 
     fun handlePositionClick(position: String) {

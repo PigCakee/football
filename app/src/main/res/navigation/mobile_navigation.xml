@@ -42,7 +42,7 @@
         tools:layout="@layout/fragment_club_positions" >
         <argument
             android:name="club"
-            app:argType="com.example.football.model.club.Club" />
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/positionInClubsFragment"

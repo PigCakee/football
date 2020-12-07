@@ -4,7 +4,7 @@ import com.example.football.model.club.Player
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class ClubsRepository @Inject constructor() {
+class PlayersRepository @Inject constructor() {
 
     fun getPlayersByClub(club: String): Flow<List<Player>> {
         return flow { emit(playersData.filter { it.club == club }) }

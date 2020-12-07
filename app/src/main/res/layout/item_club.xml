@@ -10,15 +10,15 @@
             type="com.example.football.ui.clubs.ClubsViewModel" />
 
         <variable
-            name="clubb"
-            type="com.example.football.model.club.Club" />
+            name="clubData"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="2dp"
-        android:onClick="@{() -> model.handleClubClick(clubb)}">
+        android:onClick="@{() -> model.handleClubClick(clubData)}">
 
         <ImageView
             android:id="@+id/label"

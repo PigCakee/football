@@ -37,9 +37,8 @@ class PositionInClubsFragment : Fragment() {
             }.attach()
 
             adapter = PositionInClubsPageAdapter(this, args.position, it)
+            binding.pager.adapter = adapter
         })
-
-        binding.pager.adapter = adapter
         return binding.root
     }
 
