@@ -1,5 +1,6 @@
 package com.example.football.ui.clubs
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsBinding
+import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.POS_ARG
@@ -23,6 +25,11 @@ class ClubPositionsFragment : Fragment() {
     @Inject
     lateinit var model: ClubsViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).clubsComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,14 +37,14 @@ class ClubPositionsFragment : Fragment() {
     ): View {
         model.getAllPositions()
 
-        binding.title.text = args.club.name
+        binding.title.text = args.club
         model.positions.observe(viewLifecycleOwner, {
+            adapter = ClubPositionsPageAdapter(this, args.club, it)
+            binding.pager.adapter = adapter
+
             TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
                 tab.text = it[pos]
             }.attach()
-
-            adapter = ClubPositionsPageAdapter(this, args.club)
-            binding.pager.adapter = adapter
         })
 
         return binding.root

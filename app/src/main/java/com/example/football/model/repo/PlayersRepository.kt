@@ -1,6 +1,6 @@
 package com.example.football.model.repo
 
-import com.example.football.model.club.Player
+import com.example.football.model.player.Player
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -17,8 +17,6 @@ class PlayersRepository @Inject constructor() {
     fun getPlayersByNationality(nationality: String): Flow<List<Player>> {
         return flow { emit(playersData.filter { it.nationality == nationality }) }
     }
-
-    fun getAllPlayers(): Flow<List<Player>> = flow { emit(playersData) }
 
     fun getAllPositions(): Flow<List<String>> {
         val positions: MutableList<String> = mutableListOf()
@@ -57,6 +55,10 @@ class PlayersRepository @Inject constructor() {
         return flow { emit(playersData.filter { it.club == club && it.position == position }) }
     }
 
+    fun getPlayersByNationalityInClub(nationality: String, club: String): Flow<List<Player>> {
+        return flow { emit(playersData.filter { it.nationality == nationality && it.club == club }) }
+    }
+
     companion object {
         private val playersData = listOf(
             Player("Anton", "Goalkeeper", "German","Bavaria"),
@@ -65,50 +67,23 @@ class PlayersRepository @Inject constructor() {
             Player("Anton3", "Defence", "Saxon","Bavaria"),
             Player("Anton4", "Middle", "Polish","Bavaria"),
             Player("Anton5", "Forward", "Belarussian","Bavaria"),
-            Player("Anton6", "Forward", "Belarussian","Bavaria")
+            Player("Anton6", "Forward", "Belarussian","Bavaria"),
+            Player("Anton", "Goalkeeper", "German", "PSG"),
+            Player("Anton1", "Forward", "Belarussian", "PSG"),
+            Player("Anton2", "Forward", "English", "PSG"),
+            Player("Anton3", "Defence", "Saxon", "PSG"),
+            Player("Anton4", "Middle", "Polish", "PSG"),
+            Player("Anton5", "Middle", "Polish", "PSG"),
+            Player("Anton", "Goalkeeper", "German", "Juventus"),
+            Player("Anton1", "Forward", "Belarussian", "Juventus"),
+            Player("Anton2", "Forward", "English", "Juventus"),
+            Player("Anton3", "Defence", "Saxon", "Juventus"),
+            Player("Anton4", "Middle", "Polish", "Juventus"),
+            Player("Anton", "Goalkeeper", "German", "Tottanham"),
+            Player("Anton1", "Forward", "Belarussian", "Tottanham"),
+            Player("Anton2", "Forward", "English", "Tottanham"),
+            Player("Anton3", "Defence", "Saxon", "Tottanham"),
+            Player("Anton4", "Middle", "Polish", "Tottanham")
         )
-
-        //private val clubsData = listOf(
-        //    Club(
-        //        "Bavaria",
-        //        listOf(
-        //            Player("Anton", "Goalkeeper", "German"),
-        //            Player("Anton1", "Forward", "Belarussian"),
-        //            Player("Anton2", "Forward", "English"),
-        //            Player("Anton3", "Defence", "Saxon"),
-        //            Player("Anton4", "Middle", "Polish"),
-        //            Player("Anton5", "Forward", "Belarussian"),
-        //            Player("Anton6", "Forward", "Belarussian")
-        //        )
-        //    ),
-        //    Club(
-        //        "PSG", listOf(
-        //            Player("Anton", "Goalkeeper", "German"),
-        //            Player("Anton1", "Forward", "Belarussian"),
-        //            Player("Anton2", "Forward", "English"),
-        //            Player("Anton3", "Defence", "Saxon"),
-        //            Player("Anton4", "Middle", "Polish"),
-        //            Player("Anton5", "Middle", "Polish")
-        //        )
-        //    ),
-        //    Club(
-        //        "Juventus", listOf(
-        //            Player("Anton", "Goalkeeper", "German"),
-        //            Player("Anton1", "Forward", "Belarussian"),
-        //            Player("Anton2", "Forward", "English"),
-        //            Player("Anton3", "Defence", "Saxon"),
-        //            Player("Anton4", "Middle", "Polish")
-        //        )
-        //    ),
-        //    Club(
-        //        "Tottanham", listOf(
-        //            Player("Anton", "Goalkeeper", "German"),
-        //            Player("Anton1", "Forward", "Belarussian"),
-        //            Player("Anton2", "Forward", "English"),
-        //            Player("Anton3", "Defence", "Saxon"),
-        //            Player("Anton4", "Middle", "Polish")
-        //        )
-        //    )
-        //)
     }
 }

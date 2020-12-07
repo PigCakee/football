@@ -1,5 +1,7 @@
 package com.example.football.di
 
+import com.example.football.ui.clubs.ClubPositionsFragment
+import com.example.football.ui.clubs.ClubPositionsPageFragment
 import com.example.football.ui.clubs.ClubsFragment
 import com.example.football.ui.main.MainActivity
 import dagger.Subcomponent
@@ -14,4 +16,6 @@ interface ClubsComponent {
 
     fun inject(activity: MainActivity)
     fun inject(fragment: ClubsFragment)
+    fun inject(fragment: ClubPositionsFragment)
+    fun inject(fragment: ClubPositionsPageFragment)
 }

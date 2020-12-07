@@ -1,5 +1,6 @@
 package com.example.football.ui.positions
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsPageBinding
 import com.example.football.databinding.ItemPlayerBinding
-import com.example.football.model.club.Player
+import com.example.football.model.player.Player
+import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.POS_ARG
@@ -20,6 +22,11 @@ class PositionInClubsPageFragment : Fragment() {
 
     @Inject
     lateinit var model: PositionsViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).positionsComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -3,11 +3,11 @@ package com.example.football.ui.clubs
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.football.model.club.Player
+import com.example.football.model.player.Player
 import com.example.football.model.repo.PlayersRepository
 import com.example.football.utils.livedata.mutableLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,21 +21,21 @@ class ClubsViewModel @Inject constructor(
     val club: MutableLiveData<String?> = mutableLiveData(null)
 
     fun getClubs() = viewModelScope.launch(Dispatchers.IO) {
-        playersRepository.getAllClubs().onEach { clubs.postValue(it) }
+        playersRepository.getAllClubs().collect { clubs.postValue(it) }
     }
 
     fun getPlayersByClub(club: String) = viewModelScope.launch(Dispatchers.IO) {
-        playersRepository.getPlayersByClub(club).onEach { playersInClub.postValue(Pair(it, club)) }
+        playersRepository.getPlayersByClub(club).collect { playersInClub.postValue(Pair(it, club)) }
     }
 
     fun getAllPositions() = viewModelScope.launch(Dispatchers.IO) {
-        playersRepository.getAllPositions().onEach { positions.postValue(it) }
+        playersRepository.getAllPositions().collect { positions.postValue(it) }
     }
 
     fun getPlayersByPositionInClub(position: String, club: String) =
         viewModelScope.launch(Dispatchers.IO) {
             playersRepository.getPlayersByPositionInClub(position, club)
-                .onEach { playersOnPositionInClub.postValue(it) }
+                .collect { playersOnPositionInClub.postValue(it) }
         }
 
     fun handleClubClick(club: String) {

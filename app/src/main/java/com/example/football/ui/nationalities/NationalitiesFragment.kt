@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentNationalitiesBinding
-import com.example.football.model.club.Club
-import com.example.football.model.club.Clubs
-import com.example.football.ui.adapters.NationalitiesAdapter
+import com.example.football.databinding.ItemNationalityBinding
+import com.example.football.model.player.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
@@ -46,21 +46,57 @@ class NationalitiesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        model.clubs.observe(viewLifecycleOwner, {
-            adapter.setData(it)
+        model.getAllNationalities()
+
+        model.nationalities.observe(viewLifecycleOwner, {
+            it.forEach { nationality ->
+                model.getPlayersWithNationality(nationality)
+            }
+        })
+
+        model.playersWithNationality.observe(viewLifecycleOwner, {
+            adapter.addData(it)
         })
 
         model.nationality.observe(viewLifecycleOwner, {
             if (it != null) {
-                val clubsArrayList = arrayListOf<Club>()
-                model.clubs.value?.let { club -> clubsArrayList.addAll(club) }
                 val action =
                     MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(
-                        Clubs(clubsArrayList), it
+                        it
                     )
                 navController.navigate(action)
                 model.nationality.value = null
             }
         })
+    }
+
+    inner class NationalitiesAdapter(
+        private val model: NationalitiesViewModel,
+        private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
+    ) : RecyclerView.Adapter<NationalitiesAdapter.ViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding =
+                ItemNationalityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.binding.model = model
+            with(holder.binding) {
+                this.nationality.text = data[position].second
+                this.players.text = data[position].first.size.toString()
+                this.nation = data[position].second
+            }
+        }
+
+        override fun getItemCount() = data.size
+
+        fun addData(players: Pair<List<Player>, String>) {
+            data.add(players)
+            notifyDataSetChanged()
+        }
+
+        inner class ViewHolder(val binding: ItemNationalityBinding) : RecyclerView.ViewHolder(binding.root)
     }
 }

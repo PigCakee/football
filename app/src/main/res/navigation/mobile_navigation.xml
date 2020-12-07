@@ -57,12 +57,7 @@
     <fragment
         android:id="@+id/nationalitiesInClubsFragment"
         android:name="com.example.football.ui.nationalities.NationalitiesInClubsFragment"
-        android:label="NationalitiesInClubsFragment"
-        tools:layout="@layout/fragment_nationality_in_club" >
-        <argument
-            android:name="clubs"
-            app:argType="com.example.football.model.club.Clubs">
-        </argument>
+        android:label="NationalitiesInClubsFragment" >
         <argument
             android:name="nationality"
             app:argType="string">
