@@ -28,7 +28,7 @@ class ClubsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).clubsComponent.inject(this)
+        (activity as MainActivity).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -47,12 +47,6 @@ class ClubsFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         model.getClubs()
-
-        model.clubs.observe(viewLifecycleOwner, {
-            it.forEach { club ->
-                model.getPlayersByClub(club)
-            }
-        })
 
         model.playersInClub.observe(viewLifecycleOwner, {
             adapter.addData(it)

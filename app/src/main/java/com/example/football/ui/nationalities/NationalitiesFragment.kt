@@ -28,7 +28,7 @@ class NationalitiesFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).nationalitiesComponent.inject(this)
+        (activity as MainActivity).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -47,12 +47,6 @@ class NationalitiesFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         model.getAllNationalities()
-
-        model.nationalities.observe(viewLifecycleOwner, {
-            it.forEach { nationality ->
-                model.getPlayersWithNationality(nationality)
-            }
-        })
 
         model.playersWithNationality.observe(viewLifecycleOwner, {
             adapter.addData(it)

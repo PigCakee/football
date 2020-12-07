@@ -7,6 +7,7 @@ import com.example.football.model.player.Player
 import com.example.football.model.repo.PlayersRepository
 import com.example.football.utils.livedata.mutableLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +15,6 @@ import javax.inject.Inject
 class NationalitiesViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
-    val nationalities: MutableLiveData<List<String>> = mutableLiveData()
     val clubs: MutableLiveData<List<String>> = mutableLiveData()
     val playersWithNationality: MutableLiveData<Pair<List<Player>, String>> = mutableLiveData()
     val playersWithNationalityInClub: MutableLiveData<List<Player>> = mutableLiveData()
@@ -22,11 +22,14 @@ class NationalitiesViewModel @Inject constructor(
 
     fun getAllNationalities() = viewModelScope.launch(Dispatchers.IO) {
         playersRepository.getAllNationalities().collect {
-            nationalities.postValue(it)
+            it.forEach { nationality ->
+                getPlayersWithNationality(nationality)
+                delay(1000L)
+            }
         }
     }
 
-    fun getPlayersWithNationality(nationality: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getPlayersWithNationality(nationality: String) = viewModelScope.launch(Dispatchers.IO) {
         playersRepository.getPlayersByNationality(nationality).collect {
             playersWithNationality.postValue(
                 Pair(it, nationality)

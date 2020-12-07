@@ -1,4 +1,4 @@
-package com.example.football.ui.clubs
+package com.example.football.ui.clubPosition
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsPageBinding
 import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.player.Player
+import com.example.football.ui.clubs.ClubsViewModel
 import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
@@ -25,7 +26,7 @@ class ClubPositionsPageFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).clubsComponent.inject(this)
+        (activity as MainActivity).appComponent.inject(this)
     }
 
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.example.football.ui.nationalities
+package com.example.football.ui.positionInClub
 
 import android.content.Context
 import android.os.Bundle
@@ -11,23 +11,24 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
 import com.example.football.databinding.FragmentPositionInClubsBinding
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.positions.PositionsViewModel
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
-import com.example.football.utils.view.NATIONALITY_ARG
+import com.example.football.utils.view.POS_ARG
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
-class NationalitiesInClubsFragment : Fragment() {
+class PositionInClubsFragment : Fragment() {
     private val binding by contentView<FragmentPositionInClubsBinding>(R.layout.fragment_position_in_clubs)
-    private lateinit var adapter: NationalityInClubsPageAdapter
-    private val args by navArgs<NationalitiesInClubsFragmentArgs>()
+    private lateinit var adapter: PositionInClubsPageAdapter
+    private val args by navArgs<PositionInClubsFragmentArgs>()
 
     @Inject
-    lateinit var model: NationalitiesViewModel
+    lateinit var model: PositionsViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).nationalitiesComponent.inject(this)
+        (activity as MainActivity).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -37,9 +38,9 @@ class NationalitiesInClubsFragment : Fragment() {
     ): View {
         model.getAllClubs()
 
-        binding.title.text = args.nationality
+        binding.title.text = args.position
         model.clubs.observe(viewLifecycleOwner, {
-            adapter = NationalityInClubsPageAdapter(this, args.nationality, it)
+            adapter = PositionInClubsPageAdapter(this, args.position, it)
             binding.pager.adapter = adapter
 
             TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
@@ -49,19 +50,19 @@ class NationalitiesInClubsFragment : Fragment() {
         return binding.root
     }
 
-    inner class NationalityInClubsPageAdapter(
+    inner class PositionInClubsPageAdapter(
         fragment: Fragment,
-        private val nationality: String,
+        private val pos: String,
         private val clubs: List<String>
     ) : FragmentStateAdapter(fragment) {
 
         override fun getItemCount() = clubs.size
 
         override fun createFragment(position: Int): Fragment {
-            val fragment = NationalitiesInClubsPageFragment()
+            val fragment = PositionInClubsPageFragment()
             val bundle = Bundle().apply {
                 putString(CLUB_ARG, clubs[position])
-                putString(NATIONALITY_ARG, nationality)
+                putString(POS_ARG, pos)
             }
             fragment.arguments = bundle
             return fragment

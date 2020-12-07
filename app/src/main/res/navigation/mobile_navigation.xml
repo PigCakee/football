@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_positions"/>
     <fragment
         android:id="@+id/clubPositionsFragment"
-        android:name="com.example.football.ui.clubs.ClubPositionsFragment"
+        android:name="com.example.football.ui.clubPosition.ClubPositionsFragment"
         android:label="ClubPositionsFragment"
         tools:layout="@layout/fragment_club_positions" >
         <argument
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/positionInClubsFragment"
-        android:name="com.example.football.ui.positions.PositionInClubsFragment"
+        android:name="com.example.football.ui.positionInClub.PositionInClubsFragment"
         android:label="PositionInClubsFragment"
         tools:layout="@layout/fragment_position_in_clubs" >
         <argument
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/nationalitiesInClubsFragment"
-        android:name="com.example.football.ui.nationalities.NationalitiesInClubsFragment"
+        android:name="com.example.football.ui.nationalityInClub.NationalitiesInClubsFragment"
         android:label="NationalitiesInClubsFragment" >
         <argument
             android:name="nationality"

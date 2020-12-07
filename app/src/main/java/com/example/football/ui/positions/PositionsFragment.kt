@@ -28,7 +28,7 @@ class PositionsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).positionsComponent.inject(this)
+        (activity as MainActivity).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -47,12 +47,6 @@ class PositionsFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         model.getPositions()
-
-        model.positions.observe(viewLifecycleOwner, {
-            it.forEach { position ->
-                model.getPlayersByPosition(position)
-            }
-        })
 
         model.playersOnPositions.observe(viewLifecycleOwner, {
             adapter.addData(it)
