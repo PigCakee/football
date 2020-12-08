@@ -86,8 +86,10 @@ class PositionsFragment : Fragment() {
         override fun getItemCount() = data.size
 
         fun addData(pair: Pair<List<Player>, String>) {
-            data.add(pair)
-            notifyDataSetChanged()
+            if (!data.contains(pair)) {
+                data.add(pair)
+                notifyDataSetChanged()
+            }
         }
 
         inner class ViewHolder(val binding: ItemPositionBinding) :

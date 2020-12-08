@@ -24,7 +24,7 @@ class ClubsViewModel @Inject constructor(
         playersRepository.getAllClubs().collect {
             it.forEach { club ->
                 getPlayersByClub(club)
-                delay(1000L)
+                delay(25L)
             }
         }
     }

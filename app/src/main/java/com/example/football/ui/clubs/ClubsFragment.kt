@@ -91,8 +91,10 @@ class ClubsFragment : Fragment() {
         override fun getItemCount() = data.size
 
         fun addData(clubs: Pair<List<Player>, String>) {
-            data.add(clubs)
-            notifyDataSetChanged()
+            if (!data.contains(clubs)) {
+                data.add(clubs)
+                notifyDataSetChanged()
+            }
         }
 
         inner class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)

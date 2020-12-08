@@ -1,5 +1,6 @@
 package com.example.football.ui.nationalities
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.example.football.utils.livedata.mutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +26,8 @@ class NationalitiesViewModel @Inject constructor(
         playersRepository.getAllNationalities().collect {
             it.forEach { nationality ->
                 getPlayersWithNationality(nationality)
-                delay(1000L)
+                Log.e("get data", nationality)
+                delay(25L)
             }
         }
     }
@@ -34,6 +37,7 @@ class NationalitiesViewModel @Inject constructor(
             playersWithNationality.postValue(
                 Pair(it, nationality)
             )
+            Log.e("Post value", nationality)
         }
     }
 

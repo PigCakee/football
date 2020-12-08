@@ -24,7 +24,7 @@ class PositionsViewModel @Inject constructor(
         playersRepository.getAllPositions().collect {
             it.forEach { position ->
                 getPlayersByPosition(position)
-                delay(1000L)
+                delay(100L)
             }
         }
     }

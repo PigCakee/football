@@ -2,6 +2,7 @@ package com.example.football.ui.nationalities
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ class NationalitiesFragment : Fragment() {
         model.getAllNationalities()
 
         model.playersWithNationality.observe(viewLifecycleOwner, {
+            Log.e("Observe and set data", it.second)
             adapter.addData(it)
         })
 
@@ -87,8 +89,10 @@ class NationalitiesFragment : Fragment() {
         override fun getItemCount() = data.size
 
         fun addData(players: Pair<List<Player>, String>) {
-            data.add(players)
-            notifyDataSetChanged()
+            if (!data.contains(players)) {
+                data.add(players)
+                notifyDataSetChanged()
+            }
         }
 
         inner class ViewHolder(val binding: ItemNationalityBinding) : RecyclerView.ViewHolder(binding.root)
