@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentPositionsBinding
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class PositionsFragment : Fragment() {
     private val binding by contentView<FragmentPositionsBinding>(R.layout.fragment_positions)
     private lateinit var adapter: PositionsAdapter
-    private lateinit var navController: NavController
     private lateinit var model: PositionsViewModel
 
     @Inject
@@ -42,12 +40,6 @@ class PositionsFragment : Fragment() {
         binding.model = model
         adapter = PositionsAdapter(model)
         binding.recyclerView.adapter = adapter
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
 
         model.playersOnPositions.observe(viewLifecycleOwner, {
             it.forEach { pair ->
@@ -60,10 +52,12 @@ class PositionsFragment : Fragment() {
                 val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(
                     it
                 )
-                navController.navigate(action)
+                findNavController().navigate(action)
                 model.position.value = null
             }
         })
+
+        return binding.root
     }
 
     inner class PositionsAdapter(

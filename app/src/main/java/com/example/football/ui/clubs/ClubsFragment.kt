@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentClubsBinding
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class ClubsFragment : Fragment() {
     private val binding by contentView<FragmentClubsBinding>(R.layout.fragment_clubs)
     private lateinit var adapter: ClubsAdapter
-    private lateinit var navController: NavController
     private lateinit var model: ClubsViewModel
 
     @Inject
@@ -42,12 +40,6 @@ class ClubsFragment : Fragment() {
         binding.model = model
         adapter = ClubsAdapter(model, requireContext())
         binding.recyclerView.adapter = adapter
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
 
         model.playersInClub.observe(viewLifecycleOwner, {
             it.forEach { pair ->
@@ -58,10 +50,12 @@ class ClubsFragment : Fragment() {
         model.club.observe(viewLifecycleOwner, {
             if (it != null) {
                 val action = MainFragmentDirections.actionMainFragmentToClubPositionsFragment(it)
-                navController.navigate(action)
+                findNavController().navigate(action)
                 model.club.value = null
             }
         })
+
+        return binding.root
     }
 
     inner class ClubsAdapter(
