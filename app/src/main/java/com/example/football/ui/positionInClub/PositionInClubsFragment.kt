@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -23,9 +24,10 @@ class PositionInClubsFragment : Fragment() {
     private val binding by contentView<FragmentPositionInClubsBinding>(R.layout.fragment_position_in_clubs)
     private lateinit var adapter: PositionInClubsPageAdapter
     private val args by navArgs<PositionInClubsFragmentArgs>()
+    private lateinit var model: PositionInClubsViewModel
 
     @Inject
-    lateinit var model: PositionsViewModel
+    lateinit var modelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,7 +39,7 @@ class PositionInClubsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model.getAllClubs()
+        model = ViewModelProvider(this, modelFactory).get(PositionInClubsViewModel::class.java)
 
         binding.title.text = args.position
         model.clubs.observe(viewLifecycleOwner, {

@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsBinding
-import com.example.football.ui.clubs.ClubsViewModel
 import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
@@ -23,9 +23,10 @@ class ClubPositionsFragment : Fragment() {
     private val binding by contentView<FragmentClubPositionsBinding>(R.layout.fragment_club_positions)
     private lateinit var adapter: ClubPositionsPageAdapter
     private val args by navArgs<ClubPositionsFragmentArgs>()
+    private lateinit var model: ClubPositionsViewModel
 
     @Inject
-    lateinit var model: ClubsViewModel
+    lateinit var modelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,8 +38,7 @@ class ClubPositionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        model.getAllPositions()
+        model = ViewModelProvider(this, modelFactory).get(ClubPositionsViewModel::class.java)
 
         binding.title.text = args.club
         model.positions.observe(viewLifecycleOwner, {

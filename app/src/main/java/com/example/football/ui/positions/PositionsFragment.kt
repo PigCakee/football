@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,10 @@ class PositionsFragment : Fragment() {
     private val binding by contentView<FragmentPositionsBinding>(R.layout.fragment_positions)
     private lateinit var adapter: PositionsAdapter
     private lateinit var navController: NavController
+    private lateinit var model: PositionsViewModel
 
     @Inject
-    lateinit var model: PositionsViewModel
+    lateinit var modelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,6 +38,7 @@ class PositionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        model = ViewModelProvider(this, modelFactory).get(PositionsViewModel::class.java)
         binding.model = model
         adapter = PositionsAdapter(model)
         binding.recyclerView.adapter = adapter

@@ -13,10 +13,8 @@ import javax.inject.Inject
 class NationalitiesViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
-    val clubs: MutableLiveData<List<String>> = mutableLiveData()
     val playersWithNationalityData: MutableLiveData<MutableList<Pair<List<Player>, String>>> =
         mutableLiveData()
-    val playersWithNationalityInClub: MutableLiveData<List<Player>> = mutableLiveData()
     val nationality: MutableLiveData<String?> = mutableLiveData()
 
     init {
@@ -39,15 +37,6 @@ class NationalitiesViewModel @Inject constructor(
         playersRepository.getPlayersByNationality(nationality).onEach {
             list.add(Pair(it, nationality))
         }.launchIn(viewModelScope)
-    }
-
-    fun getPlayersByNationalityInClub(nationality: String, club: String) {
-        playersRepository.getPlayersByNationalityInClub(nationality, club)
-            .onEach { playersWithNationalityInClub.value = it }.launchIn(viewModelScope)
-    }
-
-    fun getAllClubs() {
-        playersRepository.getAllClubs().onEach { clubs.value = it }.launchIn(viewModelScope)
     }
 
     fun handleNationalityClick(nationality: String) {

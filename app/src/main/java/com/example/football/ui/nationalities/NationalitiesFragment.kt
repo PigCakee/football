@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,10 @@ class NationalitiesFragment : Fragment() {
     private val binding by contentView<FragmentNationalitiesBinding>(R.layout.fragment_nationalities)
     private lateinit var adapter: NationalitiesAdapter
     private lateinit var navController: NavController
+    private lateinit var model: NationalitiesViewModel
 
     @Inject
-    lateinit var model: NationalitiesViewModel
+    lateinit var modelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,6 +38,7 @@ class NationalitiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        model = ViewModelProvider(this, modelFactory).get(NationalitiesViewModel::class.java)
         binding.model = model
         adapter = NationalitiesAdapter(model)
         binding.recyclerView.adapter = adapter

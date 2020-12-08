@@ -13,10 +13,8 @@ import javax.inject.Inject
 class PositionsViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
-    val clubs: MutableLiveData<List<String>> = mutableLiveData()
     val playersOnPositions: MutableLiveData<MutableList<Pair<List<Player>, String>>> =
         mutableLiveData()
-    val playersOnPositionInClub: MutableLiveData<List<Player>> = mutableLiveData()
     val position: MutableLiveData<String?> = mutableLiveData()
 
     init {
@@ -39,15 +37,6 @@ class PositionsViewModel @Inject constructor(
     ) {
         playersRepository.getPlayersByPosition(position)
             .onEach { list.add(Pair(it, position)) }.launchIn(viewModelScope)
-    }
-
-    fun getAllClubs() {
-        playersRepository.getAllClubs().onEach { clubs.value = it }.launchIn(viewModelScope)
-    }
-
-    fun getPlayersByPositionInClub(position: String, club: String) {
-        playersRepository.getPlayersByPositionInClub(position, club)
-            .onEach { playersOnPositionInClub.value = it }.launchIn(viewModelScope)
     }
 
     fun handlePositionClick(position: String) {

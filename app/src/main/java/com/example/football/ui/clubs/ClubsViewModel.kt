@@ -14,8 +14,6 @@ class ClubsViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
     val playersInClub: MutableLiveData<MutableList<Pair<List<Player>, String>>> = mutableLiveData()
-    val positions: MutableLiveData<List<String>> = mutableLiveData()
-    val playersOnPositionInClub: MutableLiveData<List<Player>> = mutableLiveData()
     val club: MutableLiveData<String?> = mutableLiveData(null)
 
     init {
@@ -37,15 +35,6 @@ class ClubsViewModel @Inject constructor(
     private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {
         playersRepository.getPlayersByClub(club).onEach { list.add(Pair(it, club)) }
             .launchIn(viewModelScope)
-    }
-
-    fun getAllPositions() {
-        playersRepository.getAllPositions().onEach { positions.value = it }.launchIn(viewModelScope)
-    }
-
-    fun getPlayersByPositionInClub(position: String, club: String) {
-        playersRepository.getPlayersByPositionInClub(position, club)
-            .onEach { playersOnPositionInClub.value = it }.launchIn(viewModelScope)
     }
 
     fun handleClubClick(club: String) {
