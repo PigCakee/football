@@ -21,5 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDagger() {
         appComponent = (application as MainApplication).appComponent
+        appComponent.inject(this)
     }
 }
