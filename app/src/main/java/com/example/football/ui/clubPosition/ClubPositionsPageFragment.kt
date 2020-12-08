@@ -67,6 +67,7 @@ class ClubPositionsPageFragment : Fragment() {
 
             with(holder.binding) {
                 this.name.text = player.name
+                this.pos.text = player.position
             }
         }
 
