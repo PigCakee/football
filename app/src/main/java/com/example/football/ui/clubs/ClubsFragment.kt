@@ -46,10 +46,10 @@ class ClubsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        model.getClubs()
-
         model.playersInClub.observe(viewLifecycleOwner, {
-            adapter.addData(it)
+            it.forEach { pair ->
+                adapter.addData(pair)
+            }
         })
 
         model.club.observe(viewLifecycleOwner, {

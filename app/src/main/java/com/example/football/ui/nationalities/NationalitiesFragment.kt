@@ -2,7 +2,6 @@ package com.example.football.ui.nationalities
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,11 +46,10 @@ class NationalitiesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        model.getAllNationalities()
-
-        model.playersWithNationality.observe(viewLifecycleOwner, {
-            Log.e("Observe and set data", it.second)
-            adapter.addData(it)
+        model.playersWithNationalityData.observe(viewLifecycleOwner, {
+            it.forEach { pair ->
+                adapter.addData(pair)
+            }
         })
 
         model.nationality.observe(viewLifecycleOwner, {

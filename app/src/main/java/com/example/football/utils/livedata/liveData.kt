@@ -1,7 +1,5 @@
 package com.example.football.utils.livedata
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 fun <T> mutableLiveData(defaultValue: T? = null): MutableLiveData<T> {

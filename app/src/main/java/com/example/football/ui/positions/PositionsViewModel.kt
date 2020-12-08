@@ -6,43 +6,49 @@ import androidx.lifecycle.viewModelScope
 import com.example.football.model.player.Player
 import com.example.football.model.repo.PlayersRepository
 import com.example.football.utils.livedata.mutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class PositionsViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
     val clubs: MutableLiveData<List<String>> = mutableLiveData()
-    val playersOnPositions: MutableLiveData<Pair<List<Player>, String>> = mutableLiveData()
+    val playersOnPositions: MutableLiveData<MutableList<Pair<List<Player>, String>>> =
+        mutableLiveData()
     val playersOnPositionInClub: MutableLiveData<List<Player>> = mutableLiveData()
     val position: MutableLiveData<String?> = mutableLiveData()
 
-    fun getPositions() = viewModelScope.launch(Dispatchers.IO) {
-        playersRepository.getAllPositions().collect {
+    init {
+        getPositions()
+    }
+
+    private fun getPositions() {
+        val list: MutableList<Pair<List<Player>, String>> =
+            mutableListOf()
+        playersRepository.getAllPositions().onEach {
             it.forEach { position ->
-                getPlayersByPosition(position)
-                delay(100L)
+                getPlayersByPosition(position, list)
             }
-        }
+        }.launchIn(viewModelScope).invokeOnCompletion { playersOnPositions.value = list }
     }
 
-    private fun getPlayersByPosition(position: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getPlayersByPosition(
+        position: String,
+        list: MutableList<Pair<List<Player>, String>>
+    ) {
         playersRepository.getPlayersByPosition(position)
-            .collect { playersOnPositions.postValue(Pair(it, position)) }
+            .onEach { list.add(Pair(it, position)) }.launchIn(viewModelScope)
     }
 
-    fun getAllClubs() = viewModelScope.launch(Dispatchers.IO) {
-        playersRepository.getAllClubs().collect { clubs.postValue(it) }
+    fun getAllClubs() {
+        playersRepository.getAllClubs().onEach { clubs.value = it }.launchIn(viewModelScope)
     }
 
-    fun getPlayersByPositionInClub(position: String, club: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            playersRepository.getPlayersByPositionInClub(position, club)
-                .collect { playersOnPositionInClub.postValue(it) }
-        }
+    fun getPlayersByPositionInClub(position: String, club: String) {
+        playersRepository.getPlayersByPositionInClub(position, club)
+            .onEach { playersOnPositionInClub.value = it }.launchIn(viewModelScope)
+    }
 
     fun handlePositionClick(position: String) {
         this.position.value = position

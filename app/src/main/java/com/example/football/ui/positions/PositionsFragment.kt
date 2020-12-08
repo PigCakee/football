@@ -46,10 +46,10 @@ class PositionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        model.getPositions()
-
         model.playersOnPositions.observe(viewLifecycleOwner, {
-            adapter.addData(it)
+            it.forEach { pair ->
+                adapter.addData(pair)
+            }
         })
 
         model.position.observe(viewLifecycleOwner, {
