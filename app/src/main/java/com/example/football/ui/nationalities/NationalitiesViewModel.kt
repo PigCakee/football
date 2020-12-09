@@ -22,12 +22,10 @@ class NationalitiesViewModel @Inject constructor(
     }
 
     private fun getAllNationalities() {
-        val list: MutableList<Pair<List<Player>, String>> =
-            mutableListOf()
+        val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersRepository.getAllNationalities()
-            .onEach {
-                it.forEach { nationality -> getPlayersWithNationality(nationality, list) }
-            }.launchIn(viewModelScope)
+            .onEach { it.forEach { nationality -> getPlayersWithNationality(nationality, list) } }
+            .launchIn(viewModelScope)
             .invokeOnCompletion { playersWithNationalityData.value = list }
     }
 

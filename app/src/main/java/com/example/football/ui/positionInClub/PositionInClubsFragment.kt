@@ -50,9 +50,7 @@ class PositionInClubsFragment : Fragment() {
             }.attach()
         })
 
-        binding.back.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.back.setOnClickListener { findNavController().popBackStack() }
         return binding.root
     }
 

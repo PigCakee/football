@@ -42,9 +42,7 @@ class ClubsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersInClub.observe(viewLifecycleOwner, {
-            it.forEach { pair ->
-                adapter.addData(pair)
-            }
+            it.forEach { pair -> adapter.addData(pair) }
         })
 
         model.club.observe(viewLifecycleOwner, {
@@ -76,11 +74,11 @@ class ClubsFragment : Fragment() {
             holder.binding.model = model
             with(holder.binding) {
                 this.club.text = club.second
-                this.clubData = club.second
+                clubData = club.second
                 if (club.first.isNotEmpty()) {
-                    this.players.text = club.first.size.toString()
+                    players.text = club.first.size.toString()
                 } else {
-                    this.players.text = context.getString(R.string.no_players)
+                    players.text = context.getString(R.string.no_players)
                 }
             }
         }

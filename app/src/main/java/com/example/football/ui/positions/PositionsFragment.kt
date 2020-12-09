@@ -42,16 +42,12 @@ class PositionsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersOnPositions.observe(viewLifecycleOwner, {
-            it.forEach { pair ->
-                adapter.addData(pair)
-            }
+            it.forEach { pair -> adapter.addData(pair) }
         })
 
         model.position.observe(viewLifecycleOwner, {
             if (it != null) {
-                val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(
-                    it
-                )
+                val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(it)
                 findNavController().navigate(action)
                 model.position.value = null
             }
@@ -75,8 +71,8 @@ class PositionsFragment : Fragment() {
             holder.binding.model = model
             with(holder.binding) {
                 this.position.text = data[position].second
-                this.players.text = data[position].first.size.toString()
-                this.pos = data[position].second
+                players.text = data[position].first.size.toString()
+                pos = data[position].second
             }
         }
 

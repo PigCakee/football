@@ -21,15 +21,11 @@ class ClubsViewModel @Inject constructor(
     }
 
     private fun getClubs() {
-        val list: MutableList<Pair<List<Player>, String>> =
-            mutableListOf()
+        val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersRepository.getAllClubs()
-            .onEach {
-                it.forEach { club -> getPlayersByClub(club, list) } }
+            .onEach { it.forEach { club -> getPlayersByClub(club, list) } }
             .launchIn(viewModelScope)
-            .invokeOnCompletion {
-                playersInClub.value = list
-            }
+            .invokeOnCompletion { playersInClub.value = list }
     }
 
     private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {

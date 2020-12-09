@@ -42,17 +42,13 @@ class NationalitiesFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersWithNationalityData.observe(viewLifecycleOwner, {
-            it.forEach { pair ->
-                adapter.addData(pair)
-            }
+            it.forEach { pair -> adapter.addData(pair) }
         })
 
         model.nationality.observe(viewLifecycleOwner, {
             if (it != null) {
                 val action =
-                    MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(
-                        it
-                    )
+                    MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(it)
                 findNavController().navigate(action)
                 model.nationality.value = null
             }
@@ -75,9 +71,9 @@ class NationalitiesFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.binding.model = model
             with(holder.binding) {
-                this.nationality.text = data[position].second
-                this.players.text = data[position].first.size.toString()
-                this.nation = data[position].second
+                nationality.text = data[position].second
+                players.text = data[position].first.size.toString()
+                nation = data[position].second
             }
         }
 

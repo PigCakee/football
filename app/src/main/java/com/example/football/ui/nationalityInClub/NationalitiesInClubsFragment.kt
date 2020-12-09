@@ -49,9 +49,7 @@ class NationalitiesInClubsFragment : Fragment() {
                 tab.text = it[pos]
             }.attach()
 
-            binding.back.setOnClickListener {
-                findNavController().popBackStack()
-            }
+            binding.back.setOnClickListener { findNavController().popBackStack() }
         })
         return binding.root
     }
