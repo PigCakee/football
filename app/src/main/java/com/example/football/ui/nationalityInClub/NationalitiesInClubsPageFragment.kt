@@ -67,8 +67,10 @@ class NationalitiesInClubsPageFragment : Fragment() {
             val player = data[position]
 
             with(holder.binding) {
+                val playerInClub = player.position + " | " + player.club
                 this.name.text = player.name
-                this.pos.text = player.position
+                this.pos.text = playerInClub
+                this.nationality.text = player.nationality
                 this.posIcon.setImageDrawable(
                     PositionsIconFactory.getPositionIcon(
                         context,
