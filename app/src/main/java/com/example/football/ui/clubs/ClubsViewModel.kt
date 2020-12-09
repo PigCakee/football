@@ -7,6 +7,7 @@ import com.example.football.model.player.Player
 import com.example.football.model.repo.PlayersRepository
 import com.example.football.utils.livedata.mutableLiveData
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -24,8 +25,8 @@ class ClubsViewModel @Inject constructor(
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersRepository.getAllClubs()
             .onEach { it.forEach { club -> getPlayersByClub(club, list) } }
+            .onCompletion { playersInClub.value = list }
             .launchIn(viewModelScope)
-            .invokeOnCompletion { playersInClub.value = list }
     }
 
     private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {
