@@ -12,6 +12,7 @@ import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsPageBinding
 import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.player.Player
+import com.example.football.model.player.PositionsIconFactory
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.positions.PositionsViewModel
 import com.example.football.utils.inflaters.contentView
@@ -46,7 +47,7 @@ class PositionInClubsPageFragment : Fragment() {
         }
 
         model.playersOnPositionInClub.observe(viewLifecycleOwner, {
-            val adapter = PositionInClubsListAdapter(it)
+            val adapter = PositionInClubsListAdapter(requireContext(), it)
             binding.recyclerView.adapter = adapter
         })
 
@@ -54,6 +55,7 @@ class PositionInClubsPageFragment : Fragment() {
     }
 
     inner class PositionInClubsListAdapter(
+        private val context: Context,
         private val data: List<Player>
     ) : RecyclerView.Adapter<PositionInClubsListAdapter.ViewHolder>() {
 
@@ -69,6 +71,12 @@ class PositionInClubsPageFragment : Fragment() {
             with(holder.binding) {
                 this.name.text = player.name
                 this.pos.text = player.position
+                this.posIcon.setImageDrawable(
+                    PositionsIconFactory.getPositionIcon(
+                        context,
+                        player.position
+                    )
+                )
             }
         }
 

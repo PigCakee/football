@@ -22,14 +22,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="@+id/posIcon"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/posIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Anton" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/posIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -47,9 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintBottom_toTopOf="@+id/posIcon"
+                app:layout_constraintEnd_toEndOf="@+id/posIcon"
+                app:layout_constraintStart_toStartOf="@+id/posIcon"
                 app:layout_constraintTop_toBottomOf="@+id/name"
                 tools:text="Goalkeeper" />
         </androidx.constraintlayout.widget.ConstraintLayout>
