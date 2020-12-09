@@ -14,7 +14,6 @@ import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.player.Player
 import com.example.football.model.player.PositionsIconFactory
 import com.example.football.ui.main.MainActivity
-import com.example.football.ui.positions.PositionsViewModel
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.POS_ARG
