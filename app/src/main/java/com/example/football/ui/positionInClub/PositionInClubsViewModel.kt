@@ -21,11 +21,14 @@ class PositionInClubsViewModel @Inject constructor(
     }
 
     private fun getAllClubs() {
-        playersRepository.getAllClubs().onEach { clubs.value = it }.launchIn(viewModelScope)
+        playersRepository.getAllClubs()
+            .onEach { clubs.value = it }
+            .launchIn(viewModelScope)
     }
 
     fun getPlayersByPositionInClub(position: String, club: String) {
         playersRepository.getPlayersByPositionInClub(position, club)
-            .onEach { playersOnPositionInClub.value = it }.launchIn(viewModelScope)
+            .onEach { playersOnPositionInClub.value = it }
+            .launchIn(viewModelScope)
     }
 }

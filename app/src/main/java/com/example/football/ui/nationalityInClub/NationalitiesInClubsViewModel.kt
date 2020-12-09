@@ -22,10 +22,13 @@ class NationalitiesInClubsViewModel @Inject constructor(
 
     fun getPlayersByNationalityInClub(nationality: String, club: String) {
         playersRepository.getPlayersByNationalityInClub(nationality, club)
-            .onEach { playersWithNationalityInClub.value = it }.launchIn(viewModelScope)
+            .onEach { playersWithNationalityInClub.value = it }
+            .launchIn(viewModelScope)
     }
 
     private fun getAllClubs() {
-        playersRepository.getAllClubs().onEach { clubs.value = it }.launchIn(viewModelScope)
+        playersRepository.getAllClubs()
+            .onEach { clubs.value = it }
+            .launchIn(viewModelScope)
     }
 }

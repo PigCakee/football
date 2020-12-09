@@ -24,19 +24,20 @@ class NationalitiesViewModel @Inject constructor(
     private fun getAllNationalities() {
         val list: MutableList<Pair<List<Player>, String>> =
             mutableListOf()
-        playersRepository.getAllNationalities().onEach {
-            it.forEach { nationality ->
-                getPlayersWithNationality(nationality, list)
-            }
-        }.launchIn(viewModelScope).invokeOnCompletion {
-            playersWithNationalityData.value = list
-        }
+        playersRepository.getAllNationalities()
+            .onEach {
+                it.forEach { nationality -> getPlayersWithNationality(nationality, list) }
+            }.launchIn(viewModelScope)
+            .invokeOnCompletion { playersWithNationalityData.value = list }
     }
 
-    private fun getPlayersWithNationality(nationality: String, list: MutableList<Pair<List<Player>, String>>) {
-        playersRepository.getPlayersByNationality(nationality).onEach {
-            list.add(Pair(it, nationality))
-        }.launchIn(viewModelScope)
+    private fun getPlayersWithNationality(
+        nationality: String,
+        list: MutableList<Pair<List<Player>, String>>
+    ) {
+        playersRepository.getPlayersByNationality(nationality)
+            .onEach { list.add(Pair(it, nationality)) }
+            .launchIn(viewModelScope)
     }
 
     fun handleNationalityClick(nationality: String) {
