@@ -27,7 +27,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val sectionsPagerAdapter =
-            SectionsPagerAdapter(requireContext(), requireActivity().supportFragmentManager)
+            SectionsPagerAdapter(requireContext(), childFragmentManager)
         binding.viewPager.adapter = sectionsPagerAdapter
         binding.tabs.setupWithViewPager(binding.viewPager)
         return binding.root
