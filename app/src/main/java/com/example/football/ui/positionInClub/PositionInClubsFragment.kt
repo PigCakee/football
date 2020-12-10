@@ -41,6 +41,11 @@ class PositionInClubsFragment : Fragment() {
     ): View {
         model = ViewModelProvider(this, modelFactory).get(PositionInClubsViewModel::class.java)
 
+        if (model.position == null) {
+            model.position = args.position
+            model.getClubsWithPosition(args.position)
+        }
+
         binding.title.text = args.position
         model.clubs.observe(viewLifecycleOwner, {
             adapter = PositionInClubsPageAdapter(this, args.position, it)

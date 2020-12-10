@@ -41,6 +41,11 @@ class NationalitiesInClubsFragment : Fragment() {
     ): View {
         model = ViewModelProvider(this, modelFactory).get(NationalitiesInClubsViewModel::class.java)
 
+        if (model.nationality == null) {
+            model.nationality = args.nationality
+            model.getAllClubs(args.nationality)
+        }
+
         binding.title.text = args.nationality
         model.clubs.observe(viewLifecycleOwner, {
             adapter = NationalityInClubsPageAdapter(this, args.nationality, it)
