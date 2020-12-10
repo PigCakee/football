@@ -6,6 +6,7 @@ import com.example.football.ui.clubPosition.ClubPositionsViewModel
 import com.example.football.ui.clubs.ClubsViewModel
 import com.example.football.ui.nationalities.NationalitiesViewModel
 import com.example.football.ui.nationalityInClub.NationalitiesInClubsViewModel
+import com.example.football.ui.playersPage.PlayersPageViewModel
 import com.example.football.ui.positionInClub.PositionInClubsViewModel
 import com.example.football.ui.positions.PositionsViewModel
 import dagger.Binds
@@ -47,4 +48,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PositionInClubsViewModel::class)
     internal abstract fun positionInClubsViewModel(viewModel: PositionInClubsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlayersPageViewModel::class)
+    internal abstract fun playersPageViewModel(viewModel: PlayersPageViewModel): ViewModel
 }

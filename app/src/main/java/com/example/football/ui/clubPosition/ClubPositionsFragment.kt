@@ -13,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
 import com.example.football.databinding.FragmentClubPositionsBinding
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.POS_ARG
@@ -56,23 +57,23 @@ class ClubPositionsFragment : Fragment() {
 
         return binding.root
     }
+}
 
-    inner class ClubPositionsPageAdapter(
-        fragment: Fragment,
-        private val club: String,
-        private val positions: List<String>
-    ) : FragmentStateAdapter(fragment) {
+class ClubPositionsPageAdapter(
+    fragment: Fragment,
+    private val club: String,
+    private val positions: List<String>
+) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount() = positions.size
+    override fun getItemCount() = positions.size
 
-        override fun createFragment(position: Int): Fragment {
-            val fragment = ClubPositionsPageFragment()
-            val bundle = Bundle().apply {
-                putString(POS_ARG, positions[position])
-                putString(CLUB_ARG, club)
-            }
-            fragment.arguments = bundle
-            return fragment
+    override fun createFragment(position: Int): Fragment {
+        val fragment = PlayersPageFragment()
+        val bundle = Bundle().apply {
+            putString(POS_ARG, positions[position])
+            putString(CLUB_ARG, club)
         }
+        fragment.arguments = bundle
+        return fragment
     }
 }

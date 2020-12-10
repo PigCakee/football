@@ -32,33 +32,33 @@ class MainFragment : Fragment() {
         binding.tabs.setupWithViewPager(binding.viewPager)
         return binding.root
     }
+}
 
-    // TODO replace with FragmentStateAdapter (but now NavComponent can't work with it)
-    @Suppress("DEPRECATION")
-    inner class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
-        FragmentPagerAdapter(fm) {
+// TODO replace with FragmentStateAdapter (but now NavComponent can't work with it)
+@Suppress("DEPRECATION")
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
+    FragmentPagerAdapter(fm) {
 
-        private val tabTitles = arrayOf(
-            R.string.clubs,
-            R.string.positions,
-            R.string.nationalities
-        )
+    private val tabTitles = arrayOf(
+        R.string.clubs,
+        R.string.positions,
+        R.string.nationalities
+    )
 
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                CLUBS_POS -> ClubsFragment()
-                POSITION_POS -> PositionsFragment()
-                NATIONALITY_POS -> NationalitiesFragment()
-                else -> ClubsFragment()
-            }
+    override fun getItem(position: Int): Fragment {
+        return when (position) {
+            CLUBS_POS -> ClubsFragment()
+            POSITION_POS -> PositionsFragment()
+            NATIONALITY_POS -> NationalitiesFragment()
+            else -> ClubsFragment()
         }
+    }
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return context.resources.getString(tabTitles[position])
-        }
+    override fun getPageTitle(position: Int): CharSequence {
+        return context.resources.getString(tabTitles[position])
+    }
 
-        override fun getCount(): Int {
-            return tabTitles.size
-        }
+    override fun getCount(): Int {
+        return tabTitles.size
     }
 }

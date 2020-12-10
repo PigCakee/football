@@ -2,14 +2,12 @@ package com.example.football.di
 
 import android.content.Context
 import com.example.football.ui.clubPosition.ClubPositionsFragment
-import com.example.football.ui.clubPosition.ClubPositionsPageFragment
 import com.example.football.ui.clubs.ClubsFragment
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.nationalities.NationalitiesFragment
 import com.example.football.ui.nationalityInClub.NationalitiesInClubsFragment
-import com.example.football.ui.nationalityInClub.NationalitiesInClubsPageFragment
+import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.ui.positionInClub.PositionInClubsFragment
-import com.example.football.ui.positionInClub.PositionInClubsPageFragment
 import com.example.football.ui.positions.PositionsFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -27,11 +25,9 @@ interface AppComponent {
     fun inject(activity: MainActivity)
     fun inject(fragment: ClubsFragment)
     fun inject(fragment: ClubPositionsFragment)
-    fun inject(fragment: ClubPositionsPageFragment)
+    fun inject(fragment: PlayersPageFragment)
     fun inject(fragment: NationalitiesFragment)
     fun inject(fragment: NationalitiesInClubsFragment)
-    fun inject(fragment: NationalitiesInClubsPageFragment)
     fun inject(fragment: PositionsFragment)
     fun inject(fragment: PositionInClubsFragment)
-    fun inject(fragment: PositionInClubsPageFragment)
 }

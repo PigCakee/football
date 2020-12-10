@@ -14,16 +14,9 @@ class NationalitiesInClubsViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
     val clubs: MutableLiveData<List<String>> = mutableLiveData()
-    val playersWithNationalityInClub: MutableLiveData<List<Player>> = mutableLiveData()
 
     init {
         getAllClubs()
-    }
-
-    fun getPlayersByNationalityInClub(nationality: String, club: String) {
-        playersRepository.getPlayersByNationalityInClub(nationality, club)
-            .onEach { playersWithNationalityInClub.value = it }
-            .launchIn(viewModelScope)
     }
 
     private fun getAllClubs() {

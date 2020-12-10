@@ -55,43 +55,43 @@ class ClubsFragment : Fragment() {
 
         return binding.root
     }
+}
 
-    inner class ClubsAdapter(
-        private val model: ClubsViewModel,
-        private val context: Context,
-        private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
-    ) : RecyclerView.Adapter<ClubsAdapter.ViewHolder>() {
+class ClubsAdapter(
+    private val model: ClubsViewModel,
+    private val context: Context,
+    private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
+) : RecyclerView.Adapter<ClubsAdapter.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding =
-                ItemClubBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val club = data[position]
-
-            holder.binding.model = model
-            with(holder.binding) {
-                this.club.text = club.second
-                clubData = club.second
-                if (club.first.isNotEmpty()) {
-                    players.text = club.first.size.toString()
-                } else {
-                    players.text = context.getString(R.string.no_players)
-                }
-            }
-        }
-
-        override fun getItemCount() = data.size
-
-        fun addData(clubs: Pair<List<Player>, String>) {
-            if (!data.contains(clubs)) {
-                data.add(clubs)
-                notifyDataSetChanged()
-            }
-        }
-
-        inner class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            ItemClubBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val club = data[position]
+
+        holder.binding.model = model
+        with(holder.binding) {
+            this.club.text = club.second
+            clubData = club.second
+            if (club.first.isNotEmpty()) {
+                players.text = club.first.size.toString()
+            } else {
+                players.text = context.getString(R.string.no_players)
+            }
+        }
+    }
+
+    override fun getItemCount() = data.size
+
+    fun addData(clubs: Pair<List<Player>, String>) {
+        if (!data.contains(clubs)) {
+            data.add(clubs)
+            notifyDataSetChanged()
+        }
+    }
+
+    class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)
 }

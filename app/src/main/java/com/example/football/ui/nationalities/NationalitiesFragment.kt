@@ -56,36 +56,36 @@ class NationalitiesFragment : Fragment() {
 
         return binding.root
     }
+}
 
-    inner class NationalitiesAdapter(
-        private val model: NationalitiesViewModel,
-        private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
-    ) : RecyclerView.Adapter<NationalitiesAdapter.ViewHolder>() {
+class NationalitiesAdapter(
+    private val model: NationalitiesViewModel,
+    private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
+) : RecyclerView.Adapter<NationalitiesAdapter.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding =
-                ItemNationalityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.binding.model = model
-            with(holder.binding) {
-                nationality.text = data[position].second
-                players.text = data[position].first.size.toString()
-                nation = data[position].second
-            }
-        }
-
-        override fun getItemCount() = data.size
-
-        fun addData(players: Pair<List<Player>, String>) {
-            if (!data.contains(players)) {
-                data.add(players)
-                notifyDataSetChanged()
-            }
-        }
-
-        inner class ViewHolder(val binding: ItemNationalityBinding) : RecyclerView.ViewHolder(binding.root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            ItemNationalityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.binding.model = model
+        with(holder.binding) {
+            nationality.text = data[position].second
+            players.text = data[position].first.size.toString()
+            nation = data[position].second
+        }
+    }
+
+    override fun getItemCount() = data.size
+
+    fun addData(players: Pair<List<Player>, String>) {
+        if (!data.contains(players)) {
+            data.add(players)
+            notifyDataSetChanged()
+        }
+    }
+
+    class ViewHolder(val binding: ItemNationalityBinding) : RecyclerView.ViewHolder(binding.root)
 }

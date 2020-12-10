@@ -13,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
 import com.example.football.databinding.FragmentPositionInClubsBinding
 import com.example.football.ui.main.MainActivity
+import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.POS_ARG
@@ -53,23 +54,23 @@ class PositionInClubsFragment : Fragment() {
         binding.back.setOnClickListener { findNavController().popBackStack() }
         return binding.root
     }
+}
 
-    inner class PositionInClubsPageAdapter(
-        fragment: Fragment,
-        private val pos: String,
-        private val clubs: List<String>
-    ) : FragmentStateAdapter(fragment) {
+class PositionInClubsPageAdapter(
+    fragment: Fragment,
+    private val pos: String,
+    private val clubs: List<String>
+) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount() = clubs.size
+    override fun getItemCount() = clubs.size
 
-        override fun createFragment(position: Int): Fragment {
-            val fragment = PositionInClubsPageFragment()
-            val bundle = Bundle().apply {
-                putString(CLUB_ARG, clubs[position])
-                putString(POS_ARG, pos)
-            }
-            fragment.arguments = bundle
-            return fragment
+    override fun createFragment(position: Int): Fragment {
+        val fragment = PlayersPageFragment()
+        val bundle = Bundle().apply {
+            putString(CLUB_ARG, clubs[position])
+            putString(POS_ARG, pos)
         }
+        fragment.arguments = bundle
+        return fragment
     }
 }
