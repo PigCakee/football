@@ -62,6 +62,17 @@ class PlayersRepository @Inject constructor() {
         return flow { emit(clubs as List<String>) }
     }
 
+    fun getPositionsWithNationality(nationality: String): Flow<List<String>> {
+        val positions: MutableList<String> = mutableListOf()
+
+        playersData.forEach {
+            if (!positions.contains(it.position) && it.nationality == nationality) {
+                positions.add(it.position)
+            }
+        }
+        return flow { emit(positions as List<String>) }
+    }
+
     fun getNationalitiesWithPosition(position: String): Flow<List<String>> {
         val nationalities: MutableList<String> = mutableListOf()
 

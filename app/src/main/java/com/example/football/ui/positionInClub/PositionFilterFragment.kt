@@ -26,7 +26,7 @@ class PositionInClubsFragment : Fragment() {
     private val binding by contentView<FragmentPlayersFilterBinding>(R.layout.fragment_players_filter)
     private lateinit var adapter: PositionInClubsPageAdapter
     private val args by navArgs<PositionInClubsFragmentArgs>()
-    private lateinit var model: PositionInClubsViewModel
+    private lateinit var model: PositionFilterViewModel
     private var flag: Boolean = true
 
     @Inject
@@ -42,7 +42,7 @@ class PositionInClubsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(PositionInClubsViewModel::class.java)
+        model = ViewModelProvider(this, modelFactory).get(PositionFilterViewModel::class.java)
         if (model.title.isBlank()) {
             model.title = args.position
         }

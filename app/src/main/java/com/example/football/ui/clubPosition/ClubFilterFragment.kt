@@ -1,4 +1,4 @@
-package com.example.football.ui.nationalityInClub
+package com.example.football.ui.clubPosition
 
 import android.content.Context
 import android.os.Bundle
@@ -16,15 +16,15 @@ import com.example.football.ui.main.MainActivity
 import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
-import com.example.football.utils.view.NATIONALITY_ARG
+import com.example.football.utils.view.POS_ARG
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
-class NationalitiesInClubsFragment : Fragment() {
+class ClubPositionsFragment : Fragment() {
     private val binding by contentView<FragmentPlayersFilterBinding>(R.layout.fragment_players_filter)
-    private lateinit var adapter: NationalityInClubsPageAdapter
-    private val args by navArgs<NationalitiesInClubsFragmentArgs>()
-    private lateinit var model: NationalitiesInClubsViewModel
+    private lateinit var adapter: ClubPositionsPageAdapter
+    private val args by navArgs<ClubPositionsFragmentArgs>()
+    private lateinit var model: ClubFilterViewModel
 
     @Inject
     lateinit var modelFactory: ViewModelProvider.Factory
@@ -39,41 +39,44 @@ class NationalitiesInClubsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(NationalitiesInClubsViewModel::class.java)
+        model = ViewModelProvider(this, modelFactory).get(ClubFilterViewModel::class.java)
 
-        if (model.nationality == null) {
-            model.nationality = args.nationality
-            model.getAllClubs(args.nationality)
+        if (model.club == null) {
+            model.club = args.club
+            model.getPositionsInClub(args.club)
         }
 
-        binding.title.text = args.nationality
-        model.clubs.observe(viewLifecycleOwner, {
-            adapter = NationalityInClubsPageAdapter(this, args.nationality, it)
+        binding.title.text = args.club
+        model.positions.observe(viewLifecycleOwner, {
+            adapter = ClubPositionsPageAdapter(this, args.club, it)
             binding.pager.adapter = adapter
 
             TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
                 tab.text = it[pos]
             }.attach()
-
-            binding.back.setOnClickListener { findNavController().popBackStack() }
         })
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return binding.root
     }
 }
 
-class NationalityInClubsPageAdapter(
+class ClubPositionsPageAdapter(
     fragment: Fragment,
-    private val nationality: String,
-    private val clubs: List<String>
+    private val club: String,
+    private val positions: List<String>
 ) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount() = clubs.size
+    override fun getItemCount() = positions.size
 
     override fun createFragment(position: Int): Fragment {
         val fragment = PlayersPageFragment()
         val bundle = Bundle().apply {
-            putString(CLUB_ARG, clubs[position])
-            putString(NATIONALITY_ARG, nationality)
+            putString(POS_ARG, positions[position])
+            putString(CLUB_ARG, club)
         }
         fragment.arguments = bundle
         return fragment

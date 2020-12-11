@@ -1,4 +1,4 @@
-package com.example.football.ui.nationalityInClub
+package com.example.football.ui.clubPosition
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class NationalitiesInClubsViewModel @Inject constructor(
+class ClubFilterViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
-    val clubs: MutableLiveData<List<String>> = mutableLiveData()
-    var nationality: String? = null
+    val positions: MutableLiveData<List<String>> = mutableLiveData()
+    var club: String? = null
 
-    fun getAllClubs(nationality: String) {
-        playersRepository.getClubsWithNationality(nationality)
-            .onEach { clubs.value = it }
+    fun getPositionsInClub(club: String) {
+        playersRepository.getPositionsInClub(club)
+            .onEach { positions.value = it }
             .launchIn(viewModelScope)
     }
 }
