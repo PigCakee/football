@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.R
-import com.example.football.databinding.FragmentPositionInClubsBinding
+import com.example.football.databinding.FragmentPlayersFilterBinding
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.inflaters.contentView
@@ -21,7 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
 class PositionInClubsFragment : Fragment() {
-    private val binding by contentView<FragmentPositionInClubsBinding>(R.layout.fragment_position_in_clubs)
+    private val binding by contentView<FragmentPlayersFilterBinding>(R.layout.fragment_players_filter)
     private lateinit var adapter: PositionInClubsPageAdapter
     private val args by navArgs<PositionInClubsFragmentArgs>()
     private lateinit var model: PositionInClubsViewModel

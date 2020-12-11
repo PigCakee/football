@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
-import com.example.football.databinding.FragmentClubPositionsPageBinding
+import com.example.football.databinding.FragmentPlayersFilterPageBinding
 import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.model.player.Player
 import com.example.football.model.player.PositionsIconFactory
@@ -21,7 +21,7 @@ import com.example.football.utils.view.POS_ARG
 import javax.inject.Inject
 
 class PlayersPageFragment : Fragment() {
-    private val binding by contentView<FragmentClubPositionsPageBinding>(R.layout.fragment_club_positions_page)
+    private val binding by contentView<FragmentPlayersFilterPageBinding>(R.layout.fragment_players_filter_page)
     private lateinit var model: PlayersPageViewModel
 
     @Inject

@@ -48,7 +48,7 @@
         android:id="@+id/positionInClubsFragment"
         android:name="com.example.football.ui.positionInClub.PositionInClubsFragment"
         android:label="PositionInClubsFragment"
-        tools:layout="@layout/fragment_position_in_clubs" >
+        tools:layout="@layout/fragment_players_filter" >
         <argument
             android:name="position"
             app:argType="string">
