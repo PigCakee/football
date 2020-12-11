@@ -62,6 +62,17 @@ class PlayersRepository @Inject constructor() {
         return flow { emit(clubs as List<String>) }
     }
 
+    fun getNationalitiesWithPosition(position: String): Flow<List<String>> {
+        val nationalities: MutableList<String> = mutableListOf()
+
+        playersData.forEach {
+            if (!nationalities.contains(it.nationality) && it.position == position) {
+                nationalities.add(it.nationality)
+            }
+        }
+        return flow { emit(nationalities as List<String>) }
+    }
+
     fun getAllNationalities(): Flow<List<String>> {
         val nationalities: MutableList<String> = mutableListOf()
 
@@ -84,6 +95,13 @@ class PlayersRepository @Inject constructor() {
         return flow { emit(clubs as List<String>) }
     }
 
+    fun getPlayersWithNationalityInPosition(
+        nationality: String,
+        position: String
+    ): Flow<List<Player>> {
+        return flow { emit(playersData.filter { it.nationality == nationality && it.position == position }) }
+    }
+
     fun getPlayersByPositionInClub(position: String, club: String): Flow<List<Player>> {
         return flow { emit(playersData.filter { it.club == club && it.position == position }) }
     }
@@ -94,13 +112,13 @@ class PlayersRepository @Inject constructor() {
 
     companion object {
         private val playersData = listOf(
-            Player("Manuel Neuer", "Goalkeeper", "German","Bavaria"),
-            Player("Alexander Nübel", "Goalkeeper", "German","Bavaria"),
-            Player("Ron Hoffmann", "Goalkeeper", "German","Bavaria"),
-            Player("Niklas Süle", "Defender", "German","Bavaria"),
-            Player("Benjamin Pavard", "Defender", "French","Bavaria"),
-            Player("Jérôme Boateng", "Defender", "German","Bavaria"),
-            Player("Alphonso Davies", "Defender", "Canadian","Bavaria"),
+            Player("Manuel Neuer", "Goalkeeper", "German", "Bavaria"),
+            Player("Alexander Nübel", "Goalkeeper", "German", "Bavaria"),
+            Player("Ron Hoffmann", "Goalkeeper", "German", "Bavaria"),
+            Player("Niklas Süle", "Defender", "German", "Bavaria"),
+            Player("Benjamin Pavard", "Defender", "French", "Bavaria"),
+            Player("Jérôme Boateng", "Defender", "German", "Bavaria"),
+            Player("Alphonso Davies", "Defender", "Canadian", "Bavaria"),
             Player("Bouna Sarr", "Defender", "French", "Bavaria"),
             Player("Lucas Hernández", "Defender", "French", "Bavaria"),
             Player("Joshua Kimmich", "Midfield", "German", "Bavaria"),

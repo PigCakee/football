@@ -15,6 +15,7 @@ class PlayersPageViewModel @Inject constructor(
 ) : ViewModel() {
     val playersOnPositionInClub: MutableLiveData<List<Player>> = mutableLiveData()
     val playersWithNationalityInClub: MutableLiveData<List<Player>> = mutableLiveData()
+    val playersWithNationalityInPosition: MutableLiveData<List<Player>> = mutableLiveData()
 
     fun getPlayersByPositionInClub(position: String, club: String) {
         playersRepository.getPlayersByPositionInClub(position, club)
@@ -25,6 +26,12 @@ class PlayersPageViewModel @Inject constructor(
     fun getPlayersByNationalityInClub(nationality: String, club: String) {
         playersRepository.getPlayersByNationalityInClub(nationality, club)
             .onEach { playersWithNationalityInClub.value = it }
+            .launchIn(viewModelScope)
+    }
+
+    fun getPlayersWithNationalityInPosition(nationality: String, position: String) {
+        playersRepository.getPlayersWithNationalityInPosition(nationality, position)
+            .onEach { playersWithNationalityInPosition.value = it }
             .launchIn(viewModelScope)
     }
 }

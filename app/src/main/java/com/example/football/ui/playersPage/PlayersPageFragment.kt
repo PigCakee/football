@@ -48,6 +48,9 @@ class PlayersPageFragment : Fragment() {
             if (nationality != null && club != null) {
                 model.getPlayersByNationalityInClub(nationality, club)
             }
+            if (nationality != null && position != null) {
+                model.getPlayersWithNationalityInPosition(nationality, position)
+            }
         }
 
         model.playersOnPositionInClub.observe(viewLifecycleOwner, {
@@ -56,6 +59,11 @@ class PlayersPageFragment : Fragment() {
         })
 
         model.playersWithNationalityInClub.observe(viewLifecycleOwner, {
+            val adapter = PlayersListAdapter(requireContext(), it)
+            binding.recyclerView.adapter = adapter
+        })
+
+        model.playersWithNationalityInPosition.observe(viewLifecycleOwner, {
             val adapter = PlayersListAdapter(requireContext(), it)
             binding.recyclerView.adapter = adapter
         })
