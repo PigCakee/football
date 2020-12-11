@@ -16,6 +16,8 @@ import com.example.football.ui.main.MainActivity
 import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
+import com.example.football.utils.view.FLAG_ARG
+import com.example.football.utils.view.NATIONALITY_ARG
 import com.example.football.utils.view.POS_ARG
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
@@ -25,6 +27,7 @@ class ClubPositionsFragment : Fragment() {
     private lateinit var adapter: ClubPositionsPageAdapter
     private val args by navArgs<ClubPositionsFragmentArgs>()
     private lateinit var model: ClubFilterViewModel
+    private var flag: Boolean = true
 
     @Inject
     lateinit var modelFactory: ViewModelProvider.Factory
@@ -40,26 +43,65 @@ class ClubPositionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         model = ViewModelProvider(this, modelFactory).get(ClubFilterViewModel::class.java)
+        if (model.title.isBlank()) {
+            model.title = args.club
+        }
+        binding.title.text = model.title
 
-        if (model.club == null) {
-            model.club = args.club
-            model.getPositionsInClub(args.club)
+        arguments?.apply {
+            flag = getBoolean(FLAG_ARG)
         }
 
-        binding.title.text = args.club
-        model.positions.observe(viewLifecycleOwner, {
-            adapter = ClubPositionsPageAdapter(this, args.club, it)
-            binding.pager.adapter = adapter
+        if (flag) {
+            if (model.club == null) {
+                model.club = model.title
+                model.getPositionsInClub(model.title)
+            }
 
-            TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
-                tab.text = it[pos]
-            }.attach()
-        })
+            binding.title.text = model.title
+            model.positions.observe(viewLifecycleOwner, {
+                adapter = ClubPositionsPageAdapter(this, model.title, it, emptyList())
+                binding.pager.adapter = adapter
+
+                TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
+                    tab.text = it[pos]
+                }.attach()
+            })
+        } else {
+            if (model.club == null) {
+                model.club = model.title
+                model.getNationalitiesInClub(model.title)
+            }
+
+            binding.title.text = model.title
+            model.nationalities.observe(viewLifecycleOwner, {
+                adapter = ClubPositionsPageAdapter(this, model.title, emptyList(), it)
+                binding.pager.adapter = adapter
+
+                TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
+                    tab.text = it[pos]
+                }.attach()
+            })
+        }
+
+
 
         binding.back.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        binding.switchBtn.setOnClickListener {
+            binding.pager.adapter = null
+            model.club = null
+            parentFragmentManager
+                .beginTransaction()
+                .detach(this)
+                .attach(this.apply {
+                    val bundle = Bundle().apply { putBoolean(FLAG_ARG, !flag) }
+                    arguments = bundle
+                })
+                .commit()
+        }
         return binding.root
     }
 }
@@ -67,15 +109,24 @@ class ClubPositionsFragment : Fragment() {
 class ClubPositionsPageAdapter(
     fragment: Fragment,
     private val club: String,
-    private val positions: List<String>
+    private val positions: List<String>,
+    private val nationalities: List<String>
 ) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount() = positions.size
+    override fun getItemCount(): Int {
+        return if (positions.isNotEmpty()) positions.size
+        else nationalities.size
+    }
 
     override fun createFragment(position: Int): Fragment {
         val fragment = PlayersPageFragment()
         val bundle = Bundle().apply {
-            putString(POS_ARG, positions[position])
+            if (positions.isNotEmpty()) {
+                putString(POS_ARG, positions[position])
+            }
+            if (nationalities.isNotEmpty()) {
+                putString(NATIONALITY_ARG, nationalities[position])
+            }
             putString(CLUB_ARG, club)
         }
         fragment.arguments = bundle

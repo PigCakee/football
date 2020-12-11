@@ -13,11 +13,19 @@ class ClubFilterViewModel @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : ViewModel() {
     val positions: MutableLiveData<List<String>> = mutableLiveData()
+    val nationalities: MutableLiveData<List<String>> = mutableLiveData()
     var club: String? = null
+    var title: String = ""
 
     fun getPositionsInClub(club: String) {
         playersRepository.getPositionsInClub(club)
             .onEach { positions.value = it }
+            .launchIn(viewModelScope)
+    }
+
+    fun getNationalitiesInClub(club: String) {
+        playersRepository.getNationalitiesInCLub(club)
+            .onEach { nationalities.value = it }
             .launchIn(viewModelScope)
     }
 }
