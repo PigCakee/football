@@ -26,7 +26,6 @@ class PositionsViewModel @Inject constructor(
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersRepository.getAllPositions()
             .onEach { it.forEach { position -> getPlayersByPosition(position, list) } }
-            .onCompletion { playersOnPositions.value = list }
             .launchIn(viewModelScope)
     }
 
@@ -35,8 +34,10 @@ class PositionsViewModel @Inject constructor(
         list: MutableList<Pair<List<Player>, String>>
     ) {
         playersRepository.getPlayersByPosition(position)
-            .onEach { list.add(Pair(it, position)) }
-            .launchIn(viewModelScope)
+            .onEach {
+                list.add(Pair(it, position))
+                playersOnPositions.value = list
+            }.launchIn(viewModelScope)
     }
 
     fun handlePositionClick(position: String) {

@@ -26,7 +26,6 @@ class NationalitiesViewModel @Inject constructor(
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersRepository.getAllNationalities()
             .onEach { it.forEach { nationality -> getPlayersWithNationality(nationality, list) } }
-            .onCompletion { playersWithNationalityData.value = list }
             .launchIn(viewModelScope)
     }
 
@@ -35,8 +34,10 @@ class NationalitiesViewModel @Inject constructor(
         list: MutableList<Pair<List<Player>, String>>
     ) {
         playersRepository.getPlayersByNationality(nationality)
-            .onEach { list.add(Pair(it, nationality)) }
-            .launchIn(viewModelScope)
+            .onEach {
+                list.add(Pair(it, nationality))
+                playersWithNationalityData.value = list
+            }.launchIn(viewModelScope)
     }
 
     fun handleNationalityClick(nationality: String) {

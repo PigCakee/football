@@ -2,9 +2,8 @@ package com.example.football.model.repo
 
 import com.example.football.model.player.Player
 import com.example.football.model.player.db.PlayerDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PlayersRepository @Inject constructor(
@@ -103,46 +102,5 @@ class PlayersRepository @Inject constructor(
         return dao.getPlayersByNationality(nationality).map { list ->
             list.filter { it.club == club }
         }
-    }
-
-    companion object {
-        private val playersData = listOf(
-            Player("Manuel Neuer", "Goalkeeper", "German", "Bavaria"),
-            Player("Alexander Nübel", "Goalkeeper", "German", "Bavaria"),
-            Player("Ron Hoffmann", "Goalkeeper", "German", "Bavaria"),
-            Player("Niklas Süle", "Defender", "German", "Bavaria"),
-            Player("Benjamin Pavard", "Defender", "French", "Bavaria"),
-            Player("Jérôme Boateng", "Defender", "German", "Bavaria"),
-            Player("Alphonso Davies", "Defender", "Canadian", "Bavaria"),
-            Player("Bouna Sarr", "Defender", "French", "Bavaria"),
-            Player("Lucas Hernández", "Defender", "French", "Bavaria"),
-            Player("Joshua Kimmich", "Midfield", "German", "Bavaria"),
-            Player("Javi Martinez", "Midfield", "Spanish", "Bavaria"),
-            Player("Leon Goretzka", "Midfield", "German", "Bavaria"),
-            Player("Robert Lewandowski", "Forward", "Polish", "Bavaria"),
-            Player("Thomas Müller", "Forward", "German", "Bavaria"),
-            Player("Serge Gnabry", "Forward", "German", "Bavaria"),
-            Player("Wojciech Szczesny", "Goalkeeper", "Polish", "Juventus"),
-            Player("Gianluigi Buffon", "Goalkeeper", "Italian", "Juventus"),
-            Player("Stefano Gori", "Goalkeeper", "Italian", "Juventus"),
-            Player("Matthijs de Ligt", "Midfield", "German", "Juventus"),
-            Player("Leonardo Bonucci", "Midfield", "Italian", "Juventus"),
-            Player("Giorgio Chiellini", "Midfield", "Italian", "Juventus"),
-            Player("Álvaro Morata", "Forward", "Spanish", "Juventus"),
-            Player("Paulo Dybala", "Forward", "Italian", "Juventus"),
-            Player("Federico Bernardeschi", "Forward", "Italian", "Juventus"),
-            Player("David de Gea", "Goalkeeper", "Spanish", "Manchester United"),
-            Player("Lee Grant", "Goalkeeper", "English", "Manchester United"),
-            Player("Dean Henderson", "Goalkeeper", "English", "Manchester United"),
-            Player("Victor Lindelöf", "Defender", "Swedish", "Manchester United"),
-            Player("Phil Jones", "Defender", "English", "Manchester United"),
-            Player("Luke Shaw", "Defender", "English", "Manchester United"),
-            Player("Aaron Wan-Bissaka", "Defender", "English", "Manchester United"),
-            Player("Paul Pogba", "Midfield", "French", "Manchester United"),
-            Player("Juan Mata", "Midfield", "Spanish", "Manchester United"),
-            Player("Jesse Lingard", "Midfield", "English", "Manchester United"),
-            Player("Anthony Martial", "Forward", "French", "Manchester United"),
-            Player("Mason Greenwood", "Forward", "English", "Manchester United")
-        )
     }
 }
