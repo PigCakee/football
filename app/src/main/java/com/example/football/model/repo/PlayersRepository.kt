@@ -1,135 +1,108 @@
 package com.example.football.model.repo
 
 import com.example.football.model.player.Player
+import com.example.football.model.player.db.PlayerDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class PlayersRepository @Inject constructor() {
+class PlayersRepository @Inject constructor(
+    playerDatabase: PlayerDatabase
+) {
+    private val dao = playerDatabase.dao()
 
     fun getPlayersByClub(club: String): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.club == club }) }
+        return dao.getPlayersByClub(club)
     }
 
     fun getPlayersByPosition(position: String): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.position == position }) }
+        return dao.getPlayersByPosition(position)
     }
 
     fun getPlayersByNationality(nationality: String): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.nationality == nationality }) }
-    }
-
-    fun getAllPositions(): Flow<List<String>> {
-        val positions: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!positions.contains(it.position)) {
-                positions.add(it.position)
-            }
-        }
-        return flow { emit(positions as List<String>) }
+        return dao.getPlayersByNationality(nationality)
     }
 
     fun getPositionsInClub(club: String): Flow<List<String>> {
-        val positions: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!positions.contains(it.position) && it.club == club) {
-                positions.add(it.position)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.club == club }
+                .map { it.position }
+                .distinct()
         }
-        return flow { emit(positions as List<String>) }
     }
 
     fun getNationalitiesInCLub(club: String): Flow<List<String>> {
-        val nationalities: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!nationalities.contains(it.nationality) && it.club == club) {
-                nationalities.add(it.nationality)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.club == club }
+                .map { it.nationality }
+                .distinct()
         }
-        return flow { emit(nationalities as List<String>) }
     }
 
     fun getClubsWithNationality(nationality: String): Flow<List<String>> {
-        val clubs: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!clubs.contains(it.club) && it.nationality == nationality) {
-                clubs.add(it.club)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.nationality == nationality }
+                .map { it.club }
+                .distinct()
         }
-        return flow { emit(clubs as List<String>) }
     }
 
     fun getClubsWithPosition(position: String): Flow<List<String>> {
-        val clubs: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!clubs.contains(it.club) && it.position == position) {
-                clubs.add(it.club)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.position == position }
+                .map { it.club }
+                .distinct()
         }
-        return flow { emit(clubs as List<String>) }
     }
 
     fun getPositionsWithNationality(nationality: String): Flow<List<String>> {
-        val positions: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!positions.contains(it.position) && it.nationality == nationality) {
-                positions.add(it.position)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.nationality == nationality }
+                .map { it.position }
+                .distinct()
         }
-        return flow { emit(positions as List<String>) }
     }
 
     fun getNationalitiesWithPosition(position: String): Flow<List<String>> {
-        val nationalities: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!nationalities.contains(it.nationality) && it.position == position) {
-                nationalities.add(it.nationality)
-            }
+        return dao.getPlayers().map { list ->
+            list.filter { it.position == position }
+                .map { it.nationality }
+                .distinct()
         }
-        return flow { emit(nationalities as List<String>) }
+    }
+
+    fun getAllPositions(): Flow<List<String>> {
+        return dao.getPlayers().map { list -> list.map { it.position }.distinct() }
     }
 
     fun getAllNationalities(): Flow<List<String>> {
-        val nationalities: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!nationalities.contains(it.nationality)) {
-                nationalities.add(it.nationality)
-            }
-        }
-        return flow { emit(nationalities as List<String>) }
+        return dao.getPlayers().map { list -> list.map { it.nationality }.distinct() }
     }
 
     fun getAllClubs(): Flow<List<String>> {
-        val clubs: MutableList<String> = mutableListOf()
-
-        playersData.forEach {
-            if (!clubs.contains(it.club)) {
-                clubs.add(it.club)
-            }
-        }
-        return flow { emit(clubs as List<String>) }
+        return dao.getPlayers().map { list -> list.map { it.club }.distinct() }
     }
 
     fun getPlayersWithNationalityInPosition(
         nationality: String,
         position: String
     ): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.nationality == nationality && it.position == position }) }
+        return dao.getPlayersByNationality(nationality).map { list ->
+            list.filter { it.position == position }
+        }
     }
 
     fun getPlayersByPositionInClub(position: String, club: String): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.club == club && it.position == position }) }
+        return dao.getPlayersByPosition(position).map { list ->
+            list.filter { it.club == club }
+        }
     }
 
     fun getPlayersByNationalityInClub(nationality: String, club: String): Flow<List<Player>> {
-        return flow { emit(playersData.filter { it.nationality == nationality && it.club == club }) }
+        return dao.getPlayersByNationality(nationality).map { list ->
+            list.filter { it.club == club }
+        }
     }
 
     companion object {
