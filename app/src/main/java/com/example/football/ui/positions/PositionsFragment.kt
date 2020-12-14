@@ -42,7 +42,7 @@ class PositionsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersOnPositions.observe(viewLifecycleOwner, {
-            it.forEach { pair -> adapter.addData(pair) }
+            adapter.setData(it)
         })
 
         model.position.observe(viewLifecycleOwner, {
@@ -79,11 +79,9 @@ class PositionsAdapter(
 
     override fun getItemCount() = data.size
 
-    fun addData(pair: Pair<List<Player>, String>) {
-        if (!data.contains(pair)) {
-            data.add(pair)
-            notifyDataSetChanged()
-        }
+    fun setData(newData: MutableList<Pair<List<Player>, String>>) {
+        data = newData
+        notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: ItemPositionBinding) :

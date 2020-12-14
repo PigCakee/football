@@ -42,7 +42,7 @@ class NationalitiesFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersWithNationalityData.observe(viewLifecycleOwner, {
-            it.forEach { pair -> adapter.addData(pair) }
+            adapter.setData(it)
         })
 
         model.nationality.observe(viewLifecycleOwner, {
@@ -80,11 +80,9 @@ class NationalitiesAdapter(
 
     override fun getItemCount() = data.size
 
-    fun addData(players: Pair<List<Player>, String>) {
-        if (!data.contains(players)) {
-            data.add(players)
-            notifyDataSetChanged()
-        }
+    fun setData(newData: MutableList<Pair<List<Player>, String>>) {
+        data = newData
+        notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: ItemNationalityBinding) : RecyclerView.ViewHolder(binding.root)

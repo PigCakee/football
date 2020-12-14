@@ -42,7 +42,7 @@ class ClubsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         model.playersInClub.observe(viewLifecycleOwner, {
-            it.forEach { pair -> adapter.addData(pair) }
+            adapter.setData(it)
         })
 
         model.club.observe(viewLifecycleOwner, {
@@ -86,11 +86,9 @@ class ClubsAdapter(
 
     override fun getItemCount() = data.size
 
-    fun addData(clubs: Pair<List<Player>, String>) {
-        if (!data.contains(clubs)) {
-            data.add(clubs)
-            notifyDataSetChanged()
-        }
+    fun setData(newData: MutableList<Pair<List<Player>, String>>) {
+        data = newData
+        notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)
