@@ -1,7 +1,7 @@
 package com.example.football.di
 
 import android.content.Context
-import com.example.football.model.player.db.PlayerDatabase
+import com.example.football.data.db.PlayerDatabase
 import dagger.Module
 import dagger.Provides
 

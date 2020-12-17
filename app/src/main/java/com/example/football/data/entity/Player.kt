@@ -1,4 +1,4 @@
-package com.example.football.model.player
+package com.example.football.data.entity
 
 import android.os.Parcelable
 import androidx.room.Entity

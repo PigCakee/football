@@ -1,11 +1,11 @@
-package com.example.football.model.player.db
+package com.example.football.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.football.model.player.Player
+import com.example.football.data.entity.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

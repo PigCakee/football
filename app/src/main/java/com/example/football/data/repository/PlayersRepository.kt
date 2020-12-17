@@ -1,7 +1,7 @@
-package com.example.football.model.repo
+package com.example.football.data.repository
 
-import com.example.football.model.player.Player
-import com.example.football.model.player.db.PlayerDatabase
+import com.example.football.data.entity.Player
+import com.example.football.data.db.PlayerDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

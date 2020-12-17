@@ -1,4 +1,4 @@
-package com.example.football.model.player
+package com.example.football.data.entity
 
 import android.content.Context
 import android.graphics.drawable.Drawable

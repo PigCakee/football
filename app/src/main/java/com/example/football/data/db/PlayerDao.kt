@@ -1,10 +1,10 @@
-package com.example.football.model.player.db
+package com.example.football.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.football.model.player.Player
+import com.example.football.data.entity.Player
 import kotlinx.coroutines.flow.Flow
 
 @Dao

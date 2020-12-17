@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.databinding.FragmentNationalitiesBinding
 import com.example.football.databinding.ItemNationalityBinding
-import com.example.football.model.player.Player
+import com.example.football.data.entity.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
