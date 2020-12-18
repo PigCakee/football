@@ -30,4 +30,6 @@ interface AppComponent {
     fun inject(fragment: NationalitiesInClubsFragment)
     fun inject(fragment: PositionsFragment)
     fun inject(fragment: PositionInClubsFragment)
+
+    //fun inject(presenter: )
 }

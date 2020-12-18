@@ -6,25 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
+import com.example.football.data.entity.Player
+import com.example.football.data.repository.PlayersRepository
 import com.example.football.databinding.FragmentClubsBinding
 import com.example.football.databinding.ItemClubBinding
-import com.example.football.data.entity.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
 import javax.inject.Inject
+import javax.inject.Provider
 
-class ClubsFragment : Fragment() {
+class ClubsFragment : Fragment(), ClubsView { // MvPFragment почему-то очень странный
     private val binding by contentView<FragmentClubsBinding>(R.layout.fragment_clubs)
     private lateinit var adapter: ClubsAdapter
-    private lateinit var model: ClubsViewModel
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    lateinit var playersRepository: PlayersRepository
+
+    @Inject
+    lateinit var presenterProvider: Provider<ClubsPresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,29 +40,23 @@ class ClubsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(ClubsViewModel::class.java)
-        binding.model = model
-        adapter = ClubsAdapter(model, requireContext())
+        adapter = ClubsAdapter(presenter, requireContext())
         binding.recyclerView.adapter = adapter
-
-        model.playersInClub.observe(viewLifecycleOwner, {
-            adapter.setData(it)
-        })
-
-        model.club.observe(viewLifecycleOwner, {
-            if (it != null) {
-                val action = MainFragmentDirections.actionMainFragmentToClubPositionsFragment(it)
-                findNavController().navigate(action)
-                model.club.value = null
-            }
-        })
-
         return binding.root
+    }
+
+    override fun setRecyclerData(list: MutableList<Pair<List<Player>, String>>) {
+        adapter.setData(list)
+    }
+
+    override fun moveForward(club: String) {
+        val action = MainFragmentDirections.actionMainFragmentToClubPositionsFragment(club)
+        findNavController().navigate(action)
     }
 }
 
 class ClubsAdapter(
-    private val model: ClubsViewModel,
+    private val presenter: ClubsPresenter,
     private val context: Context,
     private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
 ) : RecyclerView.Adapter<ClubsAdapter.ViewHolder>() {
@@ -72,7 +70,6 @@ class ClubsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val club = data[position]
 
-        holder.binding.model = model
         with(holder.binding) {
             this.club.text = club.second
             clubData = club.second
@@ -80,6 +77,9 @@ class ClubsAdapter(
                 players.text = club.first.size.toString()
             } else {
                 players.text = context.getString(R.string.no_players)
+            }
+            container.setOnClickListener {
+                presenter.handleClubClick(club.second)
             }
         }
     }

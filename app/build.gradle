@@ -35,6 +35,9 @@ android {
     buildFeatures {
         dataBinding = true
     }
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
@@ -79,4 +82,16 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
+    implementation "androidx.room:room-rxjava3:$roomVersion"
+
+    // Moxy
+    def moxyVersion = '2.2.1'
+    implementation "com.github.moxy-community:moxy:$moxyVersion"
+    kapt "com.github.moxy-community:moxy-compiler:$moxyVersion"
+    implementation "com.github.moxy-community:moxy-android:$moxyVersion"
+
+    // RX
+    def rxVersion = '3.0.0'
+    implementation "io.reactivex.rxjava3:rxandroid:$rxVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxVersion"
 }
