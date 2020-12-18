@@ -3,6 +3,7 @@ package com.example.football.di
 import android.content.Context
 import com.example.football.ui.clubPosition.ClubPositionsFragment
 import com.example.football.ui.clubs.ClubsFragment
+import com.example.football.ui.clubs.ClubsPresenter
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.nationalities.NationalitiesFragment
 import com.example.football.ui.nationalityInClub.NationalitiesInClubsFragment
@@ -30,6 +31,4 @@ interface AppComponent {
     fun inject(fragment: NationalitiesInClubsFragment)
     fun inject(fragment: PositionsFragment)
     fun inject(fragment: PositionInClubsFragment)
-
-    //fun inject(presenter: )
 }

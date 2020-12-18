@@ -5,26 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.data.entity.Player
-import com.example.football.data.repository.PlayersRepository
 import com.example.football.databinding.FragmentClubsBinding
 import com.example.football.databinding.ItemClubBinding
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 import javax.inject.Provider
 
-class ClubsFragment : Fragment(), ClubsView { // MvPFragment почему-то очень странный
+class ClubsFragment : MvpAppCompatFragment(), ClubsView {
     private val binding by contentView<FragmentClubsBinding>(R.layout.fragment_clubs)
     private lateinit var adapter: ClubsAdapter
-
-    @Inject
-    lateinit var playersRepository: PlayersRepository
 
     @Inject
     lateinit var presenterProvider: Provider<ClubsPresenter>

@@ -89,6 +89,8 @@ dependencies {
     implementation "com.github.moxy-community:moxy:$moxyVersion"
     kapt "com.github.moxy-community:moxy-compiler:$moxyVersion"
     implementation "com.github.moxy-community:moxy-android:$moxyVersion"
+    implementation "com.github.moxy-community:moxy-ktx:$moxyVersion"
+    implementation "com.github.moxy-community:moxy-app-compat:$moxyVersion"
 
     // RX
     def rxVersion = '3.0.0'

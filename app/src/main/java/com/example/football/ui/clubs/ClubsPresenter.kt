@@ -7,9 +7,10 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 @InjectViewState
-class ClubsPresenter (
+class ClubsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<ClubsView>() {
 
