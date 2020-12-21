@@ -1,4 +1,4 @@
-package com.example.football.ui.clubs
+package com.example.football.ui.nationalities
 
 import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
@@ -10,43 +10,48 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class ClubsPresenter @Inject constructor(
+class NationalitiesPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
-) : MvpPresenter<ClubsView>() {
+) : MvpPresenter<NationalitiesView>() {
 
-    private var clubsDisposable: Disposable? = null
+    private var nationalitiesDisposable: Disposable? = null
     private var playersDisposable: Disposable? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getClubs()
+        getAllNationalities()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        clubsDisposable?.dispose()
+        nationalitiesDisposable?.dispose()
         playersDisposable?.dispose()
     }
 
-    private fun getClubs() {
+    private fun getAllNationalities() {
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
-        clubsDisposable = playersRepository.getAllClubs()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it?.forEach { club -> getPlayersByClub(club, list) } }
-    }
-
-    private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {
-        playersDisposable = playersRepository.getPlayersByClub(club)
+        playersRepository.getAllNationalities()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                it?.let { list.add(Pair(it, club)) }
+                it.forEach { nationality -> getPlayersWithNationality(nationality, list) }
+            }
+    }
+
+    private fun getPlayersWithNationality(
+        nationality: String,
+        list: MutableList<Pair<List<Player>, String>>
+    ) {
+        playersRepository.getPlayersByNationality(nationality)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                list.add(Pair(it, nationality))
                 viewState.setRecyclerData(list)
             }
     }
 
-    fun handleClubClick(club: String) {
-        viewState.moveForward(club)
+    fun handleNationalityClick(nationality: String) {
+        viewState.moveForward(nationality)
     }
 }

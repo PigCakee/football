@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.football.R
@@ -16,17 +14,19 @@ import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.FLAG_ARG
 import com.google.android.material.tabs.TabLayoutMediator
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
+import javax.inject.Provider
 
-class NationalitiesInClubsFragment : Fragment() {
+class NationalitiesInClubsFragment : MvpAppCompatFragment(), NationalitiesFilterView {
     private val binding by contentView<FragmentPlayersFilterBinding>(R.layout.fragment_players_filter)
-    private lateinit var adapterNationalities: ClubsPositionsNationalitiesPageAdapter
     private val args by navArgs<NationalitiesInClubsFragmentArgs>()
-    private lateinit var model: NationalitiesFilterViewModel
     private var flag: Boolean = true
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    lateinit var presenterProvider: Provider<NationalitiesFilterPresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,55 +38,22 @@ class NationalitiesInClubsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(NationalitiesFilterViewModel::class.java)
+        arguments?.apply { flag = getBoolean(FLAG_ARG) }
 
-        if (model.title.isBlank()) {
-            model.title = args.nationality
-        }
-        binding.title.text = model.title
+        if (presenter.title.isBlank()) { presenter.title = args.nationality }
 
-        arguments?.apply {
-            flag = getBoolean(FLAG_ARG)
-        }
+        if (presenter.nationality == null) { presenter.nationality = presenter.title }
 
-        if (flag) {
-            if (model.nationality == null) {
-                model.nationality = model.title
-                model.getClubsWithNationality(model.title)
-            }
+        if (flag) { presenter.getClubsWithNationality(presenter.title) }
+        else { presenter.getPositionsWithNationality(presenter.title) }
 
-            model.clubs.observe(viewLifecycleOwner, {
-                adapterNationalities = ClubsPositionsNationalitiesPageAdapter(this, nationality = model.title, clubs = it)
-                binding.pager.adapter = adapterNationalities
+        binding.title.text = presenter.title
 
-                TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
-                    tab.text = it[pos]
-                }.attach()
-
-                binding.back.setOnClickListener { findNavController().popBackStack() }
-            })
-        } else {
-            if (model.nationality == null) {
-                model.nationality = model.title
-                model.getPositionsWithNationality(model.title)
-            }
-
-            model.positions.observe(viewLifecycleOwner, {
-                adapterNationalities = ClubsPositionsNationalitiesPageAdapter(this, nationality = model.title, positions = it)
-                binding.pager.adapter = adapterNationalities
-
-                TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
-                    tab.text = it[pos]
-                }.attach()
-
-                binding.back.setOnClickListener { findNavController().popBackStack() }
-            })
-        }
-
+        binding.back.setOnClickListener { findNavController().popBackStack() }
 
         binding.switchBtn.setOnClickListener {
             binding.pager.adapter = null
-            model.nationality = null
+            presenter.nationality = null
             parentFragmentManager
                 .beginTransaction()
                 .detach(this)
@@ -97,6 +64,27 @@ class NationalitiesInClubsFragment : Fragment() {
                 .commit()
         }
         return binding.root
+    }
+
+    override fun setRecyclerData(list: List<String>) {
+        if (flag) {
+            binding.pager.adapter =
+                ClubsPositionsNationalitiesPageAdapter(
+                    this,
+                    nationality = presenter.title,
+                    clubs = list
+                )
+        } else {
+            binding.pager.adapter =
+                ClubsPositionsNationalitiesPageAdapter(
+                    this,
+                    nationality = presenter.title,
+                    positions = list
+                )
+        }
+        TabLayoutMediator(binding.tabs, binding.pager) { tab, pos ->
+            tab.text = list[pos]
+        }.attach()
     }
 }
 

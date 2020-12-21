@@ -75,9 +75,7 @@ class ClubsAdapter(
             } else {
                 players.text = context.getString(R.string.no_players)
             }
-            container.setOnClickListener {
-                presenter.handleClubClick(club.second)
-            }
+            container.setOnClickListener { presenter.handleClubClick(club.second) }
         }
     }
 

@@ -1,13 +1,8 @@
 package com.example.football.data.repository
 
-import com.example.football.data.entity.Player
 import com.example.football.data.db.PlayerDatabase
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.observers.DisposableObserver
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PlayersRepository @Inject constructor(
@@ -15,23 +10,19 @@ class PlayersRepository @Inject constructor(
 ) {
     private val dao = playerDatabase.dao()
 
-    fun getPlayersByClub(club: String): Flow<List<Player>> {
+    fun getPlayersByClub(club: String): Observable<List<Player>> {
         return dao.getPlayersByClub(club)
     }
 
-    fun getPlayersByClubRX(club: String): Observable<List<Player>> {
-        return dao.getPlayersByClubRX(club)
-    }
-
-    fun getPlayersByPosition(position: String): Flow<List<Player>> {
+    fun getPlayersByPosition(position: String): Observable<List<Player>> {
         return dao.getPlayersByPosition(position)
     }
 
-    fun getPlayersByNationality(nationality: String): Flow<List<Player>> {
+    fun getPlayersByNationality(nationality: String): Observable<List<Player>> {
         return dao.getPlayersByNationality(nationality)
     }
 
-    fun getPositionsInClub(club: String): Flow<List<String>> {
+    fun getPositionsInClub(club: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.club == club }
                 .map { it.position }
@@ -39,7 +30,7 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getNationalitiesInCLub(club: String): Flow<List<String>> {
+    fun getNationalitiesInCLub(club: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.club == club }
                 .map { it.nationality }
@@ -47,7 +38,7 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getClubsWithNationality(nationality: String): Flow<List<String>> {
+    fun getClubsWithNationality(nationality: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.nationality == nationality }
                 .map { it.club }
@@ -55,7 +46,7 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getClubsWithPosition(position: String): Flow<List<String>> {
+    fun getClubsWithPosition(position: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.position == position }
                 .map { it.club }
@@ -63,7 +54,7 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getPositionsWithNationality(nationality: String): Flow<List<String>> {
+    fun getPositionsWithNationality(nationality: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.nationality == nationality }
                 .map { it.position }
@@ -71,7 +62,7 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getNationalitiesWithPosition(position: String): Flow<List<String>> {
+    fun getNationalitiesWithPosition(position: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
             list.filter { it.position == position }
                 .map { it.nationality }
@@ -79,38 +70,34 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun getAllPositions(): Flow<List<String>> {
+    fun getAllPositions(): Observable<List<String>> {
         return dao.getPlayers().map { list -> list.map { it.position }.distinct() }
     }
 
-    fun getAllNationalities(): Flow<List<String>> {
+    fun getAllNationalities(): Observable<List<String>> {
         return dao.getPlayers().map { list -> list.map { it.nationality }.distinct() }
     }
 
-    fun getAllClubs(): Flow<List<String>> {
+    fun getAllClubs(): Observable<List<String>> {
         return dao.getPlayers().map { list -> list.map { it.club }.distinct() }
-    }
-
-    fun getAllClubsRX(): Observable<List<String>> {
-        return dao.getPlayersRX().map { list -> list.map { it.club }.distinct() }
     }
 
     fun getPlayersWithNationalityInPosition(
         nationality: String,
         position: String
-    ): Flow<List<Player>> {
+    ): Observable<List<Player>> {
         return dao.getPlayersByNationality(nationality).map { list ->
             list.filter { it.position == position }
         }
     }
 
-    fun getPlayersByPositionInClub(position: String, club: String): Flow<List<Player>> {
+    fun getPlayersByPositionInClub(position: String, club: String): Observable<List<Player>> {
         return dao.getPlayersByPosition(position).map { list ->
             list.filter { it.club == club }
         }
     }
 
-    fun getPlayersByNationalityInClub(nationality: String, club: String): Flow<List<Player>> {
+    fun getPlayersByNationalityInClub(nationality: String, club: String): Observable<List<Player>> {
         return dao.getPlayersByNationality(nationality).map { list ->
             list.filter { it.club == club }
         }

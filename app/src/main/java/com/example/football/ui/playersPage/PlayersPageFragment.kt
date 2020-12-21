@@ -5,27 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
-import com.example.football.databinding.FragmentPlayersFilterPageBinding
-import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.data.entity.Player
 import com.example.football.data.entity.PositionsIconFactory
+import com.example.football.databinding.FragmentPlayersFilterPageBinding
+import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.NATIONALITY_ARG
 import com.example.football.utils.view.POS_ARG
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
+import javax.inject.Provider
 
-class PlayersPageFragment : Fragment() {
+class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     private val binding by contentView<FragmentPlayersFilterPageBinding>(R.layout.fragment_players_filter_page)
-    private lateinit var model: PlayersPageViewModel
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    lateinit var presenterProvider: Provider<PlayersPagePresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,37 +38,33 @@ class PlayersPageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(PlayersPageViewModel::class.java)
         arguments?.apply {
             val position: String? = getString(POS_ARG)
             val nationality: String? = getString(NATIONALITY_ARG)
             val club: String? = getString(CLUB_ARG)
             if (club != null && position != null) {
-                model.getPlayersByPositionInClub(position, club)
+                presenter.getPlayersByPositionInClub(position, club)
             }
             if (nationality != null && club != null) {
-                model.getPlayersByNationalityInClub(nationality, club)
+                presenter.getPlayersByNationalityInClub(nationality, club)
             }
             if (nationality != null && position != null) {
-                model.getPlayersWithNationalityInPosition(nationality, position)
+                presenter.getPlayersWithNationalityInPosition(nationality, position)
             }
         }
-
-        model.playersOnPositionInClub.observe(viewLifecycleOwner, {
-            val adapter = PlayersListAdapter(requireContext(), it)
-            binding.recyclerView.adapter = adapter
-        })
-
-        model.playersWithNationalityInClub.observe(viewLifecycleOwner, {
-            val adapter = PlayersListAdapter(requireContext(), it)
-            binding.recyclerView.adapter = adapter
-        })
-
-        model.playersWithNationalityInPosition.observe(viewLifecycleOwner, {
-            val adapter = PlayersListAdapter(requireContext(), it)
-            binding.recyclerView.adapter = adapter
-        })
         return binding.root
+    }
+
+    override fun setPlayersOnPositionInClubData(list: List<Player>) {
+        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
+    }
+
+    override fun setPlayersWithNationalityInClubData(list: List<Player>) {
+        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
+    }
+
+    override fun setPlayersWithNationalityInPositionData(list: List<Player>) {
+        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
     }
 }
 

@@ -5,26 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
+import com.example.football.data.entity.Player
 import com.example.football.databinding.FragmentPositionsBinding
 import com.example.football.databinding.ItemPositionBinding
-import com.example.football.data.entity.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
+import javax.inject.Provider
 
-class PositionsFragment : Fragment() {
+class PositionsFragment : MvpAppCompatFragment(), PositionsView {
     private val binding by contentView<FragmentPositionsBinding>(R.layout.fragment_positions)
     private lateinit var adapter: PositionsAdapter
-    private lateinit var model: PositionsViewModel
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    lateinit var presenterProvider: Provider<PositionsPresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,29 +37,23 @@ class PositionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(PositionsViewModel::class.java)
-        binding.model = model
-        adapter = PositionsAdapter(model)
+        adapter = PositionsAdapter(presenter)
         binding.recyclerView.adapter = adapter
-
-        model.playersOnPositions.observe(viewLifecycleOwner, {
-            adapter.setData(it)
-        })
-
-        model.position.observe(viewLifecycleOwner, {
-            if (it != null) {
-                val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(it)
-                findNavController().navigate(action)
-                model.position.value = null
-            }
-        })
-
         return binding.root
+    }
+
+    override fun setRecyclerData(list: MutableList<Pair<List<Player>, String>>) {
+        adapter.setData(list)
+    }
+
+    override fun moveForward(position: String) {
+        val action = MainFragmentDirections.actionMainFragmentToPositionInClubsFragment(position)
+        findNavController().navigate(action)
     }
 }
 
 class PositionsAdapter(
-    private val model: PositionsViewModel,
+    private val presenter: PositionsPresenter,
     private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
 ) : RecyclerView.Adapter<PositionsAdapter.ViewHolder>() {
 
@@ -69,11 +64,11 @@ class PositionsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.model = model
         with(holder.binding) {
             this.position.text = data[position].second
             players.text = data[position].first.size.toString()
             pos = data[position].second
+            container.setOnClickListener { presenter.handlePositionClick(data[position].second) }
         }
     }
 

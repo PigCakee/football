@@ -1,4 +1,4 @@
-package com.example.football.ui.clubs
+package com.example.football.ui.positions
 
 import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
@@ -10,43 +10,45 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class ClubsPresenter @Inject constructor(
+class PositionsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
-) : MvpPresenter<ClubsView>() {
-
-    private var clubsDisposable: Disposable? = null
+): MvpPresenter<PositionsView>() {
+    private var positionsDisposable: Disposable? = null
     private var playersDisposable: Disposable? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getClubs()
+        getPositions()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        clubsDisposable?.dispose()
+        positionsDisposable?.dispose()
         playersDisposable?.dispose()
     }
 
-    private fun getClubs() {
+    private fun getPositions() {
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
-        clubsDisposable = playersRepository.getAllClubs()
+        playersRepository.getAllPositions()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it?.forEach { club -> getPlayersByClub(club, list) } }
+            .subscribe { it.forEach { position -> getPlayersByPosition(position, list) } }
     }
 
-    private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {
-        playersDisposable = playersRepository.getPlayersByClub(club)
+    private fun getPlayersByPosition(
+        position: String,
+        list: MutableList<Pair<List<Player>, String>>
+    ) {
+        playersRepository.getPlayersByPosition(position)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                it?.let { list.add(Pair(it, club)) }
+                list.add(Pair(it, position))
                 viewState.setRecyclerData(list)
             }
     }
 
-    fun handleClubClick(club: String) {
-        viewState.moveForward(club)
+    fun handlePositionClick(position: String) {
+        viewState.moveForward(position)
     }
 }

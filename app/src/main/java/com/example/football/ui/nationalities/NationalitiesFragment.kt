@@ -5,26 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
+import com.example.football.data.entity.Player
 import com.example.football.databinding.FragmentNationalitiesBinding
 import com.example.football.databinding.ItemNationalityBinding
-import com.example.football.data.entity.Player
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
+import javax.inject.Provider
 
-class NationalitiesFragment : Fragment() {
+class NationalitiesFragment : MvpAppCompatFragment(), NationalitiesView {
     private val binding by contentView<FragmentNationalitiesBinding>(R.layout.fragment_nationalities)
     private lateinit var adapter: NationalitiesAdapter
-    private lateinit var model: NationalitiesViewModel
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
+    lateinit var presenterProvider: Provider<NationalitiesPresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,30 +37,24 @@ class NationalitiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        model = ViewModelProvider(this, modelFactory).get(NationalitiesViewModel::class.java)
-        binding.model = model
-        adapter = NationalitiesAdapter(model)
+        adapter = NationalitiesAdapter(presenter)
         binding.recyclerView.adapter = adapter
-
-        model.playersWithNationalityData.observe(viewLifecycleOwner, {
-            adapter.setData(it)
-        })
-
-        model.nationality.observe(viewLifecycleOwner, {
-            if (it != null) {
-                val action =
-                    MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(it)
-                findNavController().navigate(action)
-                model.nationality.value = null
-            }
-        })
-
         return binding.root
+    }
+
+    override fun setRecyclerData(list: MutableList<Pair<List<Player>, String>>) {
+        adapter.setData(list)
+    }
+
+    override fun moveForward(nationality: String) {
+        val action =
+            MainFragmentDirections.actionMainFragmentToNationalitiesInClubsFragment(nationality)
+        findNavController().navigate(action)
     }
 }
 
 class NationalitiesAdapter(
-    private val model: NationalitiesViewModel,
+    private val presenter: NationalitiesPresenter,
     private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
 ) : RecyclerView.Adapter<NationalitiesAdapter.ViewHolder>() {
 
@@ -70,11 +65,11 @@ class NationalitiesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.model = model
         with(holder.binding) {
             nationality.text = data[position].second
             players.text = data[position].first.size.toString()
             nation = data[position].second
+            container.setOnClickListener { presenter.handleNationalityClick(data[position].second) }
         }
     }
 
