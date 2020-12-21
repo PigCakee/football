@@ -13,7 +13,6 @@ import javax.inject.Inject
 class PositionsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ): MvpPresenter<PositionsView>() {
-    private var positionsDisposable: Disposable? = null
     private var playersDisposable: Disposable? = null
 
     override fun onFirstViewAttach() {
@@ -23,27 +22,18 @@ class PositionsPresenter @Inject constructor(
 
     override fun onDestroy() {
         super.onDestroy()
-        positionsDisposable?.dispose()
         playersDisposable?.dispose()
     }
 
     private fun getPositions() {
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
-        playersRepository.getAllPositions()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it.forEach { position -> getPlayersByPosition(position, list) } }
-    }
-
-    private fun getPlayersByPosition(
-        position: String,
-        list: MutableList<Pair<List<Player>, String>>
-    ) {
-        playersRepository.getPlayersByPosition(position)
+        playersDisposable = playersRepository.getAllPositions()
+            .flatMapIterable { it }
+            .flatMap { playersRepository.getPlayersByPosition(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                list.add(Pair(it, position))
+                list.add(Pair(it, it.first().position))
                 viewState.setRecyclerData(list)
             }
     }

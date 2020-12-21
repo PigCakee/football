@@ -13,9 +13,7 @@ import javax.inject.Inject
 class ClubsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<ClubsView>() {
-
     private var clubsDisposable: Disposable? = null
-    private var playersDisposable: Disposable? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -25,23 +23,17 @@ class ClubsPresenter @Inject constructor(
     override fun onDestroy() {
         super.onDestroy()
         clubsDisposable?.dispose()
-        playersDisposable?.dispose()
     }
 
     private fun getClubs() {
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         clubsDisposable = playersRepository.getAllClubs()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it?.forEach { club -> getPlayersByClub(club, list) } }
-    }
-
-    private fun getPlayersByClub(club: String, list: MutableList<Pair<List<Player>, String>>) {
-        playersDisposable = playersRepository.getPlayersByClub(club)
+            .flatMapIterable { it }
+            .flatMap { playersRepository.getPlayersByClub(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                it?.let { list.add(Pair(it, club)) }
+                list.add(Pair(it, it.first().club))
                 viewState.setRecyclerData(list)
             }
     }

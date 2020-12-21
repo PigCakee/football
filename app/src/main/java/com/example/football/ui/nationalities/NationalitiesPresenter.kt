@@ -13,9 +13,7 @@ import javax.inject.Inject
 class NationalitiesPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<NationalitiesView>() {
-
     private var nationalitiesDisposable: Disposable? = null
-    private var playersDisposable: Disposable? = null
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -25,28 +23,17 @@ class NationalitiesPresenter @Inject constructor(
     override fun onDestroy() {
         super.onDestroy()
         nationalitiesDisposable?.dispose()
-        playersDisposable?.dispose()
     }
 
     private fun getAllNationalities() {
         val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
-        playersRepository.getAllNationalities()
+        nationalitiesDisposable = playersRepository.getAllNationalities()
+            .flatMapIterable { it }
+            .flatMap { playersRepository.getPlayersByNationality(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                it.forEach { nationality -> getPlayersWithNationality(nationality, list) }
-            }
-    }
-
-    private fun getPlayersWithNationality(
-        nationality: String,
-        list: MutableList<Pair<List<Player>, String>>
-    ) {
-        playersRepository.getPlayersByNationality(nationality)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                list.add(Pair(it, nationality))
+                list.add(Pair(it, it.first().nationality))
                 viewState.setRecyclerData(list)
             }
     }
