@@ -14,6 +14,7 @@ class PositionsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ): MvpPresenter<PositionsView>() {
     private var playersDisposable: Disposable? = null
+    private val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,7 +27,6 @@ class PositionsPresenter @Inject constructor(
     }
 
     private fun getPositions() {
-        val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         playersDisposable = playersRepository.getAllPositions()
             .flatMapIterable { it }
             .flatMap { playersRepository.getPlayersByPosition(it) }
@@ -34,11 +34,12 @@ class PositionsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().position))
-                viewState.setRecyclerData(list)
+                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
             }
     }
 
     fun handlePositionClick(position: String) {
+        list.clear()
         viewState.moveForward(position)
     }
 }

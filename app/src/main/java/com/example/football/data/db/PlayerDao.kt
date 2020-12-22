@@ -1,9 +1,6 @@
 package com.example.football.data.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -26,6 +23,9 @@ interface PlayerDao {
 
     @Query("SELECT * FROM players_table WHERE nationality = :nationality")
     fun getPlayersByNationality(nationality: String): Observable<List<Player>>
+
+    @Update
+    fun updatePlayer(player: Player)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(player: Player)

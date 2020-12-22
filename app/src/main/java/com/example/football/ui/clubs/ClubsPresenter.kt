@@ -14,6 +14,7 @@ class ClubsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<ClubsView>() {
     private var clubsDisposable: Disposable? = null
+    private val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,7 +27,6 @@ class ClubsPresenter @Inject constructor(
     }
 
     private fun getClubs() {
-        val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         clubsDisposable = playersRepository.getAllClubs()
             .flatMapIterable { it }
             .flatMap { playersRepository.getPlayersByClub(it) }
@@ -34,11 +34,12 @@ class ClubsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().club))
-                viewState.setRecyclerData(list)
+                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
             }
     }
 
     fun handleClubClick(club: String) {
+        list.clear()
         viewState.moveForward(club)
     }
 }

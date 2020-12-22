@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.data.entity.Player
@@ -56,19 +57,20 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     }
 
     override fun setPlayersOnPositionInClubData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
+        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
     }
 
     override fun setPlayersWithNationalityInClubData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
+        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
     }
 
     override fun setPlayersWithNationalityInPositionData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(requireContext(), list)
+        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
     }
 }
 
 class PlayersListAdapter(
+    private val presenter: PlayersPagePresenter,
     private val context: Context,
     private val data: List<Player>
 ) : RecyclerView.Adapter<PlayersListAdapter.ViewHolder>() {
@@ -93,7 +95,24 @@ class PlayersListAdapter(
                     player.position
                 )
             )
+            setFavourite(player)
+            container.setOnClickListener {
+                player.favourite = !player.favourite
+                presenter.updatePlayer(player)
+            }
         }
+    }
+
+    private fun ItemPlayerBinding.setFavourite(player: Player) {
+        favoutite.setImageDrawable(
+            if (player.favourite) ContextCompat.getDrawable(
+                context,
+                R.drawable.ic_star_yellow
+            ) else ContextCompat.getDrawable(
+                context,
+                R.drawable.ic_star_white
+            )
+        )
     }
 
     override fun getItemCount() = data.size

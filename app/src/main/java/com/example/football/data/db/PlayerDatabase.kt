@@ -15,8 +15,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.FileWriter
 
-
-@Database(entities = [Player::class], exportSchema = false, version = 1)
+@Database(entities = [Player::class], exportSchema = false, version = 2)
 abstract class PlayerDatabase : RoomDatabase() {
 
     abstract fun dao(): PlayerDao
@@ -98,42 +97,42 @@ abstract class PlayerDatabase : RoomDatabase() {
 
 
         private val playersData = listOf(
-            Player("Manuel Neuer", "Goalkeeper", "German", "Bavaria"),
-            Player("Alexander Nübel", "Goalkeeper", "German", "Bavaria"),
-            Player("Ron Hoffmann", "Goalkeeper", "German", "Bavaria"),
-            Player("Niklas Süle", "Defender", "German", "Bavaria"),
-            Player("Benjamin Pavard", "Defender", "French", "Bavaria"),
-            Player("Jérôme Boateng", "Defender", "German", "Bavaria"),
-            Player("Alphonso Davies", "Defender", "Canadian", "Bavaria"),
-            Player("Bouna Sarr", "Defender", "French", "Bavaria"),
-            Player("Lucas Hernández", "Defender", "French", "Bavaria"),
-            Player("Joshua Kimmich", "Midfield", "German", "Bavaria"),
-            Player("Javi Martinez", "Midfield", "Spanish", "Bavaria"),
-            Player("Leon Goretzka", "Midfield", "German", "Bavaria"),
-            Player("Robert Lewandowski", "Forward", "Polish", "Bavaria"),
-            Player("Thomas Müller", "Forward", "German", "Bavaria"),
-            Player("Serge Gnabry", "Forward", "German", "Bavaria"),
-            Player("Wojciech Szczesny", "Goalkeeper", "Polish", "Juventus"),
-            Player("Gianluigi Buffon", "Goalkeeper", "Italian", "Juventus"),
-            Player("Stefano Gori", "Goalkeeper", "Italian", "Juventus"),
-            Player("Matthijs de Ligt", "Midfield", "German", "Juventus"),
-            Player("Leonardo Bonucci", "Midfield", "Italian", "Juventus"),
-            Player("Giorgio Chiellini", "Midfield", "Italian", "Juventus"),
-            Player("Álvaro Morata", "Forward", "Spanish", "Juventus"),
-            Player("Paulo Dybala", "Forward", "Italian", "Juventus"),
-            Player("Federico Bernardeschi", "Forward", "Italian", "Juventus"),
-            Player("David de Gea", "Goalkeeper", "Spanish", "Manchester United"),
-            Player("Lee Grant", "Goalkeeper", "English", "Manchester United"),
-            Player("Dean Henderson", "Goalkeeper", "English", "Manchester United"),
-            Player("Victor Lindelöf", "Defender", "Swedish", "Manchester United"),
-            Player("Phil Jones", "Defender", "English", "Manchester United"),
-            Player("Luke Shaw", "Defender", "English", "Manchester United"),
-            Player("Aaron Wan-Bissaka", "Defender", "English", "Manchester United"),
-            Player("Paul Pogba", "Midfield", "French", "Manchester United"),
-            Player("Juan Mata", "Midfield", "Spanish", "Manchester United"),
-            Player("Jesse Lingard", "Midfield", "English", "Manchester United"),
-            Player("Anthony Martial", "Forward", "French", "Manchester United"),
-            Player("Mason Greenwood", "Forward", "English", "Manchester United")
+            Player("Manuel Neuer", "Goalkeeper", "German", "Bavaria", false),
+            Player("Alexander Nübel", "Goalkeeper", "German", "Bavaria", false),
+            Player("Ron Hoffmann", "Goalkeeper", "German", "Bavaria", false),
+            Player("Niklas Süle", "Defender", "German", "Bavaria", false),
+            Player("Benjamin Pavard", "Defender", "French", "Bavaria", false),
+            Player("Jérôme Boateng", "Defender", "German", "Bavaria", false),
+            Player("Alphonso Davies", "Defender", "Canadian", "Bavaria", false),
+            Player("Bouna Sarr", "Defender", "French", "Bavaria", false),
+            Player("Lucas Hernández", "Defender", "French", "Bavaria", false),
+            Player("Joshua Kimmich", "Midfield", "German", "Bavaria", false),
+            Player("Javi Martinez", "Midfield", "Spanish", "Bavaria", false),
+            Player("Leon Goretzka", "Midfield", "German", "Bavaria", false),
+            Player("Robert Lewandowski", "Forward", "Polish", "Bavaria", false),
+            Player("Thomas Müller", "Forward", "German", "Bavaria", false),
+            Player("Serge Gnabry", "Forward", "German", "Bavaria", false),
+            Player("Wojciech Szczesny", "Goalkeeper", "Polish", "Juventus", false),
+            Player("Gianluigi Buffon", "Goalkeeper", "Italian", "Juventus", false),
+            Player("Stefano Gori", "Goalkeeper", "Italian", "Juventus", false),
+            Player("Matthijs de Ligt", "Midfield", "German", "Juventus", false),
+            Player("Leonardo Bonucci", "Midfield", "Italian", "Juventus", false),
+            Player("Giorgio Chiellini", "Midfield", "Italian", "Juventus", false),
+            Player("Álvaro Morata", "Forward", "Spanish", "Juventus", false),
+            Player("Paulo Dybala", "Forward", "Italian", "Juventus", false),
+            Player("Federico Bernardeschi", "Forward", "Italian", "Juventus", false),
+            Player("David de Gea", "Goalkeeper", "Spanish", "Manchester United", false),
+            Player("Lee Grant", "Goalkeeper", "English", "Manchester United", false),
+            Player("Dean Henderson", "Goalkeeper", "English", "Manchester United", false),
+            Player("Victor Lindelöf", "Defender", "Swedish", "Manchester United", false),
+            Player("Phil Jones", "Defender", "English", "Manchester United", false),
+            Player("Luke Shaw", "Defender", "English", "Manchester United", false),
+            Player("Aaron Wan-Bissaka", "Defender", "English", "Manchester United", false),
+            Player("Paul Pogba", "Midfield", "French", "Manchester United", false),
+            Player("Juan Mata", "Midfield", "Spanish", "Manchester United", false),
+            Player("Jesse Lingard", "Midfield", "English", "Manchester United", false),
+            Player("Anthony Martial", "Forward", "French", "Manchester United", false),
+            Player("Mason Greenwood", "Forward", "English", "Manchester United", false)
         )
     }
 }

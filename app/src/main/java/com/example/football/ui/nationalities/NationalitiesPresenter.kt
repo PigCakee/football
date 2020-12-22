@@ -14,6 +14,7 @@ class NationalitiesPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<NationalitiesView>() {
     private var nationalitiesDisposable: Disposable? = null
+    private val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,7 +27,6 @@ class NationalitiesPresenter @Inject constructor(
     }
 
     private fun getAllNationalities() {
-        val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
         nationalitiesDisposable = playersRepository.getAllNationalities()
             .flatMapIterable { it }
             .flatMap { playersRepository.getPlayersByNationality(it) }
@@ -34,11 +34,12 @@ class NationalitiesPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().nationality))
-                viewState.setRecyclerData(list)
+                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
             }
     }
 
     fun handleNationalityClick(nationality: String) {
+        list.clear()
         viewState.moveForward(nationality)
     }
 }

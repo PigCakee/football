@@ -2,8 +2,10 @@ package com.example.football.data.repository
 
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class PlayersRepository @Inject constructor(
@@ -104,5 +106,11 @@ class PlayersRepository @Inject constructor(
         return dao.getPlayersByNationality(nationality).map { list ->
             list.filter { it.club == club }
         }
+    }
+
+    fun updatePlayer(player: Player) {
+        Completable.fromRunnable { dao.updatePlayer(player) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 }
