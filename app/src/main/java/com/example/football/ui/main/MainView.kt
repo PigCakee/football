@@ -7,4 +7,6 @@ import moxy.viewstate.strategy.StateStrategyType
 interface MainView: MvpView {
     @StateStrategyType(value = SingleStateStrategy::class)
     fun notifyDatabaseReady()
+    @StateStrategyType(value = SingleStateStrategy::class)
+    fun notifyDatabaseBackedUp(path: String)
 }

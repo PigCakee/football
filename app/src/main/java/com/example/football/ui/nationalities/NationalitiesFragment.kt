@@ -42,6 +42,14 @@ class NationalitiesFragment : MvpAppCompatFragment(), NationalitiesView {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        if (view != null) {
+            val parentViewGroup = view?.parent as ViewGroup?
+            parentViewGroup?.removeAllViews();
+        }
+        super.onDestroyView()
+    }
+
     override fun setRecyclerData(list: MutableList<Pair<List<Player>, String>>) {
         adapter.setData(list)
     }

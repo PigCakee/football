@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -17,6 +18,7 @@ import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUBS_POS
 import com.example.football.utils.view.NATIONALITY_POS
 import com.example.football.utils.view.POSITION_POS
+import com.google.android.material.snackbar.Snackbar
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -40,6 +42,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         savedInstanceState: Bundle?
     ): View {
         binding.progressBar.visibility = View.VISIBLE
+        binding.backUp.setOnClickListener { presenter.backUpDatabase(requireContext()) }
         return binding.root
     }
 
@@ -49,6 +52,18 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             SectionsPagerAdapter(requireContext(), childFragmentManager)
         binding.viewPager.adapter = sectionsPagerAdapter
         binding.tabs.setupWithViewPager(binding.viewPager)
+    }
+
+    override fun notifyDatabaseBackedUp(path: String) {
+        val snackbar =
+            Snackbar.make(binding.root, "Database is backed up at: $path", Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorCarbonBlack
+            )
+        )
+        snackbar.show()
     }
 }
 

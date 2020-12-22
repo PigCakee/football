@@ -6,9 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.football.data.entity.Player
+import com.example.football.utils.view.DATABASE_NAME
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.FileWriter
+
 
 @Database(entities = [Player::class], exportSchema = false, version = 1)
 abstract class PlayerDatabase : RoomDatabase() {
@@ -33,16 +39,57 @@ abstract class PlayerDatabase : RoomDatabase() {
         }
     }
 
+    fun backUpDatabaseAndGetFilePath(context: Context): String {
+        val dbFile: File = context.getDatabasePath(DATABASE_NAME)
+        val dbBackUpFile = createFileAndSaveInInternalStorage(context)
+        copy(dbFile, dbBackUpFile)
+        return dbBackUpFile.toString()
+    }
+
+    private fun createFileAndSaveInInternalStorage(
+        context: Context
+    ): File? {
+        val dir = File(context.filesDir, BACKUP)
+        if (!dir.exists()) {
+            dir.mkdir()
+        }
+        try {
+            val file = File(dir, BACKUP)
+            val writer = FileWriter(file)
+            writer.flush()
+            writer.close()
+            return file
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun copy(src: File?, dst: File?) {
+        FileInputStream(src).use { `in` ->
+            FileOutputStream(dst).use { out ->
+                // Transfer bytes from in to out
+                val buf = ByteArray(1024)
+                var len: Int
+                while (`in`.read(buf).also { len = it } > 0) {
+                    out.write(buf, 0, len)
+                }
+            }
+        }
+    }
+
     companion object {
         @Volatile
         var INSTANCE: PlayerDatabase? = null
+
+        const val BACKUP = "back_up"
 
         fun getDatabase(context: Context): PlayerDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PlayerDatabase::class.java,
-                    "word_database"
+                    "players_table"
                 ).addCallback(PlayerDatabaseCallback(GlobalScope)).build()
                 INSTANCE = instance
                 instance
