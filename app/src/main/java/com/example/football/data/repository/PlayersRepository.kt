@@ -3,6 +3,7 @@ package com.example.football.data.repository
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class PlayersRepository @Inject constructor(
@@ -21,6 +22,8 @@ class PlayersRepository @Inject constructor(
     fun getPlayersByNationality(nationality: String): Observable<List<Player>> {
         return dao.getPlayersByNationality(nationality)
     }
+
+    fun getAllPlayersSingle(): Single<List<Player>> = dao.getPlayersSingle()
 
     fun getPositionsInClub(club: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->

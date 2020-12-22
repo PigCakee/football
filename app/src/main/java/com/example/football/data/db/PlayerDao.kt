@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,6 +14,9 @@ interface PlayerDao {
 
     @Query("SELECT * FROM players_table")
     fun getPlayers(): Observable<List<Player>>
+
+    @Query("SELECT * FROM players_table")
+    fun getPlayersSingle(): Single<List<Player>>
 
     @Query("SELECT * FROM players_table WHERE club = :club")
     fun getPlayersByClub(club: String): Observable<List<Player>>

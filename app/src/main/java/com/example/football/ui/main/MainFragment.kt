@@ -17,20 +17,38 @@ import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUBS_POS
 import com.example.football.utils.view.NATIONALITY_POS
 import com.example.football.utils.view.POSITION_POS
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
+import javax.inject.Inject
+import javax.inject.Provider
 
-class MainFragment : Fragment() {
+class MainFragment : MvpAppCompatFragment(), MainView {
     private val binding by contentView<FragmentMainBinding>(R.layout.fragment_main)
+
+    @Inject
+    lateinit var presenterProvider: Provider<MainPresenter>
+    private val presenter by moxyPresenter { presenterProvider.get() }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding.progressBar.visibility = View.VISIBLE
+        return binding.root
+    }
+
+    override fun notifyDatabaseReady() {
+        binding.progressBar.visibility = View.INVISIBLE
         val sectionsPagerAdapter =
             SectionsPagerAdapter(requireContext(), childFragmentManager)
         binding.viewPager.adapter = sectionsPagerAdapter
         binding.tabs.setupWithViewPager(binding.viewPager)
-        return binding.root
     }
 }
 
