@@ -40,15 +40,32 @@ abstract class PlayerDatabase : RoomDatabase() {
 
     fun backUpDatabaseAndGetFilePath(context: Context): String {
         val dbFile: File = context.getDatabasePath(DATABASE_NAME)
-        val dbBackUpFile = createFileAndSaveInInternalStorage(context)
-        copy(dbFile, dbBackUpFile)
+        val dbBackUpFile = createFileAndSaveInExternalStorage(context)
+        if (hasExternalStoragePrivateFile(context)) {
+            copy(dbFile, dbBackUpFile)
+        }
         return dbBackUpFile.toString()
     }
 
-    private fun createFileAndSaveInInternalStorage(
+    fun restoreDatabase(context: Context): Boolean {
+        val dbFile: File = context.getDatabasePath(DATABASE_NAME)
+        val dbBackUpFile = File(context.getExternalFilesDir(BACKUP), BACKUP)
+        if (hasExternalStoragePrivateFile(context)) {
+            copy(dbBackUpFile, dbFile)
+            return true
+        }
+        return false
+    }
+
+    private fun hasExternalStoragePrivateFile(context: Context): Boolean {
+        val file = File(context.getExternalFilesDir(BACKUP), BACKUP)
+        return file.exists()
+    }
+
+    private fun createFileAndSaveInExternalStorage(
         context: Context
     ): File? {
-        val dir = File(context.filesDir, BACKUP)
+        val dir = File(context.getExternalFilesDir(null), BACKUP)
         if (!dir.exists()) {
             dir.mkdir()
         }

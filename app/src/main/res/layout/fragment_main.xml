@@ -40,6 +40,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_backup" />
+
+                <ImageButton
+                    android:id="@+id/restore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="@+id/backUp"
+                    app:layout_constraintEnd_toStartOf="@+id/backUp"
+                    app:layout_constraintTop_toTopOf="@+id/backUp"
+                    app:srcCompat="@drawable/ic_restore" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.tabs.TabLayout

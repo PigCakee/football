@@ -2,6 +2,7 @@ package com.example.football.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,12 @@ class MainFragment : MvpAppCompatFragment(), MainView {
     lateinit var presenterProvider: Provider<MainPresenter>
     private val presenter by moxyPresenter { presenterProvider.get() }
 
+    companion object {
+        const val NO_FILE = "Back-up file does not exist"
+        const val RESTORED = "Database is restored"
+        const val BACKED_UP = "Database is backed up at: "
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity as MainActivity).appComponent.inject(this)
@@ -42,7 +49,18 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         savedInstanceState: Bundle?
     ): View {
         binding.progressBar.visibility = View.VISIBLE
-        binding.backUp.setOnClickListener { presenter.backUpDatabase(requireContext()) }
+
+        binding.backUp.setOnClickListener {
+            if (isExternalStorageAvailableForRW()) {
+                presenter.backUpDatabase(requireContext())
+            }
+        }
+
+        binding.restore.setOnClickListener {
+            if (isExternalStorageAvailableForRW()) {
+                presenter.restoreDatabase(requireContext())
+            }
+        }
         return binding.root
     }
 
@@ -56,7 +74,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
 
     override fun notifyDatabaseBackedUp(path: String) {
         val snackbar =
-            Snackbar.make(binding.root, "Database is backed up at: $path", Snackbar.LENGTH_SHORT)
+            Snackbar.make(binding.root, BACKED_UP + path, Snackbar.LENGTH_SHORT)
         snackbar.setBackgroundTint(
             ContextCompat.getColor(
                 requireContext(),
@@ -64,6 +82,34 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             )
         )
         snackbar.show()
+    }
+
+    override fun notifyDatabaseRestored() {
+        val snackbar =
+            Snackbar.make(binding.root, RESTORED, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorCarbonBlack
+            )
+        )
+        snackbar.show()
+    }
+
+    override fun notifyBackUpDoesNotExist() {
+        val snackbar =
+            Snackbar.make(binding.root, NO_FILE, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorCarbonBlack
+            )
+        )
+        snackbar.show()
+    }
+
+    private fun isExternalStorageAvailableForRW(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
     }
 }
 

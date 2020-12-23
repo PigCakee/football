@@ -9,4 +9,8 @@ interface MainView: MvpView {
     fun notifyDatabaseReady()
     @StateStrategyType(value = SingleStateStrategy::class)
     fun notifyDatabaseBackedUp(path: String)
+    @StateStrategyType(value = SingleStateStrategy::class)
+    fun notifyDatabaseRestored()
+    @StateStrategyType(value = SingleStateStrategy::class)
+    fun notifyBackUpDoesNotExist()
 }

@@ -38,4 +38,10 @@ class MainPresenter @Inject constructor(
         val backUpPath = database.backUpDatabaseAndGetFilePath(context)
         viewState.notifyDatabaseBackedUp(backUpPath)
     }
+
+    fun restoreDatabase(context: Context) {
+        if (database.restoreDatabase(context)) {
+            viewState.notifyDatabaseRestored()
+        } else viewState.notifyBackUpDoesNotExist()
+    }
 }
