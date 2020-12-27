@@ -1,5 +1,6 @@
 package com.example.football.data.repository
 
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Completable
@@ -112,5 +113,12 @@ class PlayersRepository @Inject constructor(
         Completable.fromRunnable { dao.updatePlayer(player) }
             .subscribeOn(Schedulers.io())
             .subscribe()
+    }
+
+    fun checkpoint() {
+        Completable.fromRunnable {
+            dao.checkpoint(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
+            //dao.checkpoint(SimpleSQLiteQuery("PRAGMA journal_mode = DELETE"))
+        }.subscribeOn(Schedulers.io()).subscribe()
     }
 }

@@ -1,10 +1,11 @@
 package com.example.football.data.db
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface PlayerDao {
@@ -26,6 +27,9 @@ interface PlayerDao {
 
     @Update
     fun updatePlayer(player: Player)
+
+    @RawQuery
+    fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery?): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(player: Player)

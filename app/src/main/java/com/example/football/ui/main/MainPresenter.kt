@@ -1,7 +1,5 @@
 package com.example.football.ui.main
 
-import android.content.Context
-import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -13,8 +11,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class MainPresenter @Inject constructor(
-    private val playersRepository: PlayersRepository,
-    private val database: PlayerDatabase
+    private val playersRepository: PlayersRepository
 ) : MvpPresenter<MainView>() {
 
     override fun onFirstViewAttach() {
@@ -34,14 +31,7 @@ class MainPresenter @Inject constructor(
             })
     }
 
-    fun backUpDatabase(context: Context) {
-        val backUpPath = database.backUpDatabaseAndGetFilePath(context)
-        viewState.notifyDatabaseBackedUp(backUpPath)
-    }
-
-    fun restoreDatabase(context: Context) {
-        if (database.restoreDatabase(context)) {
-            viewState.notifyDatabaseRestored()
-        } else viewState.notifyBackUpDoesNotExist()
+    fun checkpoint() {
+        playersRepository.checkpoint()
     }
 }

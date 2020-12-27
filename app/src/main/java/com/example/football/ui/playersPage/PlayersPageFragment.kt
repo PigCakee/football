@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.data.entity.Player
@@ -22,8 +23,10 @@ import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 import javax.inject.Provider
 
+
 class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     private val binding by contentView<FragmentPlayersFilterPageBinding>(R.layout.fragment_players_filter_page)
+    private lateinit var adapter: PlayersListAdapter
 
     @Inject
     lateinit var presenterProvider: Provider<PlayersPagePresenter>
@@ -39,6 +42,7 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        adapter = PlayersListAdapter(presenter, requireContext())
         arguments?.apply {
             val position: String? = getString(POS_ARG)
             val nationality: String? = getString(NATIONALITY_ARG)
@@ -52,27 +56,28 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
             if (nationality != null && position != null) {
                 presenter.getPlayersWithNationalityInPosition(nationality, position)
             }
+            binding.recyclerView.adapter = adapter
         }
         return binding.root
     }
 
     override fun setPlayersOnPositionInClubData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
+        adapter.setData(list)
     }
 
     override fun setPlayersWithNationalityInClubData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
+        adapter.setData(list)
     }
 
     override fun setPlayersWithNationalityInPositionData(list: List<Player>) {
-        binding.recyclerView.adapter = PlayersListAdapter(presenter, requireContext(), list)
+        adapter.setData(list)
     }
 }
 
 class PlayersListAdapter(
     private val presenter: PlayersPagePresenter,
     private val context: Context,
-    private val data: List<Player>
+    private var data: List<Player> = mutableListOf()
 ) : RecyclerView.Adapter<PlayersListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -89,12 +94,7 @@ class PlayersListAdapter(
             name.text = player.name
             pos.text = playerInClub
             nationality.text = player.nationality
-            posIcon.setImageDrawable(
-                PositionsIconFactory.getPositionIcon(
-                    context,
-                    player.position
-                )
-            )
+            posIcon.setImageDrawable(PositionsIconFactory.getPositionIcon(context, player.position))
             setFavourite(player)
             container.setOnClickListener {
                 player.favourite = !player.favourite
@@ -105,18 +105,42 @@ class PlayersListAdapter(
 
     private fun ItemPlayerBinding.setFavourite(player: Player) {
         favoutite.setImageDrawable(
-            if (player.favourite) ContextCompat.getDrawable(
-                context,
-                R.drawable.ic_star_yellow
-            ) else ContextCompat.getDrawable(
-                context,
-                R.drawable.ic_star_white
-            )
+            if (player.favourite) ContextCompat.getDrawable(context, R.drawable.ic_star_yellow)
+            else ContextCompat.getDrawable(context, R.drawable.ic_star_white)
         )
+    }
+
+    fun setData(list: List<Player>) {
+        val diffResult = DiffUtil.calculateDiff(DiffCallback(data, list))
+        data = list
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount() = data.size
 
     inner class ViewHolder(val binding: ItemPlayerBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    inner class DiffCallback(
+        private val oldData: List<Player>,
+        private val newData: List<Player>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldData.size
+
+        override fun getNewListSize(): Int = newData.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldData[oldItemPosition] == newData[newItemPosition]
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldPlayer = oldData[oldItemPosition]
+            val newPlayer = newData[newItemPosition]
+            return oldPlayer.name == newPlayer.name
+                    && oldPlayer.favourite == newPlayer.favourite
+                    && oldPlayer.club == newPlayer.club
+                    && oldPlayer.nationality == newPlayer.nationality
+                    && oldPlayer.position == newPlayer.position
+        }
+    }
 }
