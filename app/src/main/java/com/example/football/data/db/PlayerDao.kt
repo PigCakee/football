@@ -14,7 +14,7 @@ interface PlayerDao {
     fun getPlayers(): Observable<List<Player>>
 
     @Query("SELECT * FROM players_table")
-    fun getPlayersSingle(): Single<List<Player>>
+    fun getPlayersSingle(): Observable<List<Player>>
 
     @Query("SELECT * FROM players_table WHERE club = :club")
     fun getPlayersByClub(club: String): Observable<List<Player>>

@@ -5,12 +5,11 @@ import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class PlayersRepository @Inject constructor(
-    playerDatabase: PlayerDatabase
+    private val playerDatabase: PlayerDatabase
 ) {
     private val dao = playerDatabase.dao()
 
@@ -26,7 +25,7 @@ class PlayersRepository @Inject constructor(
         return dao.getPlayersByNationality(nationality)
     }
 
-    fun getAllPlayersSingle(): Single<List<Player>> = dao.getPlayersSingle()
+    fun getAllPlayersSingle(): Observable<List<Player>> = dao.getPlayersSingle()
 
     fun getPositionsInClub(club: String): Observable<List<String>> {
         return dao.getPlayers().map { list ->
@@ -118,7 +117,6 @@ class PlayersRepository @Inject constructor(
     fun checkpoint() {
         Completable.fromRunnable {
             dao.checkpoint(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
-            //dao.checkpoint(SimpleSQLiteQuery("PRAGMA journal_mode = DELETE"))
-        }.subscribeOn(Schedulers.io()).subscribe()
+        }.subscribeOn(Schedulers.io()).subscribe { playerDatabase.close() }
     }
 }

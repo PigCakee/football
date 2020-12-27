@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.football.R
-import com.example.football.data.db.PlayerDatabase
 import com.example.football.databinding.FragmentMainBinding
 import com.example.football.ui.clubs.ClubsFragment
 import com.example.football.ui.nationalities.NationalitiesFragment
@@ -39,9 +38,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
 
     @Inject
     lateinit var sPrefs: SharedPreferences
-
-    @Inject
-    lateinit var playersDatabase: PlayerDatabase
 
     companion object {
         const val NO_FILE = "Back-up file does not exist"
@@ -97,6 +93,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             // TODO somehow check if file is not deleted
             if (dataUri.toUri().path != null) {
                 copyFile(requireContext(), dataUri.toUri(), dbFile.toUri())
+                presenter.refresh()
                 notifyDatabaseRestored()
             } else {
                 with(sPrefs.edit()) {
