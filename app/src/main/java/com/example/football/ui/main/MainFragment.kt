@@ -90,10 +90,8 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             startActivityForResult(intent, READ_REQUEST_CODE)
         } else {
             val dbFile: File = requireContext().getDatabasePath(DATABASE_NAME)
-            // TODO somehow check if file is not deleted
             if (dataUri.toUri().path != null) {
                 copyFile(requireContext(), dataUri.toUri(), dbFile.toUri())
-                presenter.refresh()
                 notifyDatabaseRestored()
             } else {
                 with(sPrefs.edit()) {
