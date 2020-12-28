@@ -1,5 +1,6 @@
 package com.example.football.data.repository
 
+import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
@@ -7,11 +8,13 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PlayersRepository @Inject constructor(
-    private val playerDatabase: PlayerDatabase
+    private var playerDatabase: PlayerDatabase
 ) {
-    private val dao = playerDatabase.dao()
+    private var dao = playerDatabase.dao()
 
     fun getPlayersByClub(club: String): Observable<List<Player>> {
         return dao.getPlayersByClub(club)
@@ -109,6 +112,8 @@ class PlayersRepository @Inject constructor(
     }
 
     fun updatePlayer(player: Player) {
+        playerDatabase.openHelper.writableDatabase.beginTransaction()
+        playerDatabase.openHelper.readableDatabase.beginTransaction()
         Completable.fromRunnable { dao.updatePlayer(player) }
             .subscribeOn(Schedulers.io())
             .subscribe()
@@ -118,5 +123,10 @@ class PlayersRepository @Inject constructor(
         Completable.fromRunnable {
             dao.checkpoint(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
         }.subscribeOn(Schedulers.io()).subscribe { playerDatabase.close() }
+    }
+
+    fun openDatabase() {
+        playerDatabase.openHelper.writableDatabase.beginTransaction()
+        playerDatabase.openHelper.readableDatabase.beginTransaction()
     }
 }

@@ -2,6 +2,7 @@ package com.example.football.ui.playersPage
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.example.football.databinding.ItemPlayerBinding
 import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
+import com.example.football.utils.view.FRAGMENT_POS
 import com.example.football.utils.view.NATIONALITY_ARG
 import com.example.football.utils.view.POS_ARG
 import moxy.MvpAppCompatFragment
@@ -28,9 +30,11 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     private val binding by contentView<FragmentPlayersFilterPageBinding>(R.layout.fragment_players_filter_page)
     private lateinit var adapter: PlayersListAdapter
 
+    private val presenterTag = arguments?.getString(FRAGMENT_POS).toString()
+
     @Inject
     lateinit var presenterProvider: Provider<PlayersPagePresenter>
-    private val presenter by moxyPresenter { presenterProvider.get() }
+    private val presenter by moxyPresenter(presenterTag) { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,6 +102,7 @@ class PlayersListAdapter(
             setFavourite(player)
             container.setOnClickListener {
                 player.favourite = !player.favourite
+                notifyItemChanged(position)
                 presenter.updatePlayer(player)
             }
         }

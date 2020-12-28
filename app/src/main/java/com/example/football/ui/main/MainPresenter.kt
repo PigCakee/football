@@ -34,4 +34,8 @@ class MainPresenter @Inject constructor(
     fun checkpoint() {
         playersRepository.checkpoint()
     }
+
+    fun openDatabase() {
+        playersRepository.openDatabase()
+    }
 }

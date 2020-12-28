@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.football.ui.playersPage.PlayersPageFragment
 import com.example.football.utils.view.CLUB_ARG
+import com.example.football.utils.view.FRAGMENT_POS
 import com.example.football.utils.view.NATIONALITY_ARG
 import com.example.football.utils.view.POS_ARG
 
@@ -43,6 +44,7 @@ class ClubsPositionsNationalitiesPageAdapter(
             if (nationality != null) {
                 putString(NATIONALITY_ARG, nationality)
             }
+            putString(FRAGMENT_POS, position.toString())
         }
         fragment.arguments = bundle
         return fragment

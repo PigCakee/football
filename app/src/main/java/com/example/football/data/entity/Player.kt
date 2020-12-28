@@ -13,5 +13,5 @@ data class Player(
     val position: String,
     val nationality: String,
     val club: String,
-    var favourite: Boolean
+    var favourite: Boolean = false
 ): Parcelable

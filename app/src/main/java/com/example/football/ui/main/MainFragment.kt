@@ -93,6 +93,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             if (dataUri.toUri().path != null) {
                 copyFile(requireContext(), dataUri.toUri(), dbFile.toUri())
                 notifyDatabaseRestored()
+                presenter.openDatabase()
             } else {
                 with(sPrefs.edit()) {
                     putString(BACK_UP_PATH_KEY, null)
@@ -115,6 +116,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
                             putString(BACK_UP_PATH_KEY, data.data.toString())
                             commit()
                         }
+                        presenter.openDatabase()
                         notifyDatabaseBackedUp(data.data.toString())
                     }
                 }
@@ -122,7 +124,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
                     if (data?.data != null) {
                         val dbFile: File = requireContext().getDatabasePath(DATABASE_NAME)
                         copyFile(requireContext(), data.data!!, dbFile.toUri())
-                        //presenter.updateDatabase()
+                        presenter.openDatabase()
                         with(sPrefs.edit()) {
                             putString(BACK_UP_PATH_KEY, data.data.toString())
                             commit()
