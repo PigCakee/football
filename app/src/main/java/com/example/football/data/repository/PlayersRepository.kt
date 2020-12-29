@@ -115,10 +115,4 @@ class PlayersRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
-
-    fun checkpoint() {
-        Completable.fromRunnable {
-            dao.checkpoint(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
-        }.subscribeOn(Schedulers.io()).subscribe()
-    }
 }

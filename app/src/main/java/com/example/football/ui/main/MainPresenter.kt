@@ -35,8 +35,4 @@ class MainPresenter @Inject constructor(
                 players = it as MutableList<Player>
             }
     }
-
-    fun checkpoint() {
-        playersRepository.checkpoint()
-    }
 }

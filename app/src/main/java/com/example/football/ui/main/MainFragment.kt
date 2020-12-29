@@ -63,7 +63,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.progressBar.visibility = View.VISIBLE
+        binding.loading.visibility = View.VISIBLE
 
         binding.backUp.setOnClickListener {
             backUpDatabase()
@@ -88,7 +88,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
     }
 
     private fun backUpDatabase() {
-        presenter.checkpoint()
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
@@ -97,7 +96,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
     }
 
     private fun restoreDatabase() {
-        presenter.checkpoint()
         val dataUri = sPrefs.getString(BACK_UP_PATH_KEY, null)
         if (dataUri.isNullOrEmpty()) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -186,7 +184,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
     }
 
     override fun notifyDatabaseReady() {
-        binding.progressBar.visibility = View.INVISIBLE
+        binding.loading.visibility = View.INVISIBLE
         val sectionsPagerAdapter =
             SectionsPagerAdapter(requireContext(), childFragmentManager)
         binding.viewPager.adapter = sectionsPagerAdapter
