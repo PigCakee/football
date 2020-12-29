@@ -1,20 +1,17 @@
 package com.example.football.data.repository
 
-import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.CompletableObserver
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PlayersRepository @Inject constructor(
-    private var playerDatabase: PlayerDatabase
+    playerDatabase: PlayerDatabase
 ) {
     private var dao = playerDatabase.dao()
 
@@ -122,6 +119,6 @@ class PlayersRepository @Inject constructor(
     fun checkpoint() {
         Completable.fromRunnable {
             dao.checkpoint(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
-        }.subscribeOn(Schedulers.io()).subscribe { playerDatabase.close() }
+        }.subscribeOn(Schedulers.io()).subscribe()
     }
 }

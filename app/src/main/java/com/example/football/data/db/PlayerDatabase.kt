@@ -59,6 +59,7 @@ abstract class PlayerDatabase : RoomDatabase() {
                     "players_table"
                 ).addCallback(PlayerDatabaseCallback(GlobalScope, context)).build()
                 INSTANCE = instance
+                instance.openHelper.setWriteAheadLoggingEnabled(false)
                 instance
             }
         }
