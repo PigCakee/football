@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +23,11 @@ import com.example.football.ui.positions.PositionsFragment
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.*
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -45,7 +48,9 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         const val BACKED_UP = "Database is backed up at: "
         const val WRITE_REQUEST_CODE = 10
         const val READ_REQUEST_CODE = 20
+        const val JSON_REQUEST_CODE = 30
         const val BACKUP = "back_up"
+        const val DB_JSON = "database.json"
     }
 
     override fun onAttach(context: Context) {
@@ -67,7 +72,19 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         binding.restore.setOnClickListener {
             restoreDatabase()
         }
+
+        binding.saveToJson.setOnClickListener {
+            saveToJson()
+        }
         return binding.root
+    }
+
+    private fun saveToJson() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_TITLE, DB_JSON)
+        startActivityForResult(intent, JSON_REQUEST_CODE)
     }
 
     private fun backUpDatabase() {
@@ -93,7 +110,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
             if (dataUri.toUri().path != null) {
                 copyFile(requireContext(), dataUri.toUri(), dbFile.toUri())
                 notifyDatabaseRestored()
-                presenter.openDatabase()
             } else {
                 with(sPrefs.edit()) {
                     putString(BACK_UP_PATH_KEY, null)
@@ -116,7 +132,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
                             putString(BACK_UP_PATH_KEY, data.data.toString())
                             commit()
                         }
-                        presenter.openDatabase()
                         notifyDatabaseBackedUp(data.data.toString())
                     }
                 }
@@ -124,7 +139,6 @@ class MainFragment : MvpAppCompatFragment(), MainView {
                     if (data?.data != null) {
                         val dbFile: File = requireContext().getDatabasePath(DATABASE_NAME)
                         copyFile(requireContext(), data.data!!, dbFile.toUri())
-                        presenter.openDatabase()
                         with(sPrefs.edit()) {
                             putString(BACK_UP_PATH_KEY, data.data.toString())
                             commit()
@@ -132,21 +146,42 @@ class MainFragment : MvpAppCompatFragment(), MainView {
                         notifyDatabaseRestored()
                     }
                 }
+                JSON_REQUEST_CODE -> {
+                    if (data?.data != null) {
+                        copyJsonToFile(requireContext(), Gson().toJson(presenter.players), data.data!!)
+                        notifyDatabaseBackedUp(data.data.toString())
+                    }
+                }
             }
         }
     }
 
-    private fun copyFile(context: Context, src: Uri, dst: Uri) {
-        context.contentResolver.openInputStream(src).use { `in` ->
+    private fun copyJsonToFile(context: Context, jsonString: String, dst: Uri) {
+        try {
             context.contentResolver.openOutputStream(dst).use { out ->
-                val buf = ByteArray(1024)
-                var len: Int
-                if (`in` != null) {
-                    while (`in`.read(buf).also { len = it } > 0) {
-                        out?.write(buf, 0, len)
+                out?.write(jsonString.toByteArray())
+                out?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("Exception", "File write failed: $e")
+        }
+    }
+
+    private fun copyFile(context: Context, src: Uri, dst: Uri) {
+        try {
+            context.contentResolver.openInputStream(src).use { `in` ->
+                context.contentResolver.openOutputStream(dst).use { out ->
+                    val buf = ByteArray(1024)
+                    var len: Int
+                    if (`in` != null) {
+                        while (`in`.read(buf).also { len = it } > 0) {
+                            out?.write(buf, 0, len)
+                        }
                     }
                 }
             }
+        } catch (e: IOException) {
+            Log.e("Exception", "File write failed: $e")
         }
     }
 

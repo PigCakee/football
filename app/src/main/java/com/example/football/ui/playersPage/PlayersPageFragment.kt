@@ -103,7 +103,7 @@ class PlayersListAdapter(
             container.setOnClickListener {
                 player.favourite = !player.favourite
                 notifyItemChanged(position)
-                presenter.updatePlayer(player)
+                presenter.updatePlayer(player.favourite, player.name)
             }
         }
     }

@@ -25,8 +25,8 @@ interface PlayerDao {
     @Query("SELECT * FROM players_table WHERE nationality = :nationality")
     fun getPlayersByNationality(nationality: String): Observable<List<Player>>
 
-    @Update
-    fun updatePlayer(player: Player)
+    @Query("UPDATE players_table SET favourite = :favourite WHERE name = :name")
+    fun updatePlayer(favourite: Boolean, name: String)
 
     @RawQuery
     fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery?): Int

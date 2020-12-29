@@ -1,5 +1,6 @@
 package com.example.football.ui.main
 
+import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -13,6 +14,7 @@ class MainPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<MainView>() {
     private var playersDisposable: Disposable? = null
+    var players: MutableList<Player> = mutableListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -28,14 +30,13 @@ class MainPresenter @Inject constructor(
         playersDisposable = playersRepository.getAllPlayersSingle()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { viewState.notifyDatabaseReady() }
+            .subscribe {
+                viewState.notifyDatabaseReady()
+                players = it as MutableList<Player>
+            }
     }
 
     fun checkpoint() {
         playersRepository.checkpoint()
-    }
-
-    fun openDatabase() {
-        playersRepository.openDatabase()
     }
 }

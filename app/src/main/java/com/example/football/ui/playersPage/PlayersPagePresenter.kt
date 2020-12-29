@@ -52,7 +52,7 @@ class PlayersPagePresenter @Inject constructor(
                 .subscribe { viewState.setPlayersWithNationalityInPositionData(it) }
     }
 
-    fun updatePlayer(player: Player) {
-        playersRepository.updatePlayer(player)
+    fun updatePlayer(favourite: Boolean, name: String) {
+        playersRepository.updatePlayer(favourite, name)
     }
 }
