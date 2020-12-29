@@ -1,16 +1,12 @@
 package com.example.football.ui.playersPage
 
-import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @InjectViewState
 class PlayersPagePresenter @Inject constructor(

@@ -12,6 +12,7 @@ import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.lang.StringBuilder
 
 @Database(entities = [Player::class], exportSchema = false, version = 2)
 abstract class PlayerDatabase : RoomDatabase() {
@@ -41,8 +42,14 @@ abstract class PlayerDatabase : RoomDatabase() {
                 val inputStream: InputStream = context.assets.open("data/players_data")
                 val inputStreamReader = InputStreamReader(inputStream)
                 val bufferedReader = BufferedReader(inputStreamReader)
-                val string: String = bufferedReader.readLine()
-                Gson().fromJson(string, object : TypeToken<List<Player>>() {}.type)
+                val string = StringBuilder()
+                var line: String?
+                while (bufferedReader.readLine().also { line = it } != null) {
+                    string.append(line)
+                    string.append('\n')
+                }
+                bufferedReader.close()
+                Gson().fromJson(string.toString(), object : TypeToken<List<Player>>() {}.type)
             }
         }
     }

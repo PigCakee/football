@@ -1,1 +1,254 @@
-[{"club":"Bavaria","favourite":false,"name":"Manuel Neuer","nationality":"German","position":"Goalkeeper"},{"club":"Bavaria","favourite":false,"name":"Alexander Nübel","nationality":"German","position":"Goalkeeper"},{"club":"Bavaria","favourite":false,"name":"Ron Hoffmann","nationality":"German","position":"Goalkeeper"},{"club":"Bavaria","favourite":false,"name":"Niklas Süle","nationality":"German","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Benjamin Pavard","nationality":"French","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Jérôme Boateng","nationality":"German","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Alphonso Davies","nationality":"Canadian","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Bouna Sarr","nationality":"French","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Lucas Hernández","nationality":"French","position":"Defender"},{"club":"Bavaria","favourite":false,"name":"Joshua Kimmich","nationality":"German","position":"Midfield"},{"club":"Bavaria","favourite":false,"name":"Javi Martinez","nationality":"Spanish","position":"Midfield"},{"club":"Bavaria","favourite":false,"name":"Leon Goretzka","nationality":"German","position":"Midfield"},{"club":"Bavaria","favourite":false,"name":"Robert Lewandowski","nationality":"Polish","position":"Forward"},{"club":"Bavaria","favourite":false,"name":"Thomas Müller","nationality":"German","position":"Forward"},{"club":"Bavaria","favourite":false,"name":"Serge Gnabry","nationality":"German","position":"Forward"},{"club":"Juventus","favourite":false,"name":"Wojciech Szczesny","nationality":"Polish","position":"Goalkeeper"},{"club":"Juventus","favourite":false,"name":"Gianluigi Buffon","nationality":"Italian","position":"Goalkeeper"},{"club":"Juventus","favourite":false,"name":"Stefano Gori","nationality":"Italian","position":"Goalkeeper"},{"club":"Juventus","favourite":false,"name":"Matthijs de Ligt","nationality":"German","position":"Midfield"},{"club":"Juventus","favourite":false,"name":"Leonardo Bonucci","nationality":"Italian","position":"Midfield"},{"club":"Juventus","favourite":false,"name":"Giorgio Chiellini","nationality":"Italian","position":"Midfield"},{"club":"Juventus","favourite":false,"name":"Álvaro Morata","nationality":"Spanish","position":"Forward"},{"club":"Juventus","favourite":false,"name":"Paulo Dybala","nationality":"Italian","position":"Forward"},{"club":"Juventus","favourite":false,"name":"Federico Bernardeschi","nationality":"Italian","position":"Forward"},{"club":"Manchester United","favourite":false,"name":"David de Gea","nationality":"Spanish","position":"Goalkeeper"},{"club":"Manchester United","favourite":false,"name":"Lee Grant","nationality":"English","position":"Goalkeeper"},{"club":"Manchester United","favourite":false,"name":"Dean Henderson","nationality":"English","position":"Goalkeeper"},{"club":"Manchester United","favourite":false,"name":"Victor Lindelöf","nationality":"Swedish","position":"Defender"},{"club":"Manchester United","favourite":false,"name":"Phil Jones","nationality":"English","position":"Defender"},{"club":"Manchester United","favourite":false,"name":"Luke Shaw","nationality":"English","position":"Defender"},{"club":"Manchester United","favourite":false,"name":"Aaron Wan-Bissaka","nationality":"English","position":"Defender"},{"club":"Manchester United","favourite":false,"name":"Paul Pogba","nationality":"French","position":"Midfield"},{"club":"Manchester United","favourite":false,"name":"Juan Mata","nationality":"Spanish","position":"Midfield"},{"club":"Manchester United","favourite":false,"name":"Jesse Lingard","nationality":"English","position":"Midfield"},{"club":"Manchester United","favourite":false,"name":"Anthony Martial","nationality":"French","position":"Forward"},{"club":"Manchester United","favourite":false,"name":"Mason Greenwood","nationality":"English","position":"Forward"}]
+[
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Manuel Neuer",
+    "nationality": "German",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Alexander Nübel",
+    "nationality": "German",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Ron Hoffmann",
+    "nationality": "German",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Niklas Süle",
+    "nationality": "German",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Benjamin Pavard",
+    "nationality": "French",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Jérôme Boateng",
+    "nationality": "German",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Alphonso Davies",
+    "nationality": "Canadian",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Bouna Sarr",
+    "nationality": "French",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Lucas Hernández",
+    "nationality": "French",
+    "position": "Defender"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Joshua Kimmich",
+    "nationality": "German",
+    "position": "Midfield"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Javi Martinez",
+    "nationality": "Spanish",
+    "position": "Midfield"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Leon Goretzka",
+    "nationality": "German",
+    "position": "Midfield"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Robert Lewandowski",
+    "nationality": "Polish",
+    "position": "Forward"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Thomas Müller",
+    "nationality": "German",
+    "position": "Forward"
+  },
+  {
+    "club": "Bavaria",
+    "favourite": false,
+    "name": "Serge Gnabry",
+    "nationality": "German",
+    "position": "Forward"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Wojciech Szczesny",
+    "nationality": "Polish",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Gianluigi Buffon",
+    "nationality": "Italian",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Stefano Gori",
+    "nationality": "Italian",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Matthijs de Ligt",
+    "nationality": "German",
+    "position": "Midfield"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Leonardo Bonucci",
+    "nationality": "Italian",
+    "position": "Midfield"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Giorgio Chiellini",
+    "nationality": "Italian",
+    "position": "Midfield"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Álvaro Morata",
+    "nationality": "Spanish",
+    "position": "Forward"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Paulo Dybala",
+    "nationality": "Italian",
+    "position": "Forward"
+  },
+  {
+    "club": "Juventus",
+    "favourite": false,
+    "name": "Federico Bernardeschi",
+    "nationality": "Italian",
+    "position": "Forward"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "David de Gea",
+    "nationality": "Spanish",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Lee Grant",
+    "nationality": "English",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Dean Henderson",
+    "nationality": "English",
+    "position": "Goalkeeper"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Victor Lindelöf",
+    "nationality": "Swedish",
+    "position": "Defender"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Phil Jones",
+    "nationality": "English",
+    "position": "Defender"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Luke Shaw",
+    "nationality": "English",
+    "position": "Defender"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Aaron Wan-Bissaka",
+    "nationality": "English",
+    "position": "Defender"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Paul Pogba",
+    "nationality": "French",
+    "position": "Midfield"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Juan Mata",
+    "nationality": "Spanish",
+    "position": "Midfield"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Jesse Lingard",
+    "nationality": "English",
+    "position": "Midfield"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Anthony Martial",
+    "nationality": "French",
+    "position": "Forward"
+  },
+  {
+    "club": "Manchester United",
+    "favourite": false,
+    "name": "Mason Greenwood",
+    "nationality": "English",
+    "position": "Forward"
+  }
+]
