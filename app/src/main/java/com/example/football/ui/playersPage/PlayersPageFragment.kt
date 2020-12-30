@@ -30,7 +30,7 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
 
     @Inject
     lateinit var presenterProvider: Provider<PlayersPagePresenter>
-    private val presenter by moxyPresenter() { presenterProvider.get() }
+    private val presenter by moxyPresenter { presenterProvider.get() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,6 +43,7 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
         savedInstanceState: Bundle?
     ): View {
         adapter = PlayersListAdapter(presenter, requireContext())
+        binding.recyclerView.adapter = adapter
         arguments?.apply {
             val position: String? = getString(POS_ARG)
             val nationality: String? = getString(NATIONALITY_ARG)
@@ -56,7 +57,6 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
             if (nationality != null && position != null) {
                 presenter.getPlayersWithNationalityInPosition(nationality, position)
             }
-            binding.recyclerView.adapter = adapter
         }
         return binding.root
     }

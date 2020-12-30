@@ -5,6 +5,7 @@ import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
