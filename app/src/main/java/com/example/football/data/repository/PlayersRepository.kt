@@ -28,50 +28,50 @@ class PlayersRepository @Inject constructor(
         return dao.getPlayersByNationality(nationality)
     }
 
-    fun getAllPlayersSingle(): Observable<List<Player>> = dao.getPlayersSingle()
+    fun getAllPlayers(): Observable<List<Player>> = dao.getPlayers()
 
-    fun getPositionsInClub(club: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getPositionsInClub(club: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.club == club }
                 .map { it.position }
                 .distinct()
         }
     }
 
-    fun getNationalitiesInCLub(club: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getNationalitiesInCLub(club: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.club == club }
                 .map { it.nationality }
                 .distinct()
         }
     }
 
-    fun getClubsWithNationality(nationality: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getClubsWithNationality(nationality: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.nationality == nationality }
                 .map { it.club }
                 .distinct()
         }
     }
 
-    fun getClubsWithPosition(position: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getClubsWithPosition(position: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.position == position }
                 .map { it.club }
                 .distinct()
         }
     }
 
-    fun getPositionsWithNationality(nationality: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getPositionsWithNationality(nationality: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.nationality == nationality }
                 .map { it.position }
                 .distinct()
         }
     }
 
-    fun getNationalitiesWithPosition(position: String): Observable<List<String>> {
-        return dao.getPlayers().map { list ->
+    fun getNationalitiesWithPosition(position: String): Single<List<String>> {
+        return dao.getPlayersSingle().map { list ->
             list.filter { it.position == position }
                 .map { it.nationality }
                 .distinct()
@@ -93,20 +93,20 @@ class PlayersRepository @Inject constructor(
     fun getPlayersWithNationalityInPosition(
         nationality: String,
         position: String
-    ): Observable<List<Player>> {
-        return dao.getPlayersByNationality(nationality).map { list ->
+    ): Single<List<Player>> {
+        return dao.getPlayersByNationalitySingle(nationality).map { list ->
             list.filter { it.position == position }
         }
     }
 
-    fun getPlayersByPositionInClub(position: String, club: String): Observable<List<Player>> {
-        return dao.getPlayersByPosition(position).map { list ->
+    fun getPlayersByPositionInClub(position: String, club: String): Single<List<Player>> {
+        return dao.getPlayersByPositionSingle(position).map { list ->
             list.filter { it.club == club }
         }
     }
 
-    fun getPlayersByNationalityInClub(nationality: String, club: String): Observable<List<Player>> {
-        return dao.getPlayersByNationality(nationality).map { list ->
+    fun getPlayersByNationalityInClub(nationality: String, club: String): Single<List<Player>> {
+        return dao.getPlayersByNationalitySingle(nationality).map { list ->
             list.filter { it.club == club }
         }
     }

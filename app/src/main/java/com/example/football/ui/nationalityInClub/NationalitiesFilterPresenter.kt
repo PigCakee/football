@@ -2,7 +2,6 @@ package com.example.football.ui.nationalityInClub
 
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -15,26 +14,17 @@ class NationalitiesFilterPresenter @Inject constructor(
     var nationality: String? = null
     var title: String = ""
 
-    private var positionsDisposable: Disposable? = null
-    private var clubsDisposable: Disposable? = null
-
-    override fun onDestroy() {
-        super.onDestroy()
-        positionsDisposable?.dispose()
-        clubsDisposable?.dispose()
-    }
-
     fun getClubsWithNationality(nationality: String) {
-        clubsDisposable = playersRepository.getClubsWithNationality(nationality)
+        playersRepository.getClubsWithNationality(nationality)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { viewState.setRecyclerData(it) }
+            .subscribe { it -> viewState.setRecyclerData(it) }
     }
 
     fun getPositionsWithNationality(nationality: String) {
-        positionsDisposable = playersRepository.getPositionsWithNationality(nationality)
+        playersRepository.getPositionsWithNationality(nationality)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { viewState.setRecyclerData(it) }
+            .subscribe { it -> viewState.setRecyclerData(it) }
     }
 }

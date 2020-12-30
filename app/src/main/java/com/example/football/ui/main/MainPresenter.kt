@@ -3,6 +3,7 @@ package com.example.football.ui.main
 import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
@@ -27,7 +28,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun getDataFromDB() {
-        playersDisposable = playersRepository.getAllPlayersSingle()
+        playersDisposable = playersRepository.getAllPlayers()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

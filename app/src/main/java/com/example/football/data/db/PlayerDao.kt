@@ -14,7 +14,7 @@ interface PlayerDao {
     fun getPlayers(): Observable<List<Player>>
 
     @Query("SELECT * FROM players_table")
-    fun getPlayersSingle(): Observable<List<Player>>
+    fun getPlayersSingle(): Single<List<Player>>
 
     @Query("SELECT * FROM players_table WHERE club = :club")
     fun getPlayersByClub(club: String): Observable<List<Player>>
@@ -24,6 +24,12 @@ interface PlayerDao {
 
     @Query("SELECT * FROM players_table WHERE nationality = :nationality")
     fun getPlayersByNationality(nationality: String): Observable<List<Player>>
+
+    @Query("SELECT * FROM players_table WHERE position = :position")
+    fun getPlayersByPositionSingle(position: String): Single<List<Player>>
+
+    @Query("SELECT * FROM players_table WHERE nationality = :nationality")
+    fun getPlayersByNationalitySingle(nationality: String): Single<List<Player>>
 
     @Query("UPDATE players_table SET favourite = :favourite WHERE name = :name")
     fun updatePlayer(favourite: Boolean, name: String)
