@@ -1,15 +1,20 @@
 package com.example.football.ui.playersPage
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.football.R
 import com.example.football.data.entity.Player
 import com.example.football.data.entity.PositionsIconFactory
@@ -20,6 +25,7 @@ import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.CLUB_ARG
 import com.example.football.utils.view.NATIONALITY_ARG
 import com.example.football.utils.view.POS_ARG
+import com.tbruyelle.rxpermissions3.RxPermissions
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -29,10 +35,15 @@ import javax.inject.Provider
 class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     private val binding by contentView<FragmentPlayersFilterPageBinding>(R.layout.fragment_players_filter_page)
     private lateinit var adapter: PlayersListAdapter
+    private var position = 0
 
     @Inject
     lateinit var presenterProvider: Provider<PlayersPagePresenter>
     private val presenter by moxyPresenter { presenterProvider.get() }
+
+    companion object {
+        const val CAMERA_REQUEST_CODE = 10
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,7 +55,7 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        adapter = PlayersListAdapter(presenter, requireContext())
+        adapter = PlayersListAdapter(this, presenter, requireContext())
         binding.recyclerView.adapter = adapter
         arguments?.apply {
             val position: String? = getString(POS_ARG)
@@ -74,77 +85,114 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
     override fun setPlayersWithNationalityInPositionData(list: List<Player>) {
         adapter.setData(list)
     }
-}
 
-class PlayersListAdapter(
-    private val presenter: PlayersPagePresenter,
-    private val context: Context,
-    private var data: MutableList<Player> = mutableListOf()
-) : RecyclerView.Adapter<PlayersListAdapter.ViewHolder>() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val player = data[position]
-
-        with(holder.binding) {
-            val playerInClub = player.position + " | " + player.club
-            name.text = player.name
-            pos.text = playerInClub
-            nationality.text = player.nationality
-            posIcon.setImageDrawable(PositionsIconFactory.getPositionIcon(context, player.position))
-            setFavourite(player)
-            container.setOnClickListener {
-                player.favourite = !player.favourite
-                notifyItemChanged(position)
-                presenter.updatePlayer(player)
-            }
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            adapter.setImageAtPosition(imageBitmap)
         }
     }
 
-    private fun ItemPlayerBinding.setFavourite(player: Player) {
-        favoutite.setImageDrawable(
-            if (player.favourite) ContextCompat.getDrawable(context, R.drawable.ic_star_yellow)
-            else ContextCompat.getDrawable(context, R.drawable.ic_star_white)
-        )
-    }
+    inner class PlayersListAdapter(
+        private val fragment: Fragment,
+        private val presenter: PlayersPagePresenter,
+        private val context: Context,
+        private var data: MutableList<Player> = mutableListOf()
+    ) : RecyclerView.Adapter<PlayersListAdapter.ViewHolder>() {
 
-    fun setData(list: List<Player>) {
-        val diffResult = DiffUtil.calculateDiff(DiffCallback(data, list))
-        data.clear()
-        data.addAll(list)
-        diffResult.dispatchUpdatesTo(this)
-    }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding =
+                ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
+        }
 
-    override fun getItemCount() = data.size
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val player = data[position]
 
-    inner class ViewHolder(val binding: ItemPlayerBinding) :
-        RecyclerView.ViewHolder(binding.root)
+            with(holder.binding) {
+                val playerInClub = player.position + " | " + player.club
+                name.text = player.name
+                pos.text = playerInClub
+                nationality.text = player.nationality
+                if (player.icon != null) {
+                    posIcon.setImageBitmap(player.icon)
+                } else {
+                    posIcon.setImageBitmap(
+                        PositionsIconFactory.getPositionIcon(context, player.position)?.toBitmap()
+                    )
+                    player.icon =
+                        PositionsIconFactory.getPositionIcon(context, player.position)?.toBitmap()
+                }
+                setFavourite(player)
 
-    inner class DiffCallback(
-        private val oldData: List<Player>,
-        private val newData: List<Player>
-    ) : DiffUtil.Callback() {
+                favoutite.setOnClickListener {
+                    player.favourite = !player.favourite
+                    notifyItemChanged(position)
+                    presenter.updatePlayer(player)
+                }
 
-        override fun getOldListSize(): Int = oldData.size
+                posIcon.setOnClickListener {
+                    val rxPermissions = RxPermissions(fragment)
+                    rxPermissions
+                        .request(Manifest.permission.CAMERA)
+                        .subscribe {
+                            if (it) {
+                                val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                                this@PlayersPageFragment.position = position
+                                startActivityForResult(takePicture, CAMERA_REQUEST_CODE)
+                            }
+                        }
+                }
+            }
+        }
 
-        override fun getNewListSize(): Int = newData.size
+        private fun ItemPlayerBinding.setFavourite(player: Player) {
+            favoutite.setImageDrawable(
+                if (player.favourite) ContextCompat.getDrawable(context, R.drawable.ic_star_yellow)
+                else ContextCompat.getDrawable(context, R.drawable.ic_star_white)
+            )
+        }
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldData[oldItemPosition] == newData[newItemPosition]
+        fun setData(list: List<Player>) {
+            val diffResult = DiffUtil.calculateDiff(DiffCallback(data, list))
+            data.clear()
+            data.addAll(list)
+            diffResult.dispatchUpdatesTo(this)
+        }
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldPlayer = oldData[oldItemPosition]
-            val newPlayer = newData[newItemPosition]
-            return oldPlayer.name == newPlayer.name
-                    && oldPlayer.favourite == newPlayer.favourite
-                    && oldPlayer.club == newPlayer.club
-                    && oldPlayer.nationality == newPlayer.nationality
-                    && oldPlayer.position == newPlayer.position
+        fun setImageAtPosition(bitmap: Bitmap) {
+            data[position].icon = bitmap
+            notifyItemChanged(position)
+        }
+
+        override fun getItemCount() = data.size
+
+        inner class ViewHolder(val binding: ItemPlayerBinding) :
+            RecyclerView.ViewHolder(binding.root)
+
+        inner class DiffCallback(
+            private val oldData: List<Player>,
+            private val newData: List<Player>
+        ) : DiffUtil.Callback() {
+
+            override fun getOldListSize(): Int = oldData.size
+
+            override fun getNewListSize(): Int = newData.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                oldData[oldItemPosition] == newData[newItemPosition]
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldPlayer = oldData[oldItemPosition]
+                val newPlayer = newData[newItemPosition]
+                return oldPlayer.name == newPlayer.name
+                        && oldPlayer.favourite == newPlayer.favourite
+                        && oldPlayer.club == newPlayer.club
+                        && oldPlayer.nationality == newPlayer.nationality
+                        && oldPlayer.position == newPlayer.position
+            }
         }
     }
 }

@@ -100,4 +100,8 @@ dependencies {
     // Gson
     def gsonVersion = '2.8.6'
     implementation "com.google.code.gson:gson:$gsonVersion"
+
+    //RX Permissions
+    def rxPermissionsVersion = '0.12'
+    implementation "com.github.tbruyelle:rxpermissions:$rxPermissionsVersion"
 }

@@ -12,9 +12,8 @@ import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.lang.StringBuilder
 
-@Database(entities = [Player::class], exportSchema = false, version = 2)
+@Database(entities = [Player::class], exportSchema = false, version = 3)
 abstract class PlayerDatabase : RoomDatabase() {
 
     abstract fun dao(): PlayerDao
