@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.example.football.R
 import com.example.football.databinding.FragmentPlayersFilterBinding
 import com.example.football.ui.ClubsPositionsNationalitiesPageAdapter
 import com.example.football.ui.main.MainActivity
 import com.example.football.utils.inflaters.contentView
 import com.example.football.utils.view.FLAG_ARG
+import com.example.football.utils.view.OFFSCREEN_PAGE_LIMIT
 import com.google.android.material.tabs.TabLayoutMediator
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -63,6 +65,7 @@ class ClubPositionsFragment : MvpAppCompatFragment(), ClubFilterView {
                 })
                 .commit()
         }
+        binding.pager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT + OFFSCREEN_PAGE_LIMIT
         return binding.root
     }
 

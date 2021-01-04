@@ -10,3 +10,4 @@ const val FLAG_ARG = "flag_arg"
 const val DATABASE_NAME = "players_table"
 const val APP_PREFERENCES = "app_preferences"
 const val BACK_UP_PATH_KEY = "back_up_path_key"
+const val OFFSCREEN_PAGE_LIMIT = 10

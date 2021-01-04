@@ -2,12 +2,14 @@ package com.example.football.ui.playersPage
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.football.R
 import com.example.football.data.entity.Player
 import com.example.football.data.entity.PositionsIconFactory
@@ -77,7 +79,7 @@ class PlayersPageFragment : MvpAppCompatFragment(), PlayersPageView {
 class PlayersListAdapter(
     private val presenter: PlayersPagePresenter,
     private val context: Context,
-    private var data: List<Player> = mutableListOf()
+    private var data: MutableList<Player> = mutableListOf()
 ) : RecyclerView.Adapter<PlayersListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -99,7 +101,7 @@ class PlayersListAdapter(
             container.setOnClickListener {
                 player.favourite = !player.favourite
                 notifyItemChanged(position)
-                presenter.updatePlayer(player.favourite, player.name)
+                presenter.updatePlayer(player)
             }
         }
     }
@@ -113,7 +115,8 @@ class PlayersListAdapter(
 
     fun setData(list: List<Player>) {
         val diffResult = DiffUtil.calculateDiff(DiffCallback(data, list))
-        data = list
+        data.clear()
+        data.addAll(list)
         diffResult.dispatchUpdatesTo(this)
     }
 

@@ -1,5 +1,6 @@
 package com.example.football.ui.playersPage
 
+import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -34,7 +35,7 @@ class PlayersPagePresenter @Inject constructor(
                 .subscribe { it -> viewState.setPlayersWithNationalityInPositionData(it) }
     }
 
-    fun updatePlayer(favourite: Boolean, name: String) {
-        playersRepository.updatePlayer(favourite, name)
+    fun updatePlayer(player: Player) {
+        playersRepository.updatePlayer(player)
     }
 }

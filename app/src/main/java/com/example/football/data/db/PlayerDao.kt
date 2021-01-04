@@ -31,8 +31,8 @@ interface PlayerDao {
     @Query("SELECT * FROM players_table WHERE nationality = :nationality")
     fun getPlayersByNationalitySingle(nationality: String): Single<List<Player>>
 
-    @Query("UPDATE players_table SET favourite = :favourite WHERE name = :name")
-    fun updatePlayer(favourite: Boolean, name: String)
+    @Update
+    fun updatePlayer(player: Player)
 
     @RawQuery
     fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery?): Int

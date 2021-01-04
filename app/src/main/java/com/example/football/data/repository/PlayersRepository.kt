@@ -111,8 +111,8 @@ class PlayersRepository @Inject constructor(
         }
     }
 
-    fun updatePlayer(favourite: Boolean, name: String) {
-        Completable.fromRunnable { dao.updatePlayer(favourite, name) }
+    fun updatePlayer(player: Player) {
+        Completable.fromRunnable { dao.updatePlayer(player) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
