@@ -9,14 +9,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "players_table")
 @Parcelize
-data class Player(
+class Player : Parcelable {
     @PrimaryKey
-    val name: String,
-    val position: String,
-    val nationality: String,
-    val club: String,
+    var name: String = ""
+    var position: String = ""
+    var nationality: String = ""
+    var club: String = ""
     var favourite: Boolean = false
-): Parcelable {
     @Ignore
     var icon: Bitmap? = null
 }

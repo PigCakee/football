@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.football.R
+import com.example.football.data.entity.Player
 import com.example.football.databinding.FragmentMainBinding
 import com.example.football.ui.clubs.ClubsFragment
 import com.example.football.ui.nationalities.NationalitiesFragment

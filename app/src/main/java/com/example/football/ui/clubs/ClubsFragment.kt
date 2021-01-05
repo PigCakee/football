@@ -37,6 +37,7 @@ class ClubsFragment : MvpAppCompatFragment(), ClubsView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding.loading.visibility = View.VISIBLE
         adapter = ClubsAdapter(presenter, requireContext())
         binding.recyclerView.adapter = adapter
         return binding.root
@@ -51,6 +52,7 @@ class ClubsFragment : MvpAppCompatFragment(), ClubsView {
     }
 
     override fun setRecyclerData(list: MutableList<Pair<List<Player>, String>>) {
+        binding.loading.visibility = View.INVISIBLE
         adapter.setData(list)
     }
 

@@ -34,12 +34,11 @@ class PositionsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().position))
-                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
+                viewState.setRecyclerData(list)
             }
     }
 
     fun handlePositionClick(position: String) {
-        list.clear()
         viewState.moveForward(position)
     }
 }

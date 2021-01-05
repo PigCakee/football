@@ -34,12 +34,11 @@ class ClubsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().club))
-                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
+                viewState.setRecyclerData(list)
             }
     }
 
     fun handleClubClick(club: String) {
-        list.clear()
         viewState.moveForward(club)
     }
 }

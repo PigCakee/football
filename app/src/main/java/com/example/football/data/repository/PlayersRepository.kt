@@ -1,6 +1,5 @@
 package com.example.football.data.repository
 
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.football.data.db.PlayerDatabase
 import com.example.football.data.entity.Player
 import io.reactivex.rxjava3.core.Completable

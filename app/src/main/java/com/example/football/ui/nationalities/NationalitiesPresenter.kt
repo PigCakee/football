@@ -34,12 +34,11 @@ class NationalitiesPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 list.add(Pair(it, it.first().nationality))
-                viewState.setRecyclerData(list.distinct() as MutableList<Pair<List<Player>, String>>)
+                viewState.setRecyclerData(list)
             }
     }
 
     fun handleNationalityClick(nationality: String) {
-        list.clear()
         viewState.moveForward(nationality)
     }
 }

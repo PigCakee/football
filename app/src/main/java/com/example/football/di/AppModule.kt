@@ -3,8 +3,6 @@ package com.example.football.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.football.data.db.PlayerDatabase
-import com.example.football.data.repository.PlayersRepository
-import com.example.football.ui.clubs.ClubsPresenter
 import com.example.football.utils.view.APP_PREFERENCES
 import dagger.Module
 import dagger.Provides

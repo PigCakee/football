@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.football.data.entity.Player
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
@@ -32,8 +33,9 @@ abstract class PlayerDatabase : RoomDatabase() {
             }
         }
 
-        suspend fun populateDatabase(dao: PlayerDao) {
-            getPlayersDataFromAssets().forEach { dao.insert(it) }
+        fun populateDatabase(dao: PlayerDao) {
+            getPlayersDataFromFirebase(dao)
+            //getPlayersDataFromAssets().forEach { dao.insert(it) }
         }
 
         fun getPlayersDataFromAssets(): List<Player> {
@@ -50,6 +52,36 @@ abstract class PlayerDatabase : RoomDatabase() {
                 bufferedReader.close()
                 Gson().fromJson(string.toString(), object : TypeToken<List<Player>>() {}.type)
             }
+        }
+
+        // In case you want to populate firestore automatically
+        fun insertDataToFirestore(list: List<Player>) {
+            val remoteDatabase = FirebaseFirestore.getInstance()
+            val taskData: HashMap<String, String> =
+                hashMapOf("name" to "", "position" to "", "nationality" to "", "club" to "")
+            list.forEach {
+                taskData["name"] = it.name
+                taskData["position"] = it.position
+                taskData["nationality"] = it.nationality
+                taskData["club"] = it.club
+
+                remoteDatabase.collection("Players").add(taskData)
+            }
+        }
+
+        fun getPlayersDataFromFirebase(dao: PlayerDao) {
+            val remoteDatabase = FirebaseFirestore.getInstance()
+            remoteDatabase.collection("Players")
+                .get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val list: List<Player>? = it.result?.toObjects(Player::class.java)
+
+                        runBlocking(Dispatchers.IO) {
+                            list?.forEach { player -> dao.insert(player) }
+                        }
+                    }
+                }
         }
     }
 
