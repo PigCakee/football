@@ -65,6 +65,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
         savedInstanceState: Bundle?
     ): View {
         binding.loading.visibility = View.VISIBLE
+        binding.loading.playAnimation()
 
         binding.backUp.setOnClickListener {
             backUpDatabase()

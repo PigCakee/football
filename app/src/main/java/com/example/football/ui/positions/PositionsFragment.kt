@@ -38,6 +38,7 @@ class PositionsFragment : MvpAppCompatFragment(), PositionsView {
         savedInstanceState: Bundle?
     ): View {
         binding.loading.visibility = View.VISIBLE
+        binding.loading.playAnimation()
         adapter = PositionsAdapter(presenter)
         binding.recyclerView.adapter = adapter
         return binding.root

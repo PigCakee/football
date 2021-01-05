@@ -38,6 +38,7 @@ class NationalitiesFragment : MvpAppCompatFragment(), NationalitiesView {
         savedInstanceState: Bundle?
     ): View {
         binding.loading.visibility = View.VISIBLE
+        binding.loading.playAnimation()
         adapter = NationalitiesAdapter(presenter)
         binding.recyclerView.adapter = adapter
         return binding.root

@@ -114,4 +114,8 @@ dependencies {
     def butterKnifeVersion = '10.2.3'
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+
+    // Lottie
+    def lottieVersion = '3.6.0'
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

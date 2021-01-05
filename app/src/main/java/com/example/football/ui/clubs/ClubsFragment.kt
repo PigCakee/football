@@ -37,6 +37,7 @@ class ClubsFragment : MvpAppCompatFragment(), ClubsView {
         savedInstanceState: Bundle?
     ): View {
         binding.loading.visibility = View.VISIBLE
+        binding.loading.playAnimation()
         adapter = ClubsAdapter(presenter, requireContext())
         binding.recyclerView.adapter = adapter
         return binding.root
@@ -86,16 +87,18 @@ class ClubsAdapter(
     override fun getItemCount() = data.size
 
     fun setData(newData: MutableList<Pair<List<Player>, String>>) {
-        newData.forEach { newIt ->
-            var exists = false
-            for (it in data) {
-                if (it.second == newIt.second) {
-                    exists = true
-                    break
-                }
-            }
-            if (!exists) data.add(newIt)
-        }
+        //newData.forEach { newIt ->
+        //    var exists = false
+        //    for (it in data) {
+        //        if (it.second == newIt.second) {
+        //            exists = true
+        //            break
+        //        }
+        //    }
+        //    if (!exists) data.add(newIt)
+        //}
+        data.clear()
+        data.addAll(newData)
         notifyDataSetChanged()
     }
 }
