@@ -109,4 +109,9 @@ dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
     implementation 'com.google.firebase:firebase-firestore:22.0.1'
+
+    // Butter knife
+    def butterKnifeVersion = '10.2.3'
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 }

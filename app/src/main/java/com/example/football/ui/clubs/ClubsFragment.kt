@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.football.R
 import com.example.football.data.entity.Player
 import com.example.football.databinding.FragmentClubsBinding
-import com.example.football.databinding.ItemClubBinding
 import com.example.football.ui.main.MainActivity
 import com.example.football.ui.main.MainFragmentDirections
 import com.example.football.utils.inflaters.contentView
@@ -66,27 +65,22 @@ class ClubsAdapter(
     private val presenter: ClubsPresenter,
     private val context: Context,
     private var data: MutableList<Pair<List<Player>, String>> = mutableListOf()
-) : RecyclerView.Adapter<ClubsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemClubBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_club, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val club = data[position]
-
-        with(holder.binding) {
-            this.club.text = club.second
-            clubData = club.second
-            if (club.first.isNotEmpty()) {
-                players.text = club.first.size.toString()
-            } else {
-                players.text = context.getString(R.string.no_players)
-            }
-            container.setOnClickListener { presenter.handleClubClick(club.second) }
+        holder.club.text = club.second
+        if (club.first.isNotEmpty()) {
+            holder.players.text = club.first.size.toString()
+        } else {
+            holder.players.text = context.getString(R.string.no_players)
         }
+        holder.container.setOnClickListener { presenter.handleClubClick(club.second) }
     }
 
     override fun getItemCount() = data.size
@@ -104,6 +98,4 @@ class ClubsAdapter(
         }
         notifyDataSetChanged()
     }
-
-    class ViewHolder(val binding: ItemClubBinding) : RecyclerView.ViewHolder(binding.root)
 }
