@@ -38,5 +38,5 @@ interface PlayerDao {
     fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery?): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(player: Player)
+    fun insert(player: Player)
 }

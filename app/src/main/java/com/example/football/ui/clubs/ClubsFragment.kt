@@ -87,16 +87,6 @@ class ClubsAdapter(
     override fun getItemCount() = data.size
 
     fun setData(newData: MutableList<Pair<List<Player>, String>>) {
-        //newData.forEach { newIt ->
-        //    var exists = false
-        //    for (it in data) {
-        //        if (it.second == newIt.second) {
-        //            exists = true
-        //            break
-        //        }
-        //    }
-        //    if (!exists) data.add(newIt)
-        //}
         data.clear()
         data.addAll(newData)
         notifyDataSetChanged()

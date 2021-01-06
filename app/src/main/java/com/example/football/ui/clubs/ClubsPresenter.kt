@@ -24,7 +24,7 @@ class ClubsPresenter @Inject constructor(
 
     override fun onDestroy() {
         super.onDestroy()
-        clubsDisposable?.dispose()
+        //clubsDisposable?.dispose()
     }
 
     private fun getClubs() {

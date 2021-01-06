@@ -9,6 +9,8 @@ import com.example.football.data.entity.Player
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStream
@@ -77,9 +79,9 @@ abstract class PlayerDatabase : RoomDatabase() {
                     if (it.isSuccessful) {
                         val list: List<Player>? = it.result?.toObjects(Player::class.java)
 
-                        runBlocking(Dispatchers.IO) {
+                        Completable.fromRunnable {
                             list?.forEach { player -> dao.insert(player) }
-                        }
+                        }.subscribeOn(Schedulers.io()).subscribe()
                     }
                 }
         }
