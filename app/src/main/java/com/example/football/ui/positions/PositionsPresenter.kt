@@ -3,6 +3,7 @@ package com.example.football.ui.positions
 import com.example.football.data.entity.Player
 import com.example.football.data.repository.PlayersRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
@@ -33,8 +34,24 @@ class PositionsPresenter @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                list.add(Pair(it, it.first().position))
-                viewState.setRecyclerData(list)
+                Completable.fromRunnable {
+                    var contains = false
+                    for ((index, pair) in list.withIndex()) {
+                        if (pair.second == it.first().position) {
+                            if (it.size > pair.first.size)
+                                list[index] = Pair(it, it.first().position)
+                            contains = true
+                            break
+                        }
+                    }
+                    if (!contains) {
+                        list.add(Pair(it, it.first().position))
+                    }
+                }.subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        viewState.setRecyclerData(list)
+                    }
             }
     }
 

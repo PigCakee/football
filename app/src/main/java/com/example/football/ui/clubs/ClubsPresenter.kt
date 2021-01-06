@@ -47,8 +47,7 @@ class ClubsPresenter @Inject constructor(
                     if (!contains) {
                         list.add(Pair(it, it.first().club))
                     }
-                }
-                    .subscribeOn(Schedulers.computation())
+                }.subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         viewState.setRecyclerData(list)
