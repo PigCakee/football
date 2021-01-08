@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
 
 @InjectViewState
@@ -15,7 +16,7 @@ class ClubsPresenter @Inject constructor(
     private val playersRepository: PlayersRepository
 ) : MvpPresenter<ClubsView>() {
     private var clubsDisposable: Disposable? = null
-    private val list: MutableList<Pair<List<Player>, String>> = mutableListOf()
+    private val list: CopyOnWriteArrayList<Pair<List<Player>, String>> = CopyOnWriteArrayList()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -36,11 +37,10 @@ class ClubsPresenter @Inject constructor(
             .subscribe {
                 Completable.fromRunnable {
                     var contains = false
-                    val listIterator = list.listIterator()
-                    for (pair in listIterator) {
+                    for ((index, pair) in list.withIndex()) {
                         if (pair.second == it.first().club) {
                             if (it.size > pair.first.size)
-                                listIterator.set(Pair(it, it.first().club))
+                                list[index] = (Pair(it, it.first().club))
                             contains = true
                             break
                         }
