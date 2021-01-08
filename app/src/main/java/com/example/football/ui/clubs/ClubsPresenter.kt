@@ -36,10 +36,11 @@ class ClubsPresenter @Inject constructor(
             .subscribe {
                 Completable.fromRunnable {
                     var contains = false
-                    for ((index, pair) in list.withIndex()) {
+                    val listIterator = list.listIterator()
+                    for (pair in listIterator) {
                         if (pair.second == it.first().club) {
                             if (it.size > pair.first.size)
-                                list[index] = Pair(it, it.first().club)
+                                listIterator.set(Pair(it, it.first().club))
                             contains = true
                             break
                         }
